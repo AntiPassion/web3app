@@ -3,7 +3,7 @@ const TronWeb = require('tronweb');
 const fullNode = 'https://api.nileex.io/';
 const solidityNode = 'https://api.nileex.io';
 const eventServer = 'https://event.nileex.io/';
-const privateKey = '64cdf3b85c6582090504aaba927d5f2039271de4547cb00947a3fb873337079e';
+const privateKey = 'f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703';
 
 let tronWeb = new TronWeb(
     fullNode,
@@ -11,8 +11,6 @@ let tronWeb = new TronWeb(
     eventServer,
     privateKey
 );
-
-
 
 
 module.exports = tronWeb;

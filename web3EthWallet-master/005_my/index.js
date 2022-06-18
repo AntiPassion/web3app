@@ -1,9 +1,6 @@
-const Koa = require('koa');
-const TronWeb = require('tronweb');
-const app = new Koa();
 
-app.use(async ctx => {
-  ctx.body = 'Hello World';
-});
 
-app.listen(3100);
+const web3 = require("./web3Helper")
+
+console.log(web3.instance());
+
