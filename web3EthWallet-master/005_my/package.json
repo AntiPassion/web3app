@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "abi-decoder": "^2.4.0",
     "ejs": "^2.6.1",
     "ethereumjs-tx": "^2.1.2",
     "koa": "^2.5.2",

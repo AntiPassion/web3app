@@ -2,7 +2,7 @@
 pragma solidity >0.6.12;
 
 
-contract Demo01 {
+contract demo01 {
 
     uint[] public numbers;
 

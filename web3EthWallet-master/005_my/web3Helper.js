@@ -7,6 +7,11 @@ module.exports = {
     return web3;
   },
 
+  getWSSInstance() {
+    const web3 = new Web3(`wss://rinkeby.infura.io/ws/v3/d3df59f4140d47b087775e2c1b4be8ed`)
+    return web3;
+  },
+
   tokenContract(tokenContractABI, contractAddress) {
     const web3 = this.instance();
     const tokenContract = new web3.eth.Contract(tokenContractABI, contractAddress);
@@ -116,6 +121,15 @@ module.exports = {
   async getBalance(address) {
     const web3 = this.instance();
     return await web3.eth.getBalance(address)
+  },
+
+
+  async getErc20TransfersByBlock() {
+
+  },
+
+  async sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
 

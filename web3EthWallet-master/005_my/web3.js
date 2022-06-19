@@ -18,16 +18,15 @@
   //合约地址
   const contractAddress = '0x3d2986709F64B9A485bCFa23B6d7fC1CF85221A4';
 
-  // let web3 = web3Helper.instance();
+  let web3 = web3Helper.instance();
+
   // let tokenContract = web3Helper.tokenContract(tokenContractABI, contractAddress);
   // let a = await tokenContract.methods.balanceOf(from).call()
   // let b = await web3.eth.getTransactionCount(from);
   // let c = tokenContract.methods.transfer(to, web3.utils.toWei('5000000', 'wei')).encodeABI()
   // console.log(a, b,c);
-
   // var Tx = require('ethereumjs-tx').Transaction;
   // var pk = Buffer.from('b6c6b9dd8d94d41d3a470d769c9cc31e4035aa450320a8769b69eb97c18179ea', 'hex');
-  
   // let count = await web3.eth.getTransactionCount(from);
   // let nonce = await web3.utils.toHex(count);
   // var rawTx = {
@@ -59,6 +58,8 @@
   //- eth转帐
   // await web3Helper.sendTransaction(from, amount, to, privateKey);
   
+
+
   //- USDT转帐
   amount = parseInt(amount) * Math.pow(10, 6) + '';
   await web3Helper.sendERC20Transaction(from, amount, to, privateKey,tokenContractABI, contractAddress);
