@@ -5,7 +5,7 @@ package com.xinbo.chainblock.consts;
  * @date 6/23/22 5:39 下午
  * @desc file desc
  */
-public interface TerminalApiConst {
+public interface TrxApiConst {
 
     //创建帐号
     String CREATE_ACCOUNT = "/trx/createAccount";
@@ -24,5 +24,9 @@ public interface TerminalApiConst {
 
     //获取交易信息
     String GET_TRANSACTION_INFO = "/trx/getTransactionInfo";
+
+
+    //获取交易记录
+    String GET_TRANSACTIONS_RECORD = "%s/accounts/%s/transactions/trc20?only_confirmed=true&only_to=true&limit=200&min_timestamp=%s";
 
 }

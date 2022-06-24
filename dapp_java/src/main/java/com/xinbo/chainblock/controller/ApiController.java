@@ -1,22 +1,16 @@
 package com.xinbo.chainblock.controller;
 
 import com.xinbo.chainblock.consts.StatusCode;
-import com.xinbo.chainblock.core.TerminalApi;
+import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
-import com.xinbo.chainblock.service.UserService;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author tony
@@ -27,7 +21,7 @@ import java.util.Date;
 public class ApiController {
 
     @Autowired
-    private TerminalApi terminalApi;
+    private TrxApi terminalApi;
 
     @Operation(summary = "createAccount")
     @GetMapping("createAccount")

@@ -3,11 +3,8 @@ package com.xinbo.chainblock.core;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.xinbo.chainblock.consts.TerminalApiConst;
-import com.xinbo.chainblock.entity.terminal.ResponseEntity;
-import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
+import com.xinbo.chainblock.consts.TrxApiConst;
+import com.xinbo.chainblock.entity.terminal.*;
 import com.xinbo.chainblock.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  * @author tony
  * @date 6/23/22 5:38 下午
@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 @Slf4j
-public class TerminalApi {
+public class TrxApi {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -31,8 +31,11 @@ public class TerminalApi {
     @Autowired
     private CommonUtils commonUtils;
 
-    @Value("${terminal.url}")
+    @Value("${trx.terminal-url}")
     private String terminalUrl;
+
+    @Value("${trx.api-url}")
+    private String apiUrl;
 
     /**
      * 创建帐号
@@ -41,7 +44,7 @@ public class TerminalApi {
     public AccountApiEntity createAccount() {
         AccountApiEntity result = null;
         try {
-            String url = String.format("%s%s", terminalUrl, TerminalApiConst.CREATE_ACCOUNT);
+            String url = String.format("%s%s", terminalUrl, TrxApiConst.CREATE_ACCOUNT);
             String res = restTemplate.postForObject(url, "", String.class);
             ResponseEntity<AccountApiEntity> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<AccountApiEntity>>() {});
             if(!ObjectUtils.isEmpty(entity) && entity.getCode() == 0 && !ObjectUtils.isEmpty(entity.getData())) {
@@ -62,7 +65,7 @@ public class TerminalApi {
     public String getBalanceOfTrx(String fromAddress) {
         String result = null;
         try {
-            String url = String.format("%s%s", terminalUrl, TerminalApiConst.GET_BALANCE_TRX);
+            String url = String.format("%s%s", terminalUrl, TrxApiConst.GET_BALANCE_TRX);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("fromAddress", fromAddress);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
@@ -87,7 +90,7 @@ public class TerminalApi {
     public String getBalanceOfTrc20(String fromAddress, String privateKey) {
         String result = null;
         try {
-            String url = String.format("%s%s", terminalUrl, TerminalApiConst.GET_BALANCE_TRC20);
+            String url = String.format("%s%s", terminalUrl, TrxApiConst.GET_BALANCE_TRC20);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("fromAddress", fromAddress);
             jsonObject.put("privateKey", privateKey);
@@ -115,7 +118,7 @@ public class TerminalApi {
     public TransactionTrxApiEntity transactionOfTrx(String fromAddress, String privateKey, double amount, String toAddress) {
         TransactionTrxApiEntity result = null;
         try {
-            String url = String.format("%s%s", terminalUrl, TerminalApiConst.TRANSACTION_TRX);
+            String url = String.format("%s%s", terminalUrl, TrxApiConst.TRANSACTION_TRX);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("fromAddress", fromAddress);
             jsonObject.put("amount", commonUtils.toTrx(amount));
@@ -147,7 +150,7 @@ public class TerminalApi {
     public TransactionTrxApiEntity transactionOfTrc20(String contractAddress, String fromAddress, String privateKey, double amount, String toAddress) {
         TransactionTrxApiEntity result = null;
         try {
-            String url = String.format("%s%s", terminalUrl, TerminalApiConst.TRANSACTION_TRC20);
+            String url = String.format("%s%s", terminalUrl, TrxApiConst.TRANSACTION_TRC20);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("contractAddress", contractAddress);
             jsonObject.put("fromAddress", fromAddress);
@@ -174,7 +177,7 @@ public class TerminalApi {
     public TransactionInfoApiEntity getTransactionInfo(String txID) {
         TransactionInfoApiEntity result = null;
         try {
-            String url = String.format("%s%s", terminalUrl, TerminalApiConst.GET_TRANSACTION_INFO);
+            String url = String.format("%s%s", terminalUrl, TrxApiConst.GET_TRANSACTION_INFO);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("txID", txID);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
@@ -188,5 +191,19 @@ public class TerminalApi {
         return result;
     }
 
+
+    public void getTransactionsRecord(String account) {
+        long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
+        String url = String.format(TrxApiConst.GET_TRANSACTIONS_RECORD, apiUrl, account, minTimestamp);
+        RestTemplate restTemplate = new RestTemplate();
+        String res = restTemplate.getForObject(url, String.class);
+
+        TransactionRecordApiEntity entity = JSON.parseObject(res, new TypeReference<TransactionRecordApiEntity>() {});
+        if(!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData()) && entity.getData().size()>0) {
+            for (TransactionRecordApiEntity.Data d: entity.getData()) {
+                System.out.println(d);
+            }
+        }
+    }
 
 }

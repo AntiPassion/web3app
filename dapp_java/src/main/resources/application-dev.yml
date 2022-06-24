@@ -3,8 +3,9 @@ server:
 
 
 
-terminal:
-  url: 'http://localhost:3333'
+trx:
+  terminal-url: 'http://localhost:3333'
+  api-url: 'https://nile.trongrid.io/v1'
 
 spring:
   datasource:
