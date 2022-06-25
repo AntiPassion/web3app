@@ -55,3 +55,53 @@ values
 
 
 
+
+create table t_issue (
+  id int primary key auto_increment,
+  num varchar(50) comment '期号数',
+  start_time datetime comment '开始时间',
+  end_time datetime comment '结束时间'
+) comment '期号';
+
+
+create table t_open_result (
+  id int primary key auto_increment,
+  issue_num varchar(50) comment '期号数',
+  hash_code varchar(50) comment '哈希码',
+  status int comment '状态(0:未开奖,1:已开奖,2:已结算)'
+) comment '开奖结果';
+
+
+
+
+/*
+create table t_lottery_category(
+  id int primary key auto_increment,
+  name varchar(50) comment '类目名称'
+) comment '彩种类目';
+
+
+create table t_lottery_game(
+  id int primary key auto_increment,
+  name varchar(50) comment '游戏名称',
+  cate_id varchar(50) comment '类目id',
+  cate_name varchar(50) comment '类目名称',
+  enable tinyint(1) comment '是否开启'
+) comment '彩种游戏';
+
+
+create table t_lottery_play(
+  id int primary key auto_increment,
+  name varchar(50) comment '玩法名称',
+  game_id varchar(50) comment '彩种id',
+  play_code varchar(50) comment '玩法编码',
+  enable tinyint(1) comment '是否开启'
+) comment '彩种玩法';
+
+
+create table t_lottery_play_code(
+  id int primary key auto_increment,
+  code varchar(50) comment '编码',
+  odds varchar(50) comment '赔率'
+) comment '彩种玩法编码';
+*/
