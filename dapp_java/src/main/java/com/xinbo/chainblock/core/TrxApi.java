@@ -14,6 +14,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -192,18 +193,28 @@ public class TrxApi {
     }
 
 
-    public void getTransactionsRecord(String account) {
-        long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
-        String url = String.format(TrxApiConst.GET_TRANSACTIONS_RECORD, apiUrl, account, minTimestamp);
-        RestTemplate restTemplate = new RestTemplate();
-        String res = restTemplate.getForObject(url, String.class);
+    /**
+     * 获取转帐记录
+     * @param account
+     * @return
+     */
+    public List<TransactionRecordApiEntity.Data> getTransactionsRecord(String account) {
+        List<TransactionRecordApiEntity.Data> result = null;
+        try {
+//            long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
+            long minTimestamp = 0;
+            String url = String.format(TrxApiConst.GET_TRANSACTIONS_RECORD, apiUrl, account, minTimestamp);
+            RestTemplate restTemplate = new RestTemplate();
+            String res = restTemplate.getForObject(url, String.class);
 
-        TransactionRecordApiEntity entity = JSON.parseObject(res, new TypeReference<TransactionRecordApiEntity>() {});
-        if(!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData()) && entity.getData().size()>0) {
-            for (TransactionRecordApiEntity.Data d: entity.getData()) {
-                System.out.println(d);
+            TransactionRecordApiEntity entity = JSON.parseObject(res, new TypeReference<TransactionRecordApiEntity>() {});
+            if(!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData())) {
+                result = entity.getData();
             }
+        }catch (Exception ex) {
+            log.error("TerminalApi getTransactionsRecord exception", ex);
         }
+        return result;
     }
 
 }

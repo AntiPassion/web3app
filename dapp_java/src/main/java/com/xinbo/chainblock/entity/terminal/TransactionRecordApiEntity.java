@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.entity.terminal;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.List;
@@ -21,8 +22,20 @@ public class TransactionRecordApiEntity {
 
     @lombok.Data
     public class Data {
-        private String transaction_id;
-        private TokenInfo token_info;
+        @JSONField(name="transaction_id")
+        private String transactionId;
+
+
+        @JSONField(name="token_info")
+        private TokenInfo tokenInfo;
+
+
+        @JSONField(name="block_timestamp")
+        private Long blockTimestamp;
+        private String from;
+        private String to;
+        private String type;
+        private String value;
 
         @lombok.Data
         public class TokenInfo {
