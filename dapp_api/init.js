@@ -53,23 +53,23 @@
         if(r) console.log("t_open_result table created")
     }
 
+    let minute = 1;
+    let gameId = 1;
+    let end = 60 * 24 / minute;
+    let fixed = 4;
+    let rr = await commonHelper.genExpect(gameId, end, fixed, minute)
+    for(let i=0; i<rr.length; i++) {
+        let item = rr[i];
+        let values = `${item.gameId}, '${item.num}', '${item.endTime}', '${item.endTimestamp}'`;
+        query = `INSERT INTO t_expect(game_id, num, end_time, end_timestamp) VALUES(${values})`;
+        await sqlite.run(query)
+    }
 
-    let values = `5, '0279', '345988d3e54976500fb2bcdd91b4048033b737b30c2aa93204ba66657bc12670', '2022-06-27 00:00:00'`;
-    query = `INSERT INTO t_open_result(game_id, num, hash_code, open_time) VALUES(${values})`;
-    await sqlite.run(query)
 
+    // let values = `5, '0279', '345988d3e54976500fb2bcdd91b4048033b737b30c2aa93204ba66657bc12670', '2022-06-27 00:00:00'`;
+    // query = `INSERT INTO t_open_result(game_id, num, hash_code, open_time) VALUES(${values})`;
+    // await sqlite.run(query)
 
-    // let minute = 5;
-    // let gameId = 5;
-    // let end = 60 * 24 / minute;
-    // let fixed = 4;
-    // let rr = await commonHelper.genExpect(gameId, end, fixed, minute)
-    // for(let i=0; i<rr.length; i++) {
-    //     let item = rr[i];
-    //     let values = `${item.gameId}, '${item.num}', '${item.endTime}', '${item.endTimestamp}'`;
-    //     query = `INSERT INTO t_expect(game_id, num, end_time, end_timestamp) VALUES(${values})`;
-    //     await sqlite.run(query)
-    // }
 
 
     // let dayjs = require('dayjs')
