@@ -56,17 +56,19 @@ values
 
 
 
-create table t_issue (
+create table t_expect (
   id int primary key auto_increment,
+  game_id int comment '彩种id',
   num varchar(50) comment '期号数',
-  start_time datetime comment '开始时间',
-  end_time datetime comment '结束时间'
+  start_time varchar(20) comment '开始时间',
+  end_time varchar(20) comment '结束时间'
 ) comment '期号';
 
 
 create table t_open_result (
   id int primary key auto_increment,
-  issue_num varchar(50) comment '期号数',
+  game_id int comment '彩种id',
+  num varchar(50) comment '期号数',
   hash_code varchar(50) comment '哈希码',
   status int comment '状态(0:未开奖,1:已开奖,2:已结算)'
 ) comment '开奖结果';

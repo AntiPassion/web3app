@@ -30,118 +30,56 @@
 // })
 
 
-let sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database('./sqlite3/sqlite.db');
-
-
-class SQLite{
-
-    async hasTable(query) {
-        return new Promise((resolve,reject) => {
-            db.get(query, [], (err, row) =>{
-                if(err) reject(err.message)
-                else resolve(row == undefined ? false:true);
-            })
-        });
-    }
-
-    async run(query) {
-        return new Promise(function(resolve, reject) {
-            db.run(query, function(err)  {
-                if(err) reject(err.message)
-                else    resolve(true)
-            })
-        })
-    }
-
-    async get(query, params) {
-        return new Promise(function(resolve, reject) {
-            db.get(query, params, function(err, row)  {
-                if(err) reject("Read error: " + err.message)
-                else {
-                    resolve(row)
-                }
-            })
-        }) 
-    }
-    
-
-    async all(query, params) {
-        return new Promise(function(resolve, reject) {
-            if(params == undefined) params=[]
-     
-            db.all(query, params, function(err, rows)  {
-                if(err) reject("Read error: " + err.message)
-                else {
-                    resolve(rows)
-                }
-            })
-        }) 
-    }
-
-    async close() {
-        return new Promise(function(resolve, reject) {
-            db.close()
-            resolve(true)
-        }) 
-    }
-    
-
-}
-
 (async ()=>{
 
-    let sqlite = new SQLite();
+    let sqlite = require("./utils/sqlite3Util")
+    let commonHelper = require("./utils/commonUtil")
 
 
     //判断表是否存在(没有则创建)
     let query = `SELECT name FROM sqlite_master WHERE type='table' AND name='t_expect'`;
     let result = await sqlite.hasTable(query);
     if(result == false) {
-        query = 'CREATE TABLE t_expect(game_id int, num varchar(10), start_time varchar(20), end_time varchar(20))';
+        query = 'CREATE TABLE t_expect(game_id int, num varchar(10), end_time varchar(20), end_timestamp int)';
         var r = await sqlite.run(query)
-        if(r) console.log("table created")
+        if(r) console.log("t_expect table created")
     }
 
-    // query = `INSERT INTO t_expect(game_id, num, start_time, end_time) VALUES(2,1,'1','1')`;
-    // result = await sqlite.run(query)
-    // console.log(result);
+    query = `SELECT name FROM sqlite_master WHERE type='table' AND name='t_open_result'`;
+    result = await sqlite.hasTable(query);
+    if(result == false) {
+        query = 'CREATE TABLE t_open_result(game_id int, num varchar(10), hash_code varchar(70), open_time timestamp)';
+        var r = await sqlite.run(query)
+        if(r) console.log("t_open_result table created")
+    }
 
-    query = `select * from t_expect order by game_id desc limit 3`;
-    result = await sqlite.all(query);
-    console.log(result);
+
+    let values = `5, '0279', '345988d3e54976500fb2bcdd91b4048033b737b30c2aa93204ba66657bc12670', '2022-06-27 00:00:00'`;
+    query = `INSERT INTO t_open_result(game_id, num, hash_code, open_time) VALUES(${values})`;
+    await sqlite.run(query)
+
+
+    // let minute = 5;
+    // let gameId = 5;
+    // let end = 60 * 24 / minute;
+    // let fixed = 4;
+    // let rr = await commonHelper.genExpect(gameId, end, fixed, minute)
+    // for(let i=0; i<rr.length; i++) {
+    //     let item = rr[i];
+    //     let values = `${item.gameId}, '${item.num}', '${item.endTime}', '${item.endTimestamp}'`;
+    //     query = `INSERT INTO t_expect(game_id, num, end_time, end_timestamp) VALUES(${values})`;
+    //     await sqlite.run(query)
+    // }
+
+
+    // let dayjs = require('dayjs')
+    // let current = await commonHelper.parseSecond(dayjs().format('HH:mm:ss'))
+    // query = `select * from t_expect where game_id = 5 and ${current} < end_timestamp order by num asc limit 1`;
+    // console.log(query);
+    // result = await sqlite.all(query);
+    // console.log(result);
 
 
 
 })();
 
-
-
-
-// 增:
-
-
-// 删:
-// var del=db.prepare("DELETE from human where name =?");  
-// del.run('小白1');  
-// del.finalize();
-
-//改:
-// var r = db.prepare("UPDATE human set name =? where id =2");  
-// r.run("小白22222");  
-// r.finalize();
-
-// 查 指定字段
-// db.each("SELECT id, name,age FROM human", function(err, row) {
-//     console.log(`${row.id} 姓名:${row.name} 年龄:${row.age}`);
-//   });
-
-// 查 所有字段
-// db.all("select * from t_expect",function(err,row){
-//     console.log(JSON.stringify(row));
-// })
-
-// 查 按条件
-// db.each("SELECT id, name,age FROM human where name=?",'小白2', function(err, row) {
-//     console.log(`${row.id} 姓名:${row.name} 年龄:${row.age}`);
-//   });
