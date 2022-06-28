@@ -75,7 +75,8 @@ public class OpenResultJob {
 
             //Step 3: 需要开奖数据
             for(HashResultApiEntity entity : records) {
-                String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
+                
+//                String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
             }
 
         }catch (Exception ex) {
