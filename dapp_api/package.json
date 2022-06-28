@@ -12,13 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cross-env": "^7.0.3",
     "dayjs": "^1.11.3",
     "ejs": "^2.6.1",
     "koa": "^2.5.2",
     "koa-body": "^4.0.4",
     "koa-router": "^7.4.0",
     "node-schedule": "^2.1.0",
+    "nodemon": "^2.0.18",
     "sqlite3": "^5.0.8",
     "web3": "^1.0.0-beta.34"
   },
