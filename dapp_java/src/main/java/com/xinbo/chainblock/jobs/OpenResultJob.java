@@ -30,13 +30,13 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Slf4j
-public class HashResultJob {
+public class OpenResultJob {
 
     @Value("${trx.terminal-url}")
     private String terminalUrl;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String,Object> redisTemplate;
 
     @Autowired
     private HashResultService hashResultService;
@@ -49,38 +49,38 @@ public class HashResultJob {
     public void result() {
         try {
             //Step 1: 获取开奖数据
-            String url = String.format("%s%s%s", terminalUrl, TrxApiConst.OPEN_RESULT, 5);
+            String url = String.format("%s%s%s",terminalUrl, TrxApiConst.OPEN_RESULT, 5);
             ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
             String body = forEntity.getBody();
-            if (StringUtils.isEmpty(body)) {
+            if(StringUtils.isEmpty(body)) {
                 throw new RuntimeException("body is empty");
             }
 
-            BaseEntity<List<HashResultApiEntity>> listBaseEntity = JSON.parseObject(body, new TypeReference<BaseEntity<List<HashResultApiEntity>>>() {
-            });
-            if (ObjectUtils.isEmpty(listBaseEntity) || listBaseEntity.getCode() != 0) {
+            BaseEntity<List<HashResultApiEntity>> listBaseEntity = JSON.parseObject(body, new TypeReference<BaseEntity<List<HashResultApiEntity>>>() {});
+            if(ObjectUtils.isEmpty(listBaseEntity) || listBaseEntity.getCode() != 0) {
                 throw new RuntimeException("fetch open data error");
             }
 
 
+
             //Step 2: 过滤重复数据
             List<HashResultApiEntity> records = new ArrayList<>();
-            for (HashResultApiEntity entity : listBaseEntity.getData()) {
+            for(HashResultApiEntity entity : listBaseEntity.getData()) {
                 String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
                 Boolean hasKey = redisTemplate.hasKey(key);
-                if (hasKey != null && hasKey) {
+                if(hasKey!=null && hasKey) {
                     continue;
                 }
 
                 records.add(entity);
             }
 
-            if (records.size() <= 0) {
+            if(records.size()<=0) {
                 return;
             }
 
             //Step 3: 需要开奖数据
-            for (HashResultApiEntity entity : records) {
+            for(HashResultApiEntity entity : records) {
                 HashResultEntity hashResultEntity = HashResultEntity.builder()
                         .gameId(entity.getGameId())
                         .num(entity.getNum())
@@ -100,9 +100,8 @@ public class HashResultJob {
                 String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
                 redisTemplate.opsForValue().set(key, "", 1L, TimeUnit.DAYS);
             }
-        } catch (Exception ex) {
+        }catch (Exception ex) {
             log.error("result", ex);
         }
     }
-
 }
