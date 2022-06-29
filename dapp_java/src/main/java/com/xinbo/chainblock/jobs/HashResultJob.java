@@ -28,8 +28,8 @@ import java.util.concurrent.TimeUnit;
  * @date 6/28/22 5:45 下午
  * @desc file desc
  */
-@Service
 @Slf4j
+//@Service
 public class HashResultJob {
 
     @Value("${trx.terminal-url}")
@@ -84,6 +84,7 @@ public class HashResultJob {
                 HashResultEntity hashResultEntity = HashResultEntity.builder()
                         .gameId(entity.getGameId())
                         .num(entity.getNum())
+                        .txID(entity.getTxID())
                         .blockHash(entity.getBlockHash())
                         .blockHeight(entity.getBlockHeight())
                         .openTime(entity.getOpenTime())
