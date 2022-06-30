@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.entity.LotteryCategoryEntity;
 
 /**
  * @author tony
@@ -8,5 +8,8 @@ import com.xinbo.chainblock.entity.WalletEntity;
  * @desc file desc
  */
 public interface LotteryCategoryService {
+
+
+    LotteryCategoryEntity findById(int id);
 
 }

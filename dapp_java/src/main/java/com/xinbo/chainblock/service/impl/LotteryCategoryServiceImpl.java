@@ -4,11 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.LotteryCategoryEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.mapper.LotteryCategoryMapper;
-import com.xinbo.chainblock.mapper.WalletMapper;
 import com.xinbo.chainblock.service.LotteryCategoryService;
-import com.xinbo.chainblock.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -27,6 +24,12 @@ public class LotteryCategoryServiceImpl extends ServiceImpl<LotteryCategoryMappe
 
 
 
+    @Override
+    public LotteryCategoryEntity findById(int id) {
+        return lotteryCategoryMapper.selectById(id);
+    }
+
+
     /**
      * 创建查询条件
      *
@@ -43,8 +46,4 @@ public class LotteryCategoryServiceImpl extends ServiceImpl<LotteryCategoryMappe
         }
         return wrappers;
     }
-
-
-
-
 }

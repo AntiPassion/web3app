@@ -4,11 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.LotteryPlayCodeEntity;
-import com.xinbo.chainblock.entity.LotteryPlayEntity;
 import com.xinbo.chainblock.mapper.LotteryPlayCodeMapper;
-import com.xinbo.chainblock.mapper.LotteryPlayMapper;
 import com.xinbo.chainblock.service.LotteryPlayCodeService;
-import com.xinbo.chainblock.service.LotteryPlayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -27,6 +24,12 @@ public class LotteryPlayCodeServiceImpl extends ServiceImpl<LotteryPlayCodeMappe
 
 
 
+    @Override
+    public LotteryPlayCodeEntity findById(int id) {
+        return lotteryPlayCodeMapper.selectById(id);
+    }
+
+
     /**
      * 创建查询条件
      *
@@ -38,13 +41,9 @@ public class LotteryPlayCodeServiceImpl extends ServiceImpl<LotteryPlayCodeMappe
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
-        if (!StringUtils.isEmpty(entity.getPlayCode())) {
-            wrappers.eq(LotteryPlayCodeEntity::getPlayCode, entity.getPlayCode());
+        if (!StringUtils.isEmpty(entity.getNameCode())) {
+            wrappers.eq(LotteryPlayCodeEntity::getNameCode, entity.getNameCode());
         }
         return wrappers;
     }
-
-
-
-
 }

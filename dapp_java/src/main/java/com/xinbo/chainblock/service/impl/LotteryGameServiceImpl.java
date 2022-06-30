@@ -3,12 +3,8 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.LotteryCategoryEntity;
 import com.xinbo.chainblock.entity.LotteryGameEntity;
-import com.xinbo.chainblock.mapper.LotteryCategoryMapper;
 import com.xinbo.chainblock.mapper.LotteryGameMapper;
-import com.xinbo.chainblock.mapper.WalletMapper;
-import com.xinbo.chainblock.service.LotteryCategoryService;
 import com.xinbo.chainblock.service.LotteryGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +24,12 @@ public class LotteryGameServiceImpl extends ServiceImpl<LotteryGameMapper, Lotte
 
 
 
+    @Override
+    public LotteryGameEntity findById(int id) {
+        return lotteryGameMapper.selectById(id);
+    }
+
+
     /**
      * 创建查询条件
      *
@@ -44,8 +46,4 @@ public class LotteryGameServiceImpl extends ServiceImpl<LotteryGameMapper, Lotte
         }
         return wrappers;
     }
-
-
-
-
 }

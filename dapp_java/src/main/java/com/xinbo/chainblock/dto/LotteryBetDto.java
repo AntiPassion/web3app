@@ -1,9 +1,6 @@
-package com.xinbo.chainblock.entity;
+package com.xinbo.chainblock.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.xinbo.chainblock.annotation.RedisHandel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,17 +10,15 @@ import java.util.Date;
 
 /**
  * @author tony
- * @date 6/25/22 4:10 下午
+ * @date 6/30/22 6:36 下午
  * @desc file desc
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@TableName("t_lottery_bet")
-public class LotteryBetEntity {
+public class LotteryBetDto {
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
 
@@ -38,85 +33,72 @@ public class LotteryBetEntity {
     /**
      * 彩种id
      */
-    @TableField("cate_id")
     private Integer cateId;
 
     /**
      * 类目编码
      */
-    @TableField("cate_name_code")
     private String cateNameCode;
 
     /**
      * 类目默认名称
      */
-    @TableField("cate_name_default")
     private String cateNameDefault;
 
     /**
      * 彩种id
      */
-    @TableField("game_id")
     private Integer gameId;
 
     /**
      * 彩种id
      */
-    @TableField("game_name_code")
     private String gameNameCode;
 
     /**
      * 彩种id
      */
-    @TableField("game_name_default")
     private String gameNameDefault;
 
     /**
      * 玩法id
      */
-    @TableField("play_id")
     private Integer playId;
 
     /**
      * 玩法编码
      */
-    @TableField("play_name_code")
     private String playNameCode;
 
     /**
      * 玩法编码
      */
-    @TableField("play_name_default")
     private String playNameDefault;
 
     /**
      * 玩法编码id
      */
-    @TableField("play_code_id")
     private Integer playCodeId;
 
     /**
      * 玩法编码id
      */
-    @TableField("play_code_name_code")
+    @RedisHandel(key = "kkkk" ,keyField = "param1", kk = {"a", "b"})
     private String playCodeNameCode;
 
     /**
      * 玩法编码id
      */
-    @TableField("play_code_name_default")
     private String playCodeNameDefault;
 
     /**
      * 开奖结果
      */
-    @TableField("hash_result")
     private String hashResult;
 
     /**
      * 期号
      */
-    @TableField("num")
     private String num;
 
     /**
@@ -132,24 +114,20 @@ public class LotteryBetEntity {
     /**
      * 创建时间
      */
-    @TableField("create_time")
     private Date createTime;
 
     /**
      * 更新时间
      */
-    @TableField("update_time")
     private Date updateTime;
 
     /**
      * 状态(0:未结算,1:已结算,2:作废)
      */
-    @TableField("status")
     private Integer status;
 
     /**
      * 备注
      */
-    @TableField("status")
     private String remark;
 }

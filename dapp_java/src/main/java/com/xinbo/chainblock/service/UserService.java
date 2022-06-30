@@ -1,5 +1,4 @@
 package com.xinbo.chainblock.service;
-
 import com.xinbo.chainblock.entity.UserEntity;
 
 /**
