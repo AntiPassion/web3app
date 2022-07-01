@@ -1,11 +1,10 @@
 
 
-drop database if exists cb;
+drop database if exists cb_v1;
 
-create database cb;
+create database cb_v1;
 
-
-use cb;
+use cb_v1;
 
 create table t_user(
   id int primary key auto_increment,
