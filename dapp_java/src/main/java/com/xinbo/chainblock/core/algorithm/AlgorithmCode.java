@@ -5,7 +5,7 @@ package com.xinbo.chainblock.core.algorithm;
  * @date 6/23/22 6:43 下午
  * @desc file desc
  */
-public interface Code {
+public interface AlgorithmCode {
 
     int lost = 0;
     int win = 1;

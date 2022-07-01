@@ -10,10 +10,10 @@ import java.util.Date;
 /**
  * @author tony
  * @date 6/23/22 4:48 下午
- * @desc file desc
+ * @desc 抽奖结算
  */
-//@Service
-public class DrawNiuNiuJob {
+//@Component
+public class DrawSettleJob {
 
 
     @Autowired

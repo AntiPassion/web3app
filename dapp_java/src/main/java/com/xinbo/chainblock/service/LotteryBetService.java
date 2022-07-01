@@ -1,6 +1,8 @@
 package com.xinbo.chainblock.service;
 
+import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.LotteryBetDto;
+import com.xinbo.chainblock.entity.LotteryBetEntity;
 
 import java.util.List;
 
@@ -11,8 +13,13 @@ import java.util.List;
  */
 public interface LotteryBetService {
 
-    boolean insert(LotteryBetDto dto);
+    LotteryBetDto findById(int id);
 
-    List<LotteryBetDto> find(LotteryBetDto dto);
+    boolean insert(LotteryBetEntity entity);
 
+    List<LotteryBetEntity> find(LotteryBetEntity entity);
+
+    BasePage findPage(LotteryBetEntity dto, long current, long size);
+
+    List<LotteryBetEntity> unsettle(String num, int size);
 }

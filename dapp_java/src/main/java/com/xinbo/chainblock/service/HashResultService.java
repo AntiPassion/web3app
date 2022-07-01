@@ -11,4 +11,7 @@ public interface HashResultService {
 
     boolean insert(HashResultEntity entity);
 
+    HashResultEntity unsettle();
+
+    boolean settled(int id);
 }

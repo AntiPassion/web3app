@@ -1,6 +1,9 @@
 package com.xinbo.chainblock.core.algorithm;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author tony
@@ -8,7 +11,10 @@ import lombok.Data;
  * @desc file desc
  */
 @Data
-public class Result {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AlgorithmResult {
 
     private int status;
 

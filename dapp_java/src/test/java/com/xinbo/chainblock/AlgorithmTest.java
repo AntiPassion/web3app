@@ -1,10 +1,15 @@
 package com.xinbo.chainblock;
 
-import com.xinbo.chainblock.core.algorithm.Code;
-import com.xinbo.chainblock.core.algorithm.Result;
+import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
+import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
+import com.xinbo.chainblock.core.algorithm.LotteryAlgorithm;
+import com.xinbo.chainblock.entity.HashResultEntity;
+import com.xinbo.chainblock.entity.LotteryBetEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -16,6 +21,7 @@ import java.util.regex.Pattern;
  * @desc file desc
  */
 @RunWith(SpringRunner.class)
+@ActiveProfiles("dev")
 @SpringBootTest
 public class AlgorithmTest {
 
@@ -48,7 +54,7 @@ public class AlgorithmTest {
 
     @Test
     public void NiuNiu() {
-        Result r = new Result();
+        AlgorithmResult r = new AlgorithmResult();
         int len = openHash.length();
         String code = openHash.substring(len-5, len);
         String[] split = code.split("");
@@ -65,22 +71,38 @@ public class AlgorithmTest {
         //点数相同
         if(platformNum == playerNum) {
             if(platformNum>=1 && platformNum<=5) {
-                r.setStatus(Code.lost);
+                r.setStatus(AlgorithmCode.lost);
             } else {
-                r.setStatus(Code.draw);
+                r.setStatus(AlgorithmCode.draw);
             }
         }
 
 
         if(platformNum > playerNum) {
-            r.setStatus(Code.lost);
+            r.setStatus(AlgorithmCode.lost);
         } else {
-            r.setStatus(Code.win);
+            r.setStatus(AlgorithmCode.win);
             r.setNum(playerNum);
         }
 
         System.out.println(r.toString());
     }
 
+
+    @Autowired
+    private LotteryAlgorithm algorithm;
+
+    @Test
+    public void tes2() {
+        String tmp = "757f6cc9c06aaf1e50cc68773fcd4bd19afb92336247e28a1dc285a792751ef7";
+        HashResultEntity hr = HashResultEntity.builder()
+                .blockHash(tmp)
+                .build();
+
+        LotteryBetEntity lb = LotteryBetEntity.builder()
+                .playId(1)
+                .build();
+        algorithm.settle(hr, lb);
+    }
 
 }

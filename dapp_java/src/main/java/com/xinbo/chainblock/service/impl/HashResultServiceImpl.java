@@ -31,6 +31,16 @@ public class HashResultServiceImpl extends ServiceImpl<HashResultMapper, HashRes
     }
 
 
+    @Override
+    public HashResultEntity unsettle() {
+        return hashResultMapper.unsettle();
+    }
+
+    @Override
+    public boolean settled(int id) {
+        return hashResultMapper.settled(id)>0;
+    }
+
 
     /**
      * 创建查询条件
@@ -38,16 +48,16 @@ public class HashResultServiceImpl extends ServiceImpl<HashResultMapper, HashRes
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<WalletEntity> createWrapper(WalletEntity entity) {
-        LambdaQueryWrapper<WalletEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<HashResultEntity> createWrapper(HashResultEntity entity) {
+        LambdaQueryWrapper<HashResultEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
-        if (!StringUtils.isEmpty(entity.getUsername())) {
-            wrappers.eq(WalletEntity::getUsername, entity.getUsername());
+        if (!StringUtils.isEmpty(entity.getNum())) {
+            wrappers.eq(HashResultEntity::getNum, entity.getNum());
         }
-        if (!StringUtils.isEmpty(entity.getAddress())) {
-            wrappers.eq(WalletEntity::getAddress, entity.getAddress());
+        if (!StringUtils.isEmpty(entity.getIsSettle())) {
+            wrappers.eq(HashResultEntity::getIsSettle, entity.getIsSettle());
         }
         return wrappers;
     }
