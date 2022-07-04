@@ -14,8 +14,8 @@ create table t_user(
   freeze_money decimal(10,4) comment '冻结金额',
   salt varchar(100) comment '盐',
   version int comment '版本',
-  create_time timestamp comment '创建时间',
-  update_time timestamp comment '创建时间',
+  create_time timestamp null default null comment '创建时间',
+  update_time timestamp null default null comment '创建时间',
   UNIQUE KEY unique_username (username)
 );
 
@@ -367,8 +367,11 @@ create table t_agent(
   p_uid int comment '上级用户id',
   uid int comment '用户id',
   username varchar(100) comment '用户名',
-  level int comment '层级'
+  level int comment '层级',
+  child text comment '代理下级'
 ) comment '代理';
+
+
 insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (0,1,'jack',0);
 insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,2,'jackB1',1);
 insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,3,'jackB2',1);
