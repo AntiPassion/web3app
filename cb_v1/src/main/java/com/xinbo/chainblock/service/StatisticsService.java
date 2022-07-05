@@ -15,4 +15,6 @@ import java.util.List;
 public interface StatisticsService {
 
     List<StatisticsEntity> findByUidStr(String date, List<Integer> childList);
+
+    StatisticsEntity findByUid(String date, int childUid);
 }

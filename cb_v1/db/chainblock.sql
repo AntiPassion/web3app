@@ -387,27 +387,28 @@ create table t_agent(
 ) comment '代理';
 
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (0,1,'jack',0);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,2,'jackB1',1);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,3,'jackB2',1);
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (2,4,'jackC1',2);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (2,5,'jackC2',2);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (3,6,'jackC3',2);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (3,7,'jackC4',2);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (0,1,'jack',0,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,2,'jackB1',1,'4,5,8,9,10,11,16,17');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,3,'jackB2',1,'6,7,12,13,14,15,18');
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (4,8,'jackD1',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (4,9,'jackD2',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (5,10,'jackD3',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (5,11,'jackD4',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (6,12,'jackD5',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (6,13,'jackD6',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (7,14,'jackD7',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (7,15,'jackD8',3);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,4,'jackC1',2,'8,9,16,17');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,5,'jackC2',2,'10,11');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,6,'jackC3',2,'12,13,18');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,7,'jackC4',2,'14,15');
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (9,16,'jackE1',4);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (9,17,'jackE2',4);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (12,18,'jackE3',4);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,8,'jackD1',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,9,'jackD2',3,'16,17');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,10,'jackD3',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,11,'jackD4',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,12,'jackD5',3,'18');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,13,'jackD6',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,14,'jackD7',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,15,'jackD8',3,'');
+
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,16,'jackE1',4,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,17,'jackE2',4,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (12,18,'jackE3',4,'');
 
 
 
@@ -449,36 +450,38 @@ INSERT INTO cb_v1.t_statistics (`date`, `uid`, `username`, `bet_money`, `bet_pro
 
 
 
+
 drop table if exists t_agent_rebate;
 create table t_agent_rebate(
-  id int primary key auto_increment,
-  min int comment '最低业绩',
-  max int comment '最高业绩',
-  rebate int comment '额度'
+                               id int primary key auto_increment,
+                               min int comment '最低业绩',
+                               max int comment '最高业绩',
+                               rebate int comment '额度'
 ) comment '代理佣金';
 
-insert into cb_v1.t_agent_rebate(`min`,`max`,`rebate`) values 
+insert into cb_v1.t_agent_rebate(`min`,`max`,`rebate`) values
 (0,2000,50),
-(2000,5000,55),
-(5000,10000,60),
-(10000,20000,80),
-(20000,50000,90),
-(50000,100000,110),
-(100000,150000,130),
-(150000,200000,135),
-(200000,250000,140),
-(250000,300000,145),
-(300000,400000,150),
-(400000,500000,155),
-(500000,600000,160),
-(600000,800000,170),
-(800000,1000000,180),
-(1000000,1500000,190),
-(1500000,2000000,195),
-(2000000,2500000,200),
-(2500000,3000000,205),
-(3000000,3500000,210),
-(3500000,4000000,215),
-(4000000,5000000,220),
-(5000000,10000000,230);
+(2001,5000,55),
+(5001,10000,60),
+(10001,20000,80),
+(20001,50000,90),
+(50001,100000,110),
+(100001,150000,130),
+(150001,200000,135),
+(200001,250000,140),
+(250001,300000,145),
+(300001,400000,150),
+(400001,500000,155),
+(500001,600000,160),
+(600001,800000,170),
+(800001,1000000,180),
+(1000001,1500000,190),
+(1500001,2000000,195),
+(2000001,2500000,200),
+(2500001,3000000,205),
+(3000001,3500000,210),
+(3500001,4000000,215),
+(4000001,5000000,220),
+(5000001,10000000,230);
+
 

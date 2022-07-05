@@ -34,6 +34,11 @@ public class StatisticsServiceImpl extends ServiceImpl<StatisticsMapper, Statist
         return statisticsMapper.findByUidStr(date, childList);
     }
 
+    @Override
+    public StatisticsEntity findByUid(String date, int childUid) {
+        return statisticsMapper.findByUid(date, childUid);
+    }
+
     /**
      * 创建查询条件
      *
