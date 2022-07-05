@@ -42,11 +42,12 @@ public class AgentCommissionJob {
     @Scheduled(cron = "0/5 * * * * ?")
     public void handle() {
 
+        String date = "20220704";
 
         List<AgentRebateEntity> rebates = agentRebateService.findAll();
+        List<StatisticsEntity> statistics = statisticsService.findByDate(date);
 
 
-        String date = "20220704";
 
         //Step 1: 获取代理层级表
         int page = 1;
@@ -73,12 +74,11 @@ public class AgentCommissionJob {
         }
 
         Map<Integer, Double> map = new HashMap<>();
-
         List<AgentEntity> agentList = list.stream().filter(f -> !StringUtils.isEmpty(f.getChild())).collect(Collectors.toList());
         for(AgentEntity entity : agentList) {
             //下级
             List<Integer> childList = Arrays.stream(entity.getChild().split(",")).map(Integer::parseInt).collect(Collectors.toList());
-            childList.add(entity.getUid());
+//            childList.add(entity.getUid());
             List<StatisticsEntity> childStatistics = statisticsService.findByUidStr(date, childList);
 
             double sum = childStatistics.stream().mapToDouble(StatisticsEntity::getBetMoney).sum();
@@ -86,7 +86,66 @@ public class AgentCommissionJob {
         }
         System.out.println(map);
 
-        //汇总从下向上
+
+        //递归获取数据
+        int i = 1;
+        while (true) {
+            int finalI = i;
+            List<AgentEntity> parentAgentList = list.stream().filter(f -> f.getLevel() == finalI).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(parentAgentList) || parentAgentList.size() <= 0) {
+                break;
+            }
+            //上级
+            for (AgentEntity parent : parentAgentList) {
+                if(!map.containsKey(parent.getUid())) {
+                    continue;
+                }
+
+                List<AgentEntity> childAgentList = list.stream().filter(f -> f.getPUid().equals(parent.getUid())).collect(Collectors.toList());
+                if(CollectionUtils.isEmpty(childAgentList)) {
+                    continue;
+                }
+
+                //下级
+                List<CommissionEntity> betMoneyList = new ArrayList<>();
+                for(AgentEntity child : childAgentList) {
+                    Double betMoney = map.get(child.getUid());
+                    AgentRebateEntity rebateEntity = this.getRebate(rebates, betMoney);
+                    if(ObjectUtils.isEmpty(rebateEntity)) {
+                        continue;
+                    }
+                    Integer curRebate = rebateEntity.getRebate();
+
+                    CommissionEntity ce = CommissionEntity.builder()
+                            .uid(child.getUid())
+                            .betMoney(betMoney)
+                            .rebate(curRebate)
+                            .build();
+                    betMoneyList.add(ce);
+                }
+
+
+                //自营
+                Double betMoney = map.get(parent.getUid());
+                AgentRebateEntity rebateEntity = this.getRebate(rebates, betMoney);
+                if(ObjectUtils.isEmpty(rebateEntity)) {
+                    continue;
+                }
+                Integer curRebate = rebateEntity.getRebate();
+
+                CommissionEntity ce = CommissionEntity.builder()
+                        .uid(parent.getUid())
+                        .betMoney(betMoney)
+                        .rebate(curRebate)
+                        .build();
+                betMoneyList.add(ce);
+            }
+
+
+            i += 1;
+        }
+
+        //汇总从上向下
         Map<Integer, Double> newMap = new HashMap<>();
         List<Integer> keys = map.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
         for(Integer uid : keys) {

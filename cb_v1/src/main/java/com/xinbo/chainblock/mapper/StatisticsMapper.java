@@ -21,4 +21,8 @@ public interface StatisticsMapper extends BaseMapper<StatisticsEntity> {
     List<StatisticsEntity> findByUidStr(@Param("date") String date, @Param("childList") List<Integer> childList);
 
     StatisticsEntity findByUid(@Param("date") String date, @Param("childUid") int childUid);
+
+
+    @Select("select * from t_statistics where date = #{date}")
+    List<StatisticsEntity> findByDate(@Param("date") String date);
 }
