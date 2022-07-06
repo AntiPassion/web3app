@@ -1,10 +1,10 @@
 package com.xinbo.chainblock.jobs;
 
-import cn.hutool.core.date.DateUtil;
+import com.xinbo.chainblock.entity.AgentCommissionEntity;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.AgentRebateEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
-import com.xinbo.chainblock.mapper.AgentRebateMapper;
+import com.xinbo.chainblock.service.AgentCommissionService;
 import com.xinbo.chainblock.service.AgentRebateService;
 import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.StatisticsService;
@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * @desc 计算代理佣金
  */
 @Slf4j
-@Component
+//@Component
 public class AgentCommissionJob {
 
     @Autowired
@@ -37,6 +37,9 @@ public class AgentCommissionJob {
 
     @Autowired
     private StatisticsService statisticsService;
+
+    @Autowired
+    private AgentCommissionService agentCommissionService;
 
 
     @Scheduled(cron = "0/5 * * * * ?")
@@ -84,8 +87,8 @@ public class AgentCommissionJob {
             double sum = childStatistics.stream().mapToDouble(StatisticsEntity::getBetMoney).sum();
             map.put(entity.getUid(),sum);
         }
-        System.out.println(map);
 
+        Map<Integer, List<AgentCommissionEntity>> pair = new HashMap<>();
 
         //递归获取数据
         int i = 1;
@@ -107,8 +110,11 @@ public class AgentCommissionJob {
                 }
 
                 //下级
-                List<CommissionEntity> betMoneyList = new ArrayList<>();
+                List<AgentCommissionEntity> betMoneyList = new ArrayList<>();
                 for(AgentEntity child : childAgentList) {
+                    if(!map.containsKey(child.getUid())) {
+                        continue;
+                    }
                     Double betMoney = map.get(child.getUid());
                     AgentRebateEntity rebateEntity = this.getRebate(rebates, betMoney);
                     if(ObjectUtils.isEmpty(rebateEntity)) {
@@ -116,67 +122,126 @@ public class AgentCommissionJob {
                     }
                     Integer curRebate = rebateEntity.getRebate();
 
-                    CommissionEntity ce = CommissionEntity.builder()
+                    AgentCommissionEntity ce = AgentCommissionEntity.builder()
                             .uid(child.getUid())
-                            .betMoney(betMoney)
+                            .username(child.getUsername())
+                            .commission(0D)
+                            .directPerformance(0D)
+                            .totalPerformance(betMoney)
+                            .teamPerformance(0D)
+                            .selfPerformance(0D)
                             .rebate(curRebate)
                             .build();
                     betMoneyList.add(ce);
                 }
 
 
+                AgentCommissionEntity entity = AgentCommissionEntity.builder()
+                        .uid(parent.getUid())
+                        .username(parent.getUsername())
+                        .commission(0D)
+                        .directPerformance(0D)
+                        .teamPerformance(map.get(parent.getUid()))
+                        .build();
+                //直属
+                List<Integer> directList = betMoneyList.stream().map(AgentCommissionEntity::getUid).collect(Collectors.toList());
+                if(!CollectionUtils.isEmpty(directList)) {
+                    List<StatisticsEntity> directStatistics = statisticsService.findByUidStr(date, directList);
+                    double sum = directStatistics.stream().mapToDouble(StatisticsEntity::getBetMoney).sum();
+                    entity.setDirectPerformance(sum);
+                }
+
+
                 //自营
-                Double betMoney = map.get(parent.getUid());
-                AgentRebateEntity rebateEntity = this.getRebate(rebates, betMoney);
+                StatisticsEntity parentStatistics = statisticsService.findByUid(date, parent.getUid());
+                Double totalPerformance = map.get(parent.getUid()) + parentStatistics.getBetMoney();
+                AgentRebateEntity rebateEntity = this.getRebate(rebates, totalPerformance);
                 if(ObjectUtils.isEmpty(rebateEntity)) {
                     continue;
                 }
                 Integer curRebate = rebateEntity.getRebate();
 
-                CommissionEntity ce = CommissionEntity.builder()
-                        .uid(parent.getUid())
-                        .betMoney(betMoney)
-                        .rebate(curRebate)
-                        .build();
-                betMoneyList.add(ce);
+                entity.setTotalPerformance(totalPerformance);
+                entity.setSelfPerformance((double) parentStatistics.getBetMoney());
+                entity.setRebate(curRebate);
+                betMoneyList.add(entity);
+
+                pair.put(parent.getUid(), betMoneyList);
             }
-
-
             i += 1;
         }
 
-        //汇总从上向下
-        Map<Integer, Double> newMap = new HashMap<>();
-        List<Integer> keys = map.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-        for(Integer uid : keys) {
-            Double betMoney = map.get(uid);
-
-            AgentEntity curAgentEntity = list.stream().filter(f -> f.getUid().equals(uid)).findFirst().orElse(null);
-            if(ObjectUtils.isEmpty(curAgentEntity)) {
+        List<AgentCommissionEntity> agentCommissionEntityList = new ArrayList<>();
+        for (Map.Entry<Integer, List<AgentCommissionEntity>> entry : pair.entrySet()) {
+            Integer key = entry.getKey();
+            List<AgentCommissionEntity> value = entry.getValue();
+            AgentCommissionEntity self = value.stream().filter(f -> f.getUid().equals(key)).findFirst().orElse(null);
+            if(ObjectUtils.isEmpty(self)) {
                 continue;
             }
-            AgentRebateEntity rebateEntity = this.getRebate(rebates, betMoney);
-            Integer curRebate = rebateEntity.getRebate();
+            for (AgentCommissionEntity en : value) {
+                if(en.getUid().equals(key)) {
+                    double team = self.getRebate() * self.getTotalPerformance() / 10000;
+                    self.setCommission(self.getCommission() + team);
+                    continue;
+                }
 
-
-            int pUid = curAgentEntity.getPUid();
-            AgentEntity parAgentEntity = list.stream().filter(f -> f.getUid().equals(pUid)).findFirst().orElse(null);
-            if(ObjectUtils.isEmpty(parAgentEntity) || parAgentEntity.getPUid() == 0) {
-                continue;
+                int rebate = self.getRebate() - en.getRebate();
+                double cha = rebate * en.getTotalPerformance() / 10000;
+                self.setCommission(self.getCommission()+cha);
             }
-
-            Double parBetMoney = map.get(parAgentEntity.getUid());
-            rebateEntity = this.getRebate(rebates, parBetMoney);
-            Integer parRebate = rebateEntity.getRebate();
-
-            double cha = parRebate - curRebate;
-            double tmp = cha * betMoney / 10000;
-
-            Double r = newMap.containsKey(pUid) ? betMoney + newMap.get(pUid) : betMoney;
-            newMap.put(pUid, r);
+            self.setDate(date);
+            self.setCreateTime(new Date());
+            self.setUpdateTime(new Date());
+            agentCommissionEntityList.add(self);
         }
 
-        System.out.println(newMap);
+        System.out.println(agentCommissionEntityList);
+        boolean isSuccess = agentCommissionService.insertOrUpdate(agentCommissionEntityList);
+        System.out.println(isSuccess);
+        System.out.println("----------");
+
+
+
+        //汇总从上向下
+//        Map<Integer, Double> newMap = new HashMap<>();
+//        List<Integer> keys = map.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+//        for(Integer uid : keys) {
+//            Double betMoney = map.get(uid);
+//
+//            AgentEntity curAgentEntity = list.stream().filter(f -> f.getUid().equals(uid)).findFirst().orElse(null);
+//            if(ObjectUtils.isEmpty(curAgentEntity)) {
+//                continue;
+//            }
+//            AgentRebateEntity rebateEntity = this.getRebate(rebates, betMoney);
+//            Integer curRebate = rebateEntity.getRebate();
+//
+//
+//            int pUid = curAgentEntity.getPUid();
+//            AgentEntity parAgentEntity = list.stream().filter(f -> f.getUid().equals(pUid)).findFirst().orElse(null);
+//            if(ObjectUtils.isEmpty(parAgentEntity) || parAgentEntity.getPUid() == 0) {
+//                continue;
+//            }
+//
+//            Double parBetMoney = map.get(parAgentEntity.getUid());
+//            rebateEntity = this.getRebate(rebates, parBetMoney);
+//            Integer parRebate = rebateEntity.getRebate();
+//
+//            double cha = parRebate - curRebate;
+//            double tmp = cha * betMoney / 10000;
+//
+//            Double r = newMap.containsKey(pUid) ? betMoney + newMap.get(pUid) : betMoney;
+//            newMap.put(pUid, r);
+//        }
+//
+//        System.out.println(newMap);
+
+
+
+
+
+
+
 
         /*
 //        String date = DateUtil.format(new Date(), "yyyyMMdd");

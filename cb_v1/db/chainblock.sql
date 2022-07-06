@@ -424,7 +424,7 @@ create table t_statistics(
   recharge_money decimal(20,2) comment '充值金额',
   withdraw_money decimal(20,2) comment '提现金额',
   update_time timestamp null default null comment '更新时间',
-  UNIQUE KEY unique_date_id (`date`,uid) comment '联合索引(日期和用户id)'
+  UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
 ) comment '统计';
 
 
@@ -457,7 +457,7 @@ create table t_agent_rebate(
                                min int comment '最低业绩',
                                max int comment '最高业绩',
                                rebate int comment '额度'
-) comment '代理佣金';
+) comment '代理返佣比表';
 
 insert into cb_v1.t_agent_rebate(`min`,`max`,`rebate`) values
 (0,2000,50),
@@ -483,5 +483,36 @@ insert into cb_v1.t_agent_rebate(`min`,`max`,`rebate`) values
 (3500001,4000000,215),
 (4000001,5000000,220),
 (5000001,10000000,230);
+
+
+
+
+
+drop table if exists t_agent_commission;
+create table t_agent_commission(
+    id int primary key auto_increment,
+    `date` varchar(10) comment '日期',
+    uid int comment '用户id',
+    username varchar(100) comment '用户名',
+    commission decimal(20,2) comment '佣金',
+    total_performance decimal(20,2) comment '总业绩',
+    self_performance decimal(20,2) comment '自营业绩',
+    direct_performance decimal(20,2) comment '直属业绩',
+    team_performance decimal(20,2) comment '团队业绩',
+    rebate int comment '返佣比',
+    create_time timestamp null default null comment '创建时间',
+    update_time timestamp null default null comment '创建时间',
+    UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
+)
+
+
+insert into cb_v1.t_agent_commission(`date`, uid, username, commission, total_performance,self_performance, direct_performance, team_performance, rebate, create_time, update_time)
+values
+('20220704', 2, 'jackC3', 1, 1, 1, 1, 1, 1, '2022-07-06 12:00:00', '2022-07-06 12:00:00'          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          )
+
+    date=20220704, uid=6, username=jackC3, commission=6400.0, totalPerformance=400000.0, directPerformance=100000.0, selfPerformance=100000.0, teamPerformance=300000.0, rebate=150
+
+
+
 
 
