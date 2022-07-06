@@ -39,11 +39,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-
+        //判断是否有权限
         if (!this.hasPermission(handler)) {
             this.returnJson(response, R.builder().code(StatusCode.NOT_PERMISSION).msg("not permission").build());
             return false;
         }
+
 
         // 忽略带JwtIgnore注解的请求, 不做后续token认证校验
         if (this.jwtIgnore(handler)) {
@@ -57,7 +58,6 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
         if (StringUtils.isBlank(authHeader) || !authHeader.startsWith(GlobalConst.TOKEN_PREFIX)) {
             log.info("### 用户未登录，请先登录 ###");
-//            response.sendError(HttpStatus.UNAUTHORIZED.value(), "请先登录");
             this.returnJson(response, R.builder().code(StatusCode.TOKEN_ERROR).msg("token error").build());
             return false;
         }
@@ -70,9 +70,6 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         JwtUtil.parseToken(token.replace(GlobalConst.TOKEN_PREFIX, ""));
 
         return true;
-
-//        response.sendError(HttpStatus.FORBIDDEN.value(), String.valueOf(StatusCode.NOT_PERMISSION));
-//        return false;
     }
 
     private boolean hasPermission(Object handler) {
