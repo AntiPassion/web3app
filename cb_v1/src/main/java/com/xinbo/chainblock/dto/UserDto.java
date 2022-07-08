@@ -1,13 +1,15 @@
-package com.xinbo.chainblock.entity.admin;
+package com.xinbo.chainblock.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
-import lombok.experimental.Accessors;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -21,13 +23,11 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_user")
-public class UserEntity {
+public class UserDto {
 
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
 
@@ -36,22 +36,14 @@ public class UserEntity {
      */
     private String username;
 
-    /**
-     * 密码
-     */
-    private String pwd;
-
 
     /**
      * 头像
      */
     private String avatar;
 
-    /**
-     * 是否删除 1：已删除；0：未删除
-     */
-    @TableField("is_delete")
-    private Boolean isDelete;
 
+    private List<String> roles;
 
+    private List<String> permissions;
 }

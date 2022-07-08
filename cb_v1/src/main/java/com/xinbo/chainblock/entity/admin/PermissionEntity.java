@@ -34,26 +34,50 @@ public class PermissionEntity {
     /**
      * 名称
      */
+    @TableField("path")
+    private String path;
+
+    /**
+     * 名称
+     */
+    @TableField("component")
+    private String component;
+
+    /**
+     * 名称
+     */
+    @TableField("redirect")
+    private String redirect;
+
+    /**
+     * 菜单编码
+     */
     @TableField("name")
     private String name;
 
     /**
      * 菜单编码
      */
-    @TableField("name_code")
-    private String nameCode;
+    @TableField("name_default")
+    private String nameDefault;
+
+    /**
+     * 标题
+     */
+    @TableField("title")
+    private String title;
+
+    /**
+     * 图标
+     */
+    @TableField("icon")
+    private String icon;
 
     /**
      * 菜单编码
      */
     @TableField("code")
-    private String code;
-
-    /**
-     * 父节点
-     */
-    @TableField("parent_id")
-    private Integer parentId;
+    private Integer code;
 
     /**
      * 节点类型，1文件夹，2页面，3按钮
@@ -62,22 +86,10 @@ public class PermissionEntity {
     private Integer nodeType;
 
     /**
-     * 图标地址
-     */
-    @TableField("icon_url")
-    private String iconUrl;
-
-    /**
      * 排序号
      */
     @TableField("sort")
     private Integer sort;
-
-    /**
-     * 页面对应的地址
-     */
-    @TableField("link_url")
-    private String linkUrl;
 
     /**
      * 层次
@@ -86,10 +98,17 @@ public class PermissionEntity {
     private Integer level;
 
     /**
-     * 树id的路径 整个层次上的路径id，逗号分隔，想要找父节点特别快
+     * 父节点
      */
-    @TableField("path")
-    private String path;
+    @TableField("parent_id")
+    private Integer parentId;
+
+    /**
+     * 图标地址
+     */
+    @TableField("parent_path")
+    private String parentPath;
+
 
     /**
      * 是否删除 1：已删除；0：未删除
@@ -99,6 +118,6 @@ public class PermissionEntity {
 
 
     @TableField(exist = false)
-    private List<PermissionEntity> child;
+    private List<PermissionEntity> children;
 
 }

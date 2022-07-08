@@ -6,12 +6,14 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.*;
 
 /**
- * @author 熊二
+ * @author tony
  * @date 2021/2/5 15:52
  * @desc file desc
  */
@@ -35,7 +37,6 @@ public class JwtUtil {
         Map<String,Object> claim =  Maps.newHashMap();
         claim.put("id", jwtUser.getUid());
         claim.put("username", jwtUser.getUsername());
-        claim.put("authority", jwtUser.getAuthority());
 
         // 生成 token
         String token = Jwts.builder()
@@ -57,9 +58,6 @@ public class JwtUtil {
             return null;
         }
         Optional<Claims> optional = Optional.of(claims);
-        if (!optional.isPresent()) {
-            return null;
-        }
 
         HashMap<String, Object> map = (HashMap<String, Object>) optional.get().get(GlobalConst.TOKEN_USER_INFO_CLAIM);
 
@@ -69,11 +67,20 @@ public class JwtUtil {
         return JwtUser.builder()
                 .uid(id)
                 .username(username)
-                .authority(authority)
                 .build();
     }
 
 
+
+    /**
+     * 将 Claims 转为 JwtUser
+     * @return
+     */
+    public static JwtUser getJwtUser() {
+        String authHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader(GlobalConst.TOKEN_HEADER);
+        final String token = authHeader.substring(7);
+        return JwtUtil.parseToken(token.replace(GlobalConst.TOKEN_PREFIX, ""));
+    }
 
 
 

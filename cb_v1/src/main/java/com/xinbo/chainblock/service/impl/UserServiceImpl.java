@@ -1,10 +1,7 @@
 package com.xinbo.chainblock.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.dto.PermissionDto;
-import com.xinbo.chainblock.entity.StatisticsEntity;
+import com.xinbo.chainblock.dto.MenuDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.RolePermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
@@ -13,12 +10,9 @@ import com.xinbo.chainblock.mapper.PermissionMapper;
 import com.xinbo.chainblock.mapper.RolePermissionMapper;
 import com.xinbo.chainblock.mapper.UserMapper;
 import com.xinbo.chainblock.mapper.UserRoleMapper;
-import com.xinbo.chainblock.service.UserRoleService;
 import com.xinbo.chainblock.service.UserService;
-import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -46,8 +40,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Autowired
     private PermissionMapper permissionMapper;
 
+
     @Override
-    public List<PermissionEntity> findPermission(int userId) {
+    public List<Integer> findPermission(int userId) {
+        //根据用户id拿到权限
+        List<PermissionEntity> permission = this.getPermission(userId);
+        return permission.stream().map(PermissionEntity::getCode).distinct().collect(Collectors.toList());
+    }
+
+    private List<PermissionEntity> getPermission(int userId) {
 
         //Step 1: 根据用户id获取到角色
         List<UserRoleEntity> roleEntityList = userRoleMapper.findByUserId(userId);
@@ -61,15 +62,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         return permissionMapper.findByIds(permissions);
     }
 
+
     @Override
     public List<PermissionEntity> menu(int userId) {
         //根据用户id拿到权限
-        List<PermissionEntity> permission = this.findPermission(userId);
+        List<PermissionEntity> permission = this.getPermission(userId);
 
         //根据权限表path获取父级id
         List<Integer> parentIdList = new ArrayList<>();
         for (PermissionEntity entity : permission) {
-            String[] split = StringUtils.split(entity.getPath(), ",");
+            String[] split = StringUtils.split(entity.getParentPath(), ",");
             if (ObjectUtils.isEmpty(split) || split.length <= 0) {
                 continue;
             }
@@ -86,9 +88,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         List<PermissionEntity> folders = entityList.stream().filter(f -> f.getParentId().equals(0)).collect(Collectors.toList());
         for(PermissionEntity folder : folders) {
             List<PermissionEntity> pages = entityList.stream().filter(f -> f.getParentId().equals(folder.getId())).collect(Collectors.toList());
-            folder.setChild(pages);
+            folder.setChildren(pages);
         }
         return folders;
+    }
+
+    private List<MenuDto> format(List<PermissionEntity> menus) {
+
+        List<MenuDto> result = new ArrayList<>();
+
+        for (PermissionEntity entity : menus) {
+            MenuDto build = MenuDto.builder()
+                    .path("")
+
+                    .build();
+        }
+
+        return result;
+    }
+
+    @Override
+    public UserEntity findById(int userId) {
+        return userMapper.selectById(userId);
     }
 
 }
