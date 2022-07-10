@@ -50,8 +50,6 @@ public class IndexController {
         JwtUser jwtUser = JwtUtil.getJwtUser();
         UserEntity entity = userService.findById(jwtUser.getUid());
         UserDto dto = MapperUtil.to(entity, UserDto.class);
-        dto.setPermissions(Arrays.asList("read:system", "write:system", "delete:system"));
-        dto.setRoles(Arrays.asList("admin"));
         return R.builder().code(StatusCode.SUCCESS).data(dto).build();
     }
 
