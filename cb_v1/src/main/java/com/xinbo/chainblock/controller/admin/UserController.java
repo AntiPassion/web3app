@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController
+@RestController("adminUser")
 @RequestMapping("/admin/user")
 public class UserController {
 
@@ -44,9 +44,9 @@ public class UserController {
     }
 
 
-    @Operation(summary = "info", description = "会员信息")
-    @PostMapping("info")
-    public R<Object> info() {
+    @Operation(summary = "find", description = "会员信息")
+    @PostMapping("find")
+    public R<Object> find() {
         JwtUser jwtUser = JwtUtil.getJwtUser();
         UserEntity entity = userService.findById(jwtUser.getUid());
         UserDto dto = MapperUtil.to(entity, UserDto.class);
@@ -105,4 +105,12 @@ public class UserController {
         BasePage basePage = userService.findPage(entity, current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
     }
+
+
+    @Operation(summary = "findById", description = "查询会员")
+    @GetMapping("findById/{id}")
+    public R<Object> findById(@PathVariable Integer id) {
+        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.to(userService.findById(id), UserDto.class)).build();
+    }
+
 }

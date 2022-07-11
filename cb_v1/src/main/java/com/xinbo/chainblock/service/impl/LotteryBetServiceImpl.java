@@ -71,6 +71,19 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
     }
 
     @Override
+    public BasePage findPage(LotteryBetEntity entity, long current, long size, Date start, Date end) {
+        Page<LotteryBetEntity> page = new Page<>(current, size);
+        page.addOrder(OrderItem.asc("create_time"));
+        LambdaQueryWrapper<LotteryBetEntity> wrapper = this.createWrapper(entity);
+        if(!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
+            wrapper.ge(LotteryBetEntity::getCreateTime, start).le(LotteryBetEntity::getCreateTime, end);
+        }
+
+        IPage<LotteryBetEntity> iPage = lotteryBetMapper.selectPage(page, wrapper);
+        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), LotteryBetDto.class)).build();
+    }
+
+    @Override
     public List<LotteryBetEntity> unsettle(String num, int size) {
         return lotteryBetMapper.unsettle(num, size);
     }
