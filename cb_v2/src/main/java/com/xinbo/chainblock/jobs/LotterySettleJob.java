@@ -1,19 +1,19 @@
 package com.xinbo.chainblock.jobs;
 
+import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
 import com.xinbo.chainblock.core.algorithm.LotteryAlgorithm;
 import com.xinbo.chainblock.entity.HashResultEntity;
 import com.xinbo.chainblock.entity.LotteryBetEntity;
 import com.xinbo.chainblock.service.HashResultService;
 import com.xinbo.chainblock.service.LotteryBetService;
+import com.xinbo.chainblock.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +33,9 @@ public class LotterySettleJob {
     private LotteryBetService lotteryBetService;
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
     private LotteryAlgorithm lotteryAlgorithm;
 
     private static final int SIZE = 50;
@@ -40,7 +43,6 @@ public class LotterySettleJob {
     @Scheduled(cron = "0/5 * * * * ?")
     public void settle() {
         try {
-
             //Step 1: 拿未结算的开奖数据(t_hash_result.is_settle为0)
             HashResultEntity resultEntity = hashResultService.unsettle();
             if (ObjectUtils.isEmpty(resultEntity) || resultEntity.getId() <= 0) {
@@ -59,22 +61,31 @@ public class LotterySettleJob {
                 return;
             }
 
-            //Step 2.2: 计算输赢
-            List<AlgorithmResult> settleResult = new ArrayList<>();
+            //Step 2.2: 计算输赢&构建数据
             for (LotteryBetEntity betEntity : betEntityList) {
                 AlgorithmResult settle = lotteryAlgorithm.settle(resultEntity, betEntity);
-                settleResult.add(settle);
+                float profileMoney = 0, payoutMoney = 0;
+                if (settle.getStatus() == AlgorithmCode.WIN) {
+                    profileMoney = betEntity.getMoney() * betEntity.getOdds() - betEntity.getMoney();
+                    payoutMoney = betEntity.getMoney() + profileMoney;
+                } else {
+                    profileMoney = betEntity.getMoney() * -1;
+                    payoutMoney = 0;
+                }
+                betEntity.setProfitMoney(profileMoney);
+                betEntity.setPayoutMoney(payoutMoney);
+                betEntity.setHashResult(resultEntity.getBlockHash());
             }
 
-            //Step 3: 构建数据 @todo
-            System.out.println(settleResult);
+            //Step 3: 更新数据库 @todo
+            lotteryBetService.settle(betEntityList);
 
-            //Step 4: 更新数据库 @todo
 
             System.out.println("@Scheduled" + new Date());
-        } catch (Exception ex) {
-            System.out.println(ex);
+        } catch (RuntimeException ex) {
+            log.error("settle: ", ex);
         }
     }
+
 
 }

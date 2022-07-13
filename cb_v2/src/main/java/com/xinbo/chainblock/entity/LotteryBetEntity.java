@@ -26,15 +26,16 @@ public class LotteryBetEntity {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-
     /**
      * 会员id
      */
     private Integer uid;
+
     /**
      * 会员名
      */
     private String username;
+
     /**
      * 彩种id
      */
@@ -128,6 +129,19 @@ public class LotteryBetEntity {
      * 注单金额
      */
     private Float money;
+
+
+    /**
+     * 赢利金额
+     */
+    @TableField("profit_money")
+    private Float profitMoney;
+
+    /**
+     * 派彩金额
+     */
+    @TableField("payout_money")
+    private Float payoutMoney;
 
     /**
      * 创建时间

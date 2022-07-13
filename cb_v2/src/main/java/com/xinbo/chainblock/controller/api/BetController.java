@@ -2,7 +2,6 @@ package com.xinbo.chainblock.controller.api;
 
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.dto.LotteryBetDto;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.CommonUtils;
@@ -20,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/bet")
+@RequestMapping("/api/apibet")
 public class BetController {
 
     @Autowired
@@ -42,9 +41,9 @@ public class BetController {
 
         try {
             //判断数据是否合法
-            UserEntity userEntity = UserEntity.builder()
-                    .username("jack")
-                    .id(1)
+            MemberEntity memberEntity = MemberEntity.builder()
+                    .username("jackC")
+                    .id(3)
                     .version(1)
                     .build();
 
@@ -65,8 +64,8 @@ public class BetController {
             }
 
             LotteryBetEntity entity = LotteryBetEntity.builder()
-                    .uid(userEntity.getId())
-                    .username(userEntity.getUsername())
+                    .uid(memberEntity.getId())
+                    .username(memberEntity.getUsername())
                     .cateId(gameEntity.getCateId())
                     .cateNameCode(gameEntity.getCateNameCode())
                     .cateNameDefault(gameEntity.getCateNameDefault())
