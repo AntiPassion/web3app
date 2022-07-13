@@ -1,329 +1,267 @@
 
 
-drop database if exists cb_v1;
+drop database if exists cb_v2;
 
-create database cb_v1;
+create database cb_v2;
 
-use cb_v1;
-
-drop table if exists t_member;
-create table t_member(
-  id int primary key auto_increment,
-  username varchar(50) comment '用户名',
-  pwd varchar(100) comment '密码',
-  money decimal(10,4) comment '金额',
-  freeze_money decimal(10,4) comment '冻结金额',
-  salt varchar(100) comment '盐',
-  version int comment '版本',
-  create_time timestamp null default null comment '创建时间',
-  update_time timestamp null default null comment '创建时间',
-  UNIQUE KEY unique_username (username)
-);
+use cb_v2;
 
 
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jack','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC3','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC4','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD3','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD4','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD5','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD6','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD7','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD8','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE3','123456',10000,'123456',1,'2022-06-25 12:00:00');
-
-
-
-drop table if exists t_member_flow;
-create table t_member_flow(
-  id int primary key auto_increment,
-  username varchar(50) comment '用户名',
-  before_money decimal(10,4) comment '帐变前金额',
-  after_money decimal(10,4) comment '帐变后金额',
-  flow_money decimal(10,4) comment '流水金额',
-  item_code int comment '帐变编码',
-  item_code_default varchar(100) comment '帐变默认编码',
-  create_time timestamp null default null comment '创建时间',
-  remark varchar(100) comment '备注'
-) comment '会员流水表';
-
-insert into cb_v1.t_member_flow(username, before_money, after_money, flow_money, item_code, item_code_default, create_time, remark) values
-('jack', 10000, 10020, 20, 100010, 100010, '2022-06-25 12:00:00', '');
-
-create table t_operation_log(
-  id int primary key auto_increment
-) comment '会员流水表';
-
-
-
-
-drop table if exists t_recharge;
-create table t_recharge (
+drop table if exists t_game;
+create table t_game(
     id int primary key auto_increment,
-    transaction_id varchar(100) comment '转帐id',
-    token_symbol varchar(20) comment '币种',
-    token_decimals int comment '位数',
-    token_address varchar(100) comment '合约地址',
-    token_name varchar(20) comment '币种名',
-    block_timestamp bigint comment '块时间戳',
-    from_address varchar(100) comment '转帐地址',
-    to_address varchar(100) comment '收款地址',
-    type varchar(20) comment '转帐类型',
-    value decimal(20,6) comment '转帐金额',
-    UNIQUE KEY unique_transaction_id (transaction_id)
-) comment '充值';
-
-
-
-drop table if exists t_wallet;
-create table t_wallet(
-    id int primary key auto_increment,
-    address varchar(100),
-    uid int comment '会员id',
-    username varchar(50) comment '会员名',
-    type int(10) comment '钱包类型'
-) comment '钱包';
-
-insert into cb_v1.t_wallet (`address`,`uid`,`username`,`type`) values ('TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe',1,'jack', 1);
-
-
-
-
-drop table if exists t_expect;
-create table t_expect (
-  id int primary key auto_increment,
-  game_id int comment '彩种id',
-  num varchar(50) comment '期号数',
-  start_time varchar(20) comment '开始时间',
-  end_time varchar(20) comment '结束时间'
-) comment '期号';
-
-
-
-drop table if exists t_hash_result;
-create table t_hash_result (
-  id int primary key auto_increment,
-  game_id int comment '彩种id',
-  num varchar(50) comment '期号数',
-  txID varchar(70) comment '期号数',
-  block_hash varchar(70) comment '哈希码',
-  block_height varchar(50) comment '块高度',
-  open_time timestamp comment '开奖时间',
-  open_timestamp bigint comment '开奖时间戳',
-  network varchar(10) comment '块高度',
-  is_settle tinyint comment '状态(0:未结算,1:已结算)'
-) comment '开奖结果';
-INSERT INTO cb_v1.t_hash_result (game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (5, '202207010275', '00b62b030c3acf59129247e4a5272be8bbf736723c05a9aed154c990c9513df3', '0000000001a6a300de858fa824019a3e1dbd779e074fc2cb314fc61aca7dfff6', '27697920', '2022-07-01 22:55:07', 1656687307000, 'nile', 0);
-INSERT INTO cb_v1.t_hash_result (game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (5, '202207010274', '78458f985d78e05a21ff4171e376bb3ba08154f4c6675ff0860f99c4ff8c98a3', '0000000001a6a29e0703e89c59bab0e5c36f5bab2c91fc9797da037d2cd9b9e8', '27697822', '2022-07-01 22:50:06', 1656687006000, 'nile', 0);
-INSERT INTO cb_v1.t_hash_result (game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (5, '202207010273', 'd9dc22d7f4a915a339bc49a6b3cfe5df8f3a394f6d79a64fe68cbf1d5553a589', '0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb', '27697765', '2022-07-01 22:47:16', 1656686836000, 'nile', 0);
-
-
-
-
-drop table if exists t_lottery_category;
-create table t_lottery_category(
-  id int primary key auto_increment,
-  name_code varchar(50) comment '类目编码',
-  name_default varchar(50) comment '类目默认名称'
-) comment '彩种类目';
-insert into cb_v1.t_lottery_category (`name_code`,`name_default`) values ('100010','哈希抽奖');
-insert into cb_v1.t_lottery_category (`name_code`,`name_default`) values ('100020','哈希彩票');
-
-
-drop table if exists t_lottery_game;
-create table t_lottery_game(
-  id int primary key auto_increment,
-  name_code varchar(50) comment '游戏名称编码',
-  name_default varchar(50) comment '游戏默认名称',
-  cate_id varchar(50) comment '类目id',
-  cate_name_code varchar(50) comment '类目编码',
-  cate_name_default varchar(50) comment '类目默认名称',
-  enable tinyint(1) comment '是否开启'
+    name varchar(50) comment '游戏名称编码',
+    name_zh varchar(50) comment '游戏中文名称',
+    enable tinyint(1) comment '是否开启'
 ) comment '彩种游戏';
-insert into cb_v1.t_lottery_game(`name_code`,`name_default`,`cate_id`,`cate_name_code`,`cate_name_default`,`enable`) values ('200010','抽奖-牛牛',1,'100010','哈希抽奖',1);
-insert into cb_v1.t_lottery_game(`name_code`,`name_default`,`cate_id`,`cate_name_code`,`cate_name_default`,`enable`) values ('200011','抽奖-大小',1,'100010','哈希抽奖',1);
-insert into cb_v1.t_lottery_game(`name_code`,`name_default`,`cate_id`,`cate_name_code`,`cate_name_default`,`enable`) values ('200012','抽奖-单双',1,'100010','哈希抽奖',1);
-insert into cb_v1.t_lottery_game(`name_code`,`name_default`,`cate_id`,`cate_name_code`,`cate_name_default`,`enable`) values ('200110','哈希28',1,'100020','哈希彩票',1);
+insert into cb_v2.t_game(`name`,`name_zh`,`enable`) values
+('200010','幸运哈希',1),
+('200110','哈希PK拾',1),
+('200210','哈希牛牛',1),
+('200310','哈希两面',1),
+('200410','哈希百家乐',1);
+
+drop table if exists t_room;
+create table t_room(
+   id int primary key auto_increment,
+   game_id int comment '游戏id',
+   game_name varchar(50) comment '游戏名称编码',
+   game_name_zh varchar(50) comment '游戏默认名称',
+   name varchar(50) comment '游戏名称编码',
+   name_zh varchar(50) comment '游戏默认名称',
+   min int comment '',
+   max int comment '',
+   max_odds decimal(10,2) comment ''
+) comment '房间';
+
+insert into cb_v2.t_room(game_id, game_name, game_name_zh, name, name_zh, min, max, max_odds) values
+(1, '200010', '幸运哈希', '300010', '体验房', '0', '200', 1.98),
+(1, '200010', '幸运哈希', '300010', '初级房', '0', '200', 1.98),
+(1, '200010', '幸运哈希', '300010', '中级房', '0', '200', 1.98),
+(1, '200010', '幸运哈希', '300010', '高级房', '0', '200', 1.98),
+
+(1, '200110', '哈希PK拾', '300110', '体验房', '0', '200', 1.98),
+(1, '200110', '哈希PK拾', '300111', '初级房', '50', '5000', 1.98),
+(1, '200110', '哈希PK拾', '300112', '中级房', '100', '10000', 1.98),
+(1, '200110', '哈希PK拾', '300113', '高级房', '1000', '20000', 1.98),
+
+(1, '200210', '哈希牛牛', '300210', '体验房', '0', '200', 1.98),
+(1, '200210', '哈希牛牛', '300211', '初级房', '50', '5000', 1.98),
+(1, '200210', '哈希牛牛', '300212', '中级房', '100', '10000', 1.98),
+(1, '200210', '哈希牛牛', '300213', '高级房', '1000', '20000', 1.98),
+
+(1, '200310', '哈希两面', '300310', '体验房', '0', '200', 1.95),
+(1, '200310', '哈希两面', '300311', '初级房', '50', '5000', 1.95),
+(1, '200310', '哈希两面', '300312', '中级房', '100', '10000', 1.95),
+(1, '200310', '哈希两面', '300313', '高级房', '1000', '20000', 1.95),
+
+(1, '200410', '哈希百家乐', '300410', '体验房', '0', '200', 1.95),
+(1, '200410', '哈希百家乐', '300411', '初级房', '50', '5000', 1.95),
+(1, '200410', '哈希百家乐', '300412', '中级房', '100', '10000', 1.95),
+(1, '200410', '哈希百家乐', '300413', '高级房', '1000', '20000', 1.95)
+;
 
 
 
-drop table if exists t_lottery_play;
-create table t_lottery_play(
-  id int primary key auto_increment,
-  name_code varchar(50) comment '玩法名称编码',
-  name_default varchar(50) comment '玩法默认名称'
+
+drop table if exists t_code;
+create table t_code(
+    id int primary key auto_increment,
+    game_id int comment '游戏id',
+    code varchar(50) comment '编码',
+    code_zh varchar(50) comment '编码中文',
+    odds decimal(10, 2) comment '赔率',
+    sorted int comment '排序'
 ) comment '彩种玩法';
 
-insert into cb_v1.t_lottery_play(`name_code`,`name_default`) values ('400010','一球');
-insert into cb_v1.t_lottery_play(`name_code`,`name_default`) values ('400011','二球');
-insert into cb_v1.t_lottery_play(`name_code`,`name_default`) values ('400012','二球');
-insert into cb_v1.t_lottery_play(`name_code`,`name_default`) values ('400012','和值');
-insert into cb_v1.t_lottery_play(`name_code`,`name_default`) values ('400012','龙虎');
-insert into cb_v1.t_lottery_play(`name_code`,`name_default`) values ('400012','特殊');
-insert into cb_v1.t_lottery_play(`name_code`,`name_default`) values ('400012','牛牛');
+insert into cb_v2.t_code(`game_id`, `code`,`code_zh`, `odds`, `sorted`) values
+(1, '400010','', '9.8',1),
+
+(2, '400110','0', '9.8', 1),
+(2, '400111','1', '9.8', 1),
+(2, '400112','2', '9.8', 1),
+(2, '400113','3', '9.8', 1),
+(2, '400114','4', '9.8', 1),
+(2, '400115','5', '9.8', 1),
+(2, '400116','6', '9.8', 1),
+(2, '400117','7', '9.8', 1),
+(2, '400118','8', '9.8', 1),
+(2, '400119','9', '9.8', 1),
+
+(3, '400210','庄(平倍)', '0.95', 1),
+(3, '400211','庄(超级翻倍)', '0.95', 2),
+(3, '400212','庄(翻倍)', '0.95', 3),
+(3, '400213','和局', '9.5', 4),
+(3, '400213','闲(平倍)', '0.95', 5),
+(3, '400214','闲(超级翻倍)', '0.95', 6),
+(3, '400215','闲(翻倍)', '0.95', 7),
+
+(4, '400310','大', '1.95', 1),
+(4, '400311','小', '1.95', 2),
+(4, '400212','单', '1.95', 3),
+(4, '400213','双', '1.95', 4),
+
+(5, '400410','庄', '1.95', 1),
+(5, '400411','庄对', '11', 2),
+(5, '400412','闲对', '11', 3),
+(5, '400413','闲', '1.95', 4),
+(5, '400414','和', '8', 5)
+;
 
 
 
 drop table if exists t_lottery_play_code;
 create table t_lottery_play_code(
-  id int primary key auto_increment,
-  play_id int comment '玩法编号',
-  name_code varchar(50) comment '玩法名称编码',
-  name_default varchar(50) comment '玩法默认名称',
-  odds decimal(10,3) comment '赔率'
+    id int primary key auto_increment,
+    play_id int comment '玩法编号',
+    name_code varchar(50) comment '玩法名称编码',
+    name_default varchar(50) comment '玩法默认名称',
+    odds decimal(10,3) comment '赔率'
 ) comment '彩种玩法编码';
 
 -- # 一球
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500010','大',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500011','小',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500012','单',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500013','双',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500014','1',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500015','2',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500016','3',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500017','4',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500018','5',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500019','6',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500020','7',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500021','8',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500022','9',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500023','0',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500010','大',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500011','小',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500012','单',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500013','双',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500014','1',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500015','2',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500016','3',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500017','4',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500018','5',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500019','6',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500020','7',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500021','8',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500022','9',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500023','0',9.800);
 
 -- # 二球
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500010','大',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500011','小',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500012','单',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500013','双',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500014','1',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500015','2',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500016','3',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500017','4',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500018','5',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500019','6',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500020','7',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500021','8',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500022','9',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500023','0',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500010','大',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500011','小',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500012','单',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500013','双',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500014','1',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500015','2',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500016','3',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500017','4',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500018','5',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500019','6',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500020','7',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500021','8',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500022','9',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500023','0',9.800);
 
 -- # 三球
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500010','大',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500011','小',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500012','单',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500013','双',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500014','1',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500015','2',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500016','3',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500017','4',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500018','5',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500019','6',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500020','7',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500021','8',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500022','9',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500023','0',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500010','大',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500011','小',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500012','单',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500013','双',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500014','1',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500015','2',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500016','3',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500017','4',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500018','5',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500019','6',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500020','7',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500021','8',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500022','9',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500023','0',9.800);
 
 -- # 和值
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500110','总和大',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500111','总和小',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500112','总和单',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500113','总和双',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500114','0',803.600);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500115','1',267.860);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500116','2',133.930);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500117','3',80.360);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500118','4',53.570);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500119','5',38.260);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500120','6',28.690);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500121','7',22.310);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500122','8',17.860);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500123','9',14.600);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500124','10',12.750);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500125','11',11.640);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500126','12',11.000);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500127','13',10.710);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500128','14',10.710);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500129','15',11.000);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500130','16',11.640);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500131','17',12.750);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500132','18',14.640);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500133','19',17.860);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500134','20',22.310);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500135','21',28.690);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500136','22',38.260);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500137','23',53.570);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500138','24',80.3600);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500139','25',133.930);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500140','26',267.840);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500141','27',803.600);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500110','总和大',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500111','总和小',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500112','总和单',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500113','总和双',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500114','0',803.600);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500115','1',267.860);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500116','2',133.930);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500117','3',80.360);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500118','4',53.570);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500119','5',38.260);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500120','6',28.690);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500121','7',22.310);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500122','8',17.860);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500123','9',14.600);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500124','10',12.750);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500125','11',11.640);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500126','12',11.000);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500127','13',10.710);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500128','14',10.710);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500129','15',11.000);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500130','16',11.640);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500131','17',12.750);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500132','18',14.640);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500133','19',17.860);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500134','20',22.310);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500135','21',28.690);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500136','22',38.260);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500137','23',53.570);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500138','24',80.3600);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500139','25',133.930);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500140','26',267.840);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500141','27',803.600);
 
 
 -- # 龙虎
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (5,'500210','龙',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (5,'500211','虎',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (5,'500212','和',8.030);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (5,'500210','龙',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (5,'500211','虎',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (5,'500212','和',8.030);
 
 
 -- # 特殊
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500310','豹子',80.360);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500311','顺子',13.390);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500312','半顺',2.170);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500313','对子',2.970);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500314','杂六',2.680);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500310','豹子',80.360);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500311','顺子',13.390);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500312','半顺',2.170);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500313','对子',2.970);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500314','杂六',2.680);
 
 
 -- # 牛牛
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500410','牛1',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500411','牛2',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500412','牛3',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500413','牛4',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500414','牛5',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500415','牛6',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500416','牛7',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500417','牛8',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500418','牛9',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500419','牛牛',9.800);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500420','牛大',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500421','牛小',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500422','牛单',1.960);
-insert into cb_v1.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500423','牛双',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500410','牛1',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500411','牛2',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500412','牛3',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500413','牛4',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500414','牛5',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500415','牛6',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500416','牛7',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500417','牛8',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500418','牛9',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500419','牛牛',9.800);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500420','牛大',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500421','牛小',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500422','牛单',1.960);
+insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500423','牛双',1.960);
 
 
 
 
 drop table if exists t_lottery_bet;
 create table t_lottery_bet (
-  id int primary key auto_increment,
-  uid int comment '会员id',
-  username varchar(50) comment '会员名',
-  cate_id int comment '类目id',
-  cate_name_code varchar(50) comment '类目编码',
-  cate_name_default varchar(50) comment '类目默认名称',
-  game_id int comment '彩种id',
-  game_name_code varchar(50) comment '类目编码',
-  game_name_default varchar(50) comment '彩种编码',
-  play_id int comment '玩法编号',
-  play_name_code varchar(50) comment '类目编码',
-  play_name_default varchar(50) comment '玩法编码',
-  play_code_id int comment '玩法编码id',
-  play_code_name_code varchar(50) comment '玩法编码id',
-  play_code_name_default varchar(50) comment '玩法编码id',
-  hash_result varchar(80) comment '开奖结果',
-  num varchar(20) comment '期号',
-  odds decimal(10,4) comment '赔率',
-  money decimal(10,4) comment '投注金额',
-  profit_money decimal(10,4) comment '赢利金额',
-  payout_money decimal(10,4) comment '派彩金额',
-  create_time timestamp null default null comment '创建时间',
-  update_time timestamp null default null comment '更新时间',
-  status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
-  remark varchar(100) comment '备注'
+    id int primary key auto_increment,
+    uid int comment '会员id',
+    username varchar(50) comment '会员名',
+    cate_id int comment '类目id',
+    cate_name_code varchar(50) comment '类目编码',
+    cate_name_default varchar(50) comment '类目默认名称',
+    game_id int comment '彩种id',
+    game_name_code varchar(50) comment '类目编码',
+    game_name_default varchar(50) comment '彩种编码',
+    play_id int comment '玩法编号',
+    play_name_code varchar(50) comment '类目编码',
+    play_name_default varchar(50) comment '玩法编码',
+    play_code_id int comment '玩法编码id',
+    play_code_name_code varchar(50) comment '玩法编码id',
+    play_code_name_default varchar(50) comment '玩法编码id',
+    hash_result varchar(80) comment '开奖结果',
+    num varchar(20) comment '期号',
+    odds decimal(10,4) comment '赔率',
+    money decimal(10,4) comment '投注金额',
+    profit_money decimal(10,4) comment '赢利金额',
+    payout_money decimal(10,4) comment '派彩金额',
+    create_time timestamp null default null comment '创建时间',
+    update_time timestamp null default null comment '更新时间',
+    status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
+    remark varchar(100) comment '备注'
 ) comment '彩票注单';
 
 INSERT INTO `t_lottery_bet` (`uid`, `username`, `cate_id`, `cate_name_code`, `cate_name_default`, `game_id`, `game_name_code`, `game_name_default`, `play_id`, `play_name_code`, `play_name_default`, `play_code_id`, `play_code_name_code`, `play_code_name_default`, `hash_result`, `num`, `odds`, `money`, `profit_money`, `payout_money`, `create_time`, `update_time`, `status`, `remark`) VALUES
@@ -363,19 +301,153 @@ INSERT INTO `t_lottery_bet` (`uid`, `username`, `cate_id`, `cate_name_code`, `ca
 
 drop table if exists t_draw_bet;
 create table t_draw_bet (
-  id int primary key auto_increment,
-  uid int comment '会员id',
-  username varchar(50) comment '会员名',
-  form_address varchar(50) comment '用户地址',
-  to_address varchar(50) comment '收款地址',
-  amount varchar(100) comment '金额',
-  symbol varchar(50) comment '货币',
-  hash_result varchar(50) comment '开奖结果',
-  create_time timestamp null default null comment '创建时间',
-  update_time timestamp null default null comment '更新时间',
-  status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
-  remark varchar(100) comment '备注'
+    id int primary key auto_increment,
+    uid int comment '会员id',
+    username varchar(50) comment '会员名',
+    form_address varchar(50) comment '用户地址',
+    to_address varchar(50) comment '收款地址',
+    amount varchar(100) comment '金额',
+    symbol varchar(50) comment '货币',
+    hash_result varchar(50) comment '开奖结果',
+    create_time timestamp null default null comment '创建时间',
+    update_time timestamp null default null comment '更新时间',
+    status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
+    remark varchar(100) comment '备注'
 ) comment '抽奖注单';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+drop table if exists t_member;
+create table t_member(
+  id int primary key auto_increment,
+  username varchar(50) comment '用户名',
+  pwd varchar(100) comment '密码',
+  money decimal(10,4) comment '金额',
+  freeze_money decimal(10,4) comment '冻结金额',
+  salt varchar(100) comment '盐',
+  version int comment '版本',
+  create_time timestamp null default null comment '创建时间',
+  update_time timestamp null default null comment '创建时间',
+  UNIQUE KEY unique_username (username)
+);
+
+
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jack','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC3','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC4','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD3','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD4','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD5','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD6','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD7','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD8','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE3','123456',10000,'123456',1,'2022-06-25 12:00:00');
+
+
+
+drop table if exists t_member_flow;
+create table t_member_flow(
+  id int primary key auto_increment,
+  username varchar(50) comment '用户名',
+  before_money decimal(10,4) comment '帐变前金额',
+  after_money decimal(10,4) comment '帐变后金额',
+  flow_money decimal(10,4) comment '流水金额',
+  item_code int comment '帐变编码',
+  item_code_default varchar(100) comment '帐变默认编码',
+  create_time timestamp null default null comment '创建时间',
+  remark varchar(100) comment '备注'
+) comment '会员流水表';
+
+insert into cb_v2.t_member_flow(username, before_money, after_money, flow_money, item_code, item_code_default, create_time, remark) values
+('jack', 10000, 10020, 20, 100010, 100010, '2022-06-25 12:00:00', '');
+
+create table t_operation_log(
+  id int primary key auto_increment
+) comment '会员流水表';
+
+
+
+
+drop table if exists t_recharge;
+create table t_recharge (
+    id int primary key auto_increment,
+    transaction_id varchar(100) comment '转帐id',
+    token_symbol varchar(20) comment '币种',
+    token_decimals int comment '位数',
+    token_address varchar(100) comment '合约地址',
+    token_name varchar(20) comment '币种名',
+    block_timestamp bigint comment '块时间戳',
+    from_address varchar(100) comment '转帐地址',
+    to_address varchar(100) comment '收款地址',
+    type varchar(20) comment '转帐类型',
+    value decimal(20,6) comment '转帐金额',
+    UNIQUE KEY unique_transaction_id (transaction_id)
+) comment '充值';
+
+
+
+drop table if exists t_wallet;
+create table t_wallet(
+    id int primary key auto_increment,
+    address varchar(100),
+    uid int comment '会员id',
+    username varchar(50) comment '会员名',
+    type int(10) comment '钱包类型'
+) comment '钱包';
+
+insert into cb_v2.t_wallet (`address`,`uid`,`username`,`type`) values ('TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe',1,'jack', 1);
+
+
+
+
+drop table if exists t_expect;
+create table t_expect (
+  id int primary key auto_increment,
+  game_id int comment '彩种id',
+  num varchar(50) comment '期号数',
+  start_time varchar(20) comment '开始时间',
+  end_time varchar(20) comment '结束时间'
+) comment '期号';
+
+
+
+drop table if exists t_hash_result;
+create table t_hash_result (
+  id int primary key auto_increment,
+  game_id int comment '彩种id',
+  num varchar(50) comment '期号数',
+  txID varchar(70) comment '期号数',
+  block_hash varchar(70) comment '哈希码',
+  block_height varchar(50) comment '块高度',
+  open_time timestamp comment '开奖时间',
+  open_timestamp bigint comment '开奖时间戳',
+  network varchar(10) comment '块高度',
+  is_settle tinyint comment '状态(0:未结算,1:已结算)'
+) comment '开奖结果';
+INSERT INTO cb_v2.t_hash_result (game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (5, '202207010275', '00b62b030c3acf59129247e4a5272be8bbf736723c05a9aed154c990c9513df3', '0000000001a6a300de858fa824019a3e1dbd779e074fc2cb314fc61aca7dfff6', '27697920', '2022-07-01 22:55:07', 1656687307000, 'nile', 0);
+INSERT INTO cb_v2.t_hash_result (game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (5, '202207010274', '78458f985d78e05a21ff4171e376bb3ba08154f4c6675ff0860f99c4ff8c98a3', '0000000001a6a29e0703e89c59bab0e5c36f5bab2c91fc9797da037d2cd9b9e8', '27697822', '2022-07-01 22:50:06', 1656687006000, 'nile', 0);
+INSERT INTO cb_v2.t_hash_result (game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (5, '202207010273', 'd9dc22d7f4a915a339bc49a6b3cfe5df8f3a394f6d79a64fe68cbf1d5553a589', '0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb', '27697765', '2022-07-01 22:47:16', 1656686836000, 'nile', 0);
+
+
 
 
 
@@ -394,27 +466,27 @@ create table t_agent(
 
 
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (0,1,'jack',0,'');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,2,'jackB1',1,'4,5,8,9,10,11,16,17');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,3,'jackB2',1,'6,7,12,13,14,15,18');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (0,1,'jack',0,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,2,'jackB1',1,'4,5,8,9,10,11,16,17');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,3,'jackB2',1,'6,7,12,13,14,15,18');
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,4,'jackC1',2,'8,9,16,17');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,5,'jackC2',2,'10,11');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,6,'jackC3',2,'12,13,18');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,7,'jackC4',2,'14,15');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,4,'jackC1',2,'8,9,16,17');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,5,'jackC2',2,'10,11');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,6,'jackC3',2,'12,13,18');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,7,'jackC4',2,'14,15');
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,8,'jackD1',3,'');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,9,'jackD2',3,'16,17');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,10,'jackD3',3,'');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,11,'jackD4',3,'');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,12,'jackD5',3,'18');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,13,'jackD6',3,'');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,14,'jackD7',3,'');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,15,'jackD8',3,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,8,'jackD1',3,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,9,'jackD2',3,'16,17');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,10,'jackD3',3,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,11,'jackD4',3,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,12,'jackD5',3,'18');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,13,'jackD6',3,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,14,'jackD7',3,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,15,'jackD8',3,'');
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,16,'jackE1',4,'');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,17,'jackE2',4,'');
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (12,18,'jackE3',4,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,16,'jackE1',4,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,17,'jackE2',4,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (12,18,'jackE3',4,'');
 
 
 
@@ -434,7 +506,7 @@ create table t_statistics(
 ) comment '统计';
 
 
-INSERT INTO cb_v1.t_statistics (`date`, `uid`, `username`, `bet_money`, `bet_profit_money`, `bet_payout_money`, `recharge_money`, `withdraw_money`, `update_time`) VALUES
+INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_money`, `bet_profit_money`, `bet_payout_money`, `recharge_money`, `withdraw_money`, `update_time`) VALUES
 ('20220704',2,'jackB1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
 ('20220704',3,'jackB2',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
 ('20220704',4,'jackC1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
@@ -465,7 +537,7 @@ create table t_agent_rebate(
                                rebate int comment '额度'
 ) comment '代理返佣比表';
 
-insert into cb_v1.t_agent_rebate(`min`,`max`,`rebate`) values
+insert into cb_v2.t_agent_rebate(`min`,`max`,`rebate`) values
 (0,2000,50),
 (2001,5000,55),
 (5001,10000,60),
@@ -528,9 +600,9 @@ CREATE TABLE t_user (
     is_delete tinyint(1) default 0 COMMENT '是否删除 1：已删除；0：未删除',
     unique key uniq_username (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台用户表';
-insert into cb_v1.t_user(username, pwd, avatar, is_delete) values ('admin', '123456', 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif', 0);
-insert into cb_v1.t_user(username, pwd, avatar, is_delete) values ('jack', '123456', 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif', 0);
-insert into cb_v1.t_user(username, pwd, avatar, is_delete) values ('tony', '123456', 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif', 0);
+insert into cb_v2.t_user(username, pwd, avatar, is_delete) values ('admin', '123456', 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif', 0);
+insert into cb_v2.t_user(username, pwd, avatar, is_delete) values ('jack', '123456', 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif', 0);
+insert into cb_v2.t_user(username, pwd, avatar, is_delete) values ('tony', '123456', 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif', 0);
 
 
 drop table if exists t_user_role;
@@ -539,12 +611,12 @@ CREATE TABLE t_user_role (
     user_id int COMMENT '用户ID',
     role_id int COMMENT '角色ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户角色表';
-insert into cb_v1.t_user_role(user_id, role_id) values (1,1);
-insert into cb_v1.t_user_role(user_id, role_id) values (1,2);
-insert into cb_v1.t_user_role(user_id, role_id) values (2,2);
-insert into cb_v1.t_user_role(user_id, role_id) values (2,3);
-insert into cb_v1.t_user_role(user_id, role_id) values (3,1);
-insert into cb_v1.t_user_role(user_id, role_id) values (3,3);
+insert into cb_v2.t_user_role(user_id, role_id) values (1,1);
+insert into cb_v2.t_user_role(user_id, role_id) values (1,2);
+insert into cb_v2.t_user_role(user_id, role_id) values (2,2);
+insert into cb_v2.t_user_role(user_id, role_id) values (2,3);
+insert into cb_v2.t_user_role(user_id, role_id) values (3,1);
+insert into cb_v2.t_user_role(user_id, role_id) values (3,3);
 
 
 drop table if exists t_role;
@@ -554,9 +626,9 @@ CREATE TABLE t_role (
     name varchar(100) COMMENT '名称',
     is_delete tinyint(1)  DEFAULT 0 COMMENT '是否删除 1：已删除；0：未删除'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色表';
-insert into cb_v1.t_role(code, name, is_delete) values ('1000', '开发部', 0);
-insert into cb_v1.t_role(code, name, is_delete) values ('1001', '测试部', 0);
-insert into cb_v1.t_role(code, name, is_delete) values ('1003', '财务部', 0);
+insert into cb_v2.t_role(code, name, is_delete) values ('1000', '开发部', 0);
+insert into cb_v2.t_role(code, name, is_delete) values ('1001', '测试部', 0);
+insert into cb_v2.t_role(code, name, is_delete) values ('1003', '财务部', 0);
 
 
 
@@ -567,16 +639,16 @@ CREATE TABLE t_role_permission (
     role_id int(20) COMMENT '角色ID',
     permission_id int(20) COMMENT '权限ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色菜单关系表';
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,3);
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,4);
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,5);
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,6);
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,8);
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,9);
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,10);
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,11);
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,14);
-insert into cb_v1.t_role_permission(role_id, permission_id) values (1,19);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,3);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,4);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,5);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,6);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,8);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,9);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,10);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,11);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,14);
+insert into cb_v2.t_role_permission(role_id, permission_id) values (1,19);
 
 
 
@@ -599,7 +671,7 @@ CREATE TABLE t_permission (
     is_delete tinyint(1)  DEFAULT 0 COMMENT '是否删除 1：已删除；0：未删除'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限表';
 
-insert into cb_v1.t_permission(path, component, redirect, name, name_default, title, icon, code, node_type, sort, level, parent_id, parent_path, is_delete) values
+insert into cb_v2.t_permission(path, component, redirect, name, name_default, title, icon, code, node_type, sort, level, parent_id, parent_path, is_delete) values
 ('/dashboard','#','/dashboard/analysis', 'Dashboard', '会员管理', 'router.dashboard', 'ant-design:dashboard-filled', 10011, 1, 1, 1, 0, '', 0),
 ('analysis','views/Dashboard/Analysis','', 'Analysis', '会员中心', 'router.analysis', '', 0, 2, 1, 1, 1, '1', 0),
 ('','','', '', '添加会员', '', '', 10011, 3, 1, 1, 2, '2,1', 0),
@@ -616,7 +688,7 @@ insert into cb_v1.t_permission(path, component, redirect, name, name_default, ti
 ;
 
 #
-# insert into cb_v1.t_permission(name, name_code, code, parent_id, node_type, icon_url, sort, link_url, level, path, is_delete) values
+# insert into cb_v2.t_permission(name, name_code, code, parent_id, node_type, icon_url, sort, link_url, level, path, is_delete) values
 # ('会员管理','1000','1000',0, 1, '', 10, '/member/index', 1, '', 0),
 # ('会员中心','1000','1000',1, 2, '', 10, '/member/index', 2, '1', 0),
 # ('添加会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '2,1', 0),
