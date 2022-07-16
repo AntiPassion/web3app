@@ -3,8 +3,8 @@ package com.xinbo.chainblock.controller.admin;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.entity.LotteryBetEntity;
-import com.xinbo.chainblock.service.LotteryBetService;
+import com.xinbo.chainblock.entity.HashBetEntity;
+import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import com.xinbo.chainblock.vo.BetVo;
@@ -22,15 +22,15 @@ import org.springframework.web.bind.annotation.*;
 public class AgentController {
 
     @Autowired
-    private LotteryBetService lotteryBetService;
+    private HashBetService hashBetService;
 
 
     @JwtIgnore
     @Operation(summary = "findLotteryPage", description = "注单列表")
     @PostMapping("findLotteryPage/{current}/{size}")
     public R<Object> findLotteryPage(@RequestBody BetVo vo, @PathVariable long current, @PathVariable long size) {
-        LotteryBetEntity entity = MapperUtil.to(vo, LotteryBetEntity.class);
-        BasePage basePage = lotteryBetService.findPage(entity, current, size, vo.getStart(), vo.getEnd());
+        HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
+        BasePage basePage = hashBetService.findPage(entity, current, size, vo.getStart(), vo.getEnd());
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
     }
 

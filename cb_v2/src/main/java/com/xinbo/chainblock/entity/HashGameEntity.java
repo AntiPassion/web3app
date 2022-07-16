@@ -18,22 +18,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_lottery_category")
-public class LotteryCategoryEntity {
+@TableName("t_hash_game")
+public class HashGameEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 类目编码
+     * 游戏名称编码
      */
-    @TableField("name_code")
-    private String nameCode;
+    @TableField("name")
+    private String name;
 
     /**
-     * 类目默认名称
+     * 游戏中文名称
      */
-    @TableField("name_default")
-    private String nameDefault;
+    @TableField("name_zh")
+    private String nameZh;
 
+    /**
+     * 是否开启
+     */
+    private Boolean enable;
 }

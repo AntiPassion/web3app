@@ -10,15 +10,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.consts.ItemConst;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.LotteryBetDto;
-import com.xinbo.chainblock.entity.LotteryBetEntity;
+import com.xinbo.chainblock.entity.HashBetEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
-import com.xinbo.chainblock.mapper.LotteryBetMapper;
+import com.xinbo.chainblock.mapper.HashBetMapper;
 import com.xinbo.chainblock.mapper.StatisticsMapper;
 import com.xinbo.chainblock.mapper.MemberFlowMapper;
 import com.xinbo.chainblock.mapper.MemberMapper;
-import com.xinbo.chainblock.service.LotteryBetService;
+import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,10 +36,10 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, LotteryBetEntity> implements LotteryBetService {
+public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity> implements HashBetService {
 
     @Autowired
-    private LotteryBetMapper lotteryBetMapper;
+    private HashBetMapper hashBetMapper;
     @Autowired
     private MemberMapper memberMapper;
     @Autowired
@@ -50,53 +50,53 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
 
     @Override
     public LotteryBetDto findById(int id) {
-        LotteryBetEntity entity = lotteryBetMapper.selectById(id);
+        HashBetEntity entity = hashBetMapper.selectById(id);
         return MapperUtil.to(entity, LotteryBetDto.class);
     }
 
     @Override
-    public boolean insert(LotteryBetEntity entity) {
-        return lotteryBetMapper.insert(entity) > 0;
+    public boolean insert(HashBetEntity entity) {
+        return hashBetMapper.insert(entity) > 0;
     }
 
     @Override
-    public List<LotteryBetEntity> find(LotteryBetEntity entity) {
-        return lotteryBetMapper.selectList(this.createWrapper(entity));
+    public List<HashBetEntity> find(HashBetEntity entity) {
+        return hashBetMapper.selectList(this.createWrapper(entity));
     }
 
     @Override
-    public BasePage findPage(LotteryBetEntity entity, long current, long size) {
-        Page<LotteryBetEntity> page = new Page<>(current, size);
+    public BasePage findPage(HashBetEntity entity, long current, long size) {
+        Page<HashBetEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
-        IPage<LotteryBetEntity> iPage = lotteryBetMapper.selectPage(page, this.createWrapper(entity));
+        IPage<HashBetEntity> iPage = hashBetMapper.selectPage(page, this.createWrapper(entity));
         return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), LotteryBetDto.class)).build();
     }
 
     @Override
-    public BasePage findPage(LotteryBetEntity entity, long current, long size, Date start, Date end) {
-        Page<LotteryBetEntity> page = new Page<>(current, size);
+    public BasePage findPage(HashBetEntity entity, long current, long size, Date start, Date end) {
+        Page<HashBetEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
-        LambdaQueryWrapper<LotteryBetEntity> wrapper = this.createWrapper(entity);
+        LambdaQueryWrapper<HashBetEntity> wrapper = this.createWrapper(entity);
         if(!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
-            wrapper.ge(LotteryBetEntity::getCreateTime, start).le(LotteryBetEntity::getCreateTime, end);
+            wrapper.ge(HashBetEntity::getCreateTime, start).le(HashBetEntity::getCreateTime, end);
         }
 
-        IPage<LotteryBetEntity> iPage = lotteryBetMapper.selectPage(page, wrapper);
+        IPage<HashBetEntity> iPage = hashBetMapper.selectPage(page, wrapper);
         return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), LotteryBetDto.class)).build();
     }
 
     @Override
-    public List<LotteryBetEntity> unsettle(String num, int size) {
-        return lotteryBetMapper.unsettle(num, size);
+    public List<HashBetEntity> unsettle(String num, int size) {
+        return hashBetMapper.unsettle(num, size);
     }
 
     @Transactional
     @Override
-    public boolean settle(List<LotteryBetEntity> list) {
-        for (LotteryBetEntity bet : list) {
+    public boolean settle(List<HashBetEntity> list) {
+        for (HashBetEntity bet : list) {
             //更新注单表
             bet.setStatus(1);
-            int rows = lotteryBetMapper.settle(bet);
+            int rows = hashBetMapper.settle(bet);
             if (rows <= 0) {
                 throw new RuntimeException("settle: update lottery bet exception");
             }
@@ -154,22 +154,22 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
      * @param entity 实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<LotteryBetEntity> createWrapper(LotteryBetEntity entity) {
-        LambdaQueryWrapper<LotteryBetEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<HashBetEntity> createWrapper(HashBetEntity entity) {
+        LambdaQueryWrapper<HashBetEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getUid()) && entity.getUid() > 0) {
-            wrappers.eq(LotteryBetEntity::getUid, entity.getUid());
+            wrappers.eq(HashBetEntity::getUid, entity.getUid());
         }
         if (!StringUtils.isEmpty(entity.getNum())) {
-            wrappers.eq(LotteryBetEntity::getNum, entity.getNum());
+            wrappers.eq(HashBetEntity::getNum, entity.getNum());
         }
         if (!StringUtils.isEmpty(entity.getHashResult())) {
-            wrappers.eq(LotteryBetEntity::getHashResult, entity.getHashResult());
+            wrappers.eq(HashBetEntity::getHashResult, entity.getHashResult());
         }
         if (!StringUtils.isEmpty(entity.getGameId()) && entity.getGameId() > 0) {
-            wrappers.eq(LotteryBetEntity::getGameId, entity.getGameId());
+            wrappers.eq(HashBetEntity::getGameId, entity.getGameId());
         }
         return wrappers;
     }

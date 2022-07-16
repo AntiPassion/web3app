@@ -4,9 +4,9 @@ import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
 import com.xinbo.chainblock.core.algorithm.LotteryAlgorithm;
 import com.xinbo.chainblock.entity.HashResultEntity;
-import com.xinbo.chainblock.entity.LotteryBetEntity;
+import com.xinbo.chainblock.entity.HashBetEntity;
 import com.xinbo.chainblock.service.HashResultService;
-import com.xinbo.chainblock.service.LotteryBetService;
+import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class LotterySettleJob {
     private HashResultService hashResultService;
 
     @Autowired
-    private LotteryBetService lotteryBetService;
+    private HashBetService hashBetService;
 
     @Autowired
     private MemberService memberService;
@@ -50,10 +50,10 @@ public class LotterySettleJob {
             }
 
             //Step 2: 到彩票注单表里面拿到未结算的注单
-            List<LotteryBetEntity> betEntityList = lotteryBetService.unsettle(resultEntity.getNum(), SIZE);
+            List<HashBetEntity> hashBetEntityList = hashBetService.unsettle(resultEntity.getNum(), SIZE);
 
             //Step 2.1: 如果全都已结算则更新开奖数据(t_hash_result.is_settle设置为1)
-            if (CollectionUtils.isEmpty(betEntityList) || betEntityList.size() <= 0) {
+            if (CollectionUtils.isEmpty(hashBetEntityList) || hashBetEntityList.size() <= 0) {
                 boolean isSuccess = hashResultService.settled(resultEntity.getId());
                 if (!isSuccess) {
                     log.error("update hash result table fail");
@@ -62,23 +62,23 @@ public class LotterySettleJob {
             }
 
             //Step 2.2: 计算输赢&构建数据
-            for (LotteryBetEntity betEntity : betEntityList) {
-                AlgorithmResult settle = lotteryAlgorithm.settle(resultEntity, betEntity);
+            for (HashBetEntity hashBetEntity : hashBetEntityList) {
+                AlgorithmResult settle = lotteryAlgorithm.settle(resultEntity, hashBetEntity);
                 float profileMoney = 0, payoutMoney = 0;
                 if (settle.getStatus() == AlgorithmCode.WIN) {
-                    profileMoney = betEntity.getMoney() * betEntity.getOdds() - betEntity.getMoney();
-                    payoutMoney = betEntity.getMoney() + profileMoney;
+                    profileMoney = hashBetEntity.getMoney() * hashBetEntity.getOdds() - hashBetEntity.getMoney();
+                    payoutMoney = hashBetEntity.getMoney() + profileMoney;
                 } else {
-                    profileMoney = betEntity.getMoney() * -1;
+                    profileMoney = hashBetEntity.getMoney() * -1;
                     payoutMoney = 0;
                 }
-                betEntity.setProfitMoney(profileMoney);
-                betEntity.setPayoutMoney(payoutMoney);
-                betEntity.setHashResult(resultEntity.getBlockHash());
+                hashBetEntity.setProfitMoney(profileMoney);
+                hashBetEntity.setPayoutMoney(payoutMoney);
+                hashBetEntity.setHashResult(resultEntity.getBlockHash());
             }
 
             //Step 3: 更新数据库 @todo
-            lotteryBetService.settle(betEntityList);
+            hashBetService.settle(hashBetEntityList);
 
 
             System.out.println("@Scheduled" + new Date());

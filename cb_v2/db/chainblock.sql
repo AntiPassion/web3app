@@ -7,300 +7,115 @@ create database cb_v2;
 use cb_v2;
 
 
-drop table if exists t_game;
-create table t_game(
+drop table if exists t_hash_game;
+create table t_hash_game(
     id int primary key auto_increment,
     name varchar(50) comment '游戏名称编码',
     name_zh varchar(50) comment '游戏中文名称',
     enable tinyint(1) comment '是否开启'
 ) comment '彩种游戏';
-insert into cb_v2.t_game(`name`,`name_zh`,`enable`) values
+insert into cb_v2.t_hash_game(`name`,`name_zh`,`enable`) values
 ('200010','幸运哈希',1),
 ('200110','哈希PK拾',1),
 ('200210','哈希牛牛',1),
 ('200310','哈希两面',1),
 ('200410','哈希百家乐',1);
 
-drop table if exists t_room;
-create table t_room(
+drop table if exists t_hash_room;
+create table t_hash_room(
    id int primary key auto_increment,
    game_id int comment '游戏id',
    game_name varchar(50) comment '游戏名称编码',
-   game_name_zh varchar(50) comment '游戏默认名称',
-   name varchar(50) comment '游戏名称编码',
-   name_zh varchar(50) comment '游戏默认名称',
-   min int comment '',
-   max int comment '',
-   max_odds decimal(10,2) comment ''
+   game_name_zh varchar(50) comment '游戏中文名称',
+   name varchar(50) comment '房间名称编码',
+   name_zh varchar(50) comment '房间中文名称',
+   min int comment '最低金额',
+   max int comment '最高金额',
+   max_odds decimal(10,2) comment '最大赔率',
+   type tinyint(1) comment '类型(1:体验房, 2:初级房, 3:中级房, 4:高级房)',
+   pic varchar(100) comment '图片地址'
 ) comment '房间';
 
-insert into cb_v2.t_room(game_id, game_name, game_name_zh, name, name_zh, min, max, max_odds) values
-(1, '200010', '幸运哈希', '300010', '体验房', '0', '200', 1.98),
-(1, '200010', '幸运哈希', '300010', '初级房', '0', '200', 1.98),
-(1, '200010', '幸运哈希', '300010', '中级房', '0', '200', 1.98),
-(1, '200010', '幸运哈希', '300010', '高级房', '0', '200', 1.98),
+insert into cb_v2.t_hash_room(game_id, game_name, game_name_zh, name, name_zh, min, max, max_odds,`type`, pic) values
+(1, '200010', '幸运哈希', '300010', '体验房', '0', '200', 1.98, 1, 'http://xxx/a/b.jpg'),
+(1, '200010', '幸运哈希', '300010', '初级房', '0', '200', 1.98, 2, 'http://xxx/a/b.jpg'),
+(1, '200010', '幸运哈希', '300010', '中级房', '0', '200', 1.98, 3, 'http://xxx/a/b.jpg'),
+(1, '200010', '幸运哈希', '300010', '高级房', '0', '200', 1.98, 4, 'http://xxx/a/b.jpg'),
 
-(1, '200110', '哈希PK拾', '300110', '体验房', '0', '200', 1.98),
-(1, '200110', '哈希PK拾', '300111', '初级房', '50', '5000', 1.98),
-(1, '200110', '哈希PK拾', '300112', '中级房', '100', '10000', 1.98),
-(1, '200110', '哈希PK拾', '300113', '高级房', '1000', '20000', 1.98),
+(2, '200110', '哈希PK拾', '300110', '体验房', '0', '200', 1.98, 1, 'http://xxx/a/b.jpg'),
+(2, '200110', '哈希PK拾', '300111', '初级房', '50', '5000', 1.98, 2, 'http://xxx/a/b.jpg'),
+(2, '200110', '哈希PK拾', '300112', '中级房', '100', '10000', 1.98, 3, 'http://xxx/a/b.jpg'),
+(2, '200110', '哈希PK拾', '300113', '高级房', '1000', '20000', 1.98, 4, 'http://xxx/a/b.jpg'),
 
-(1, '200210', '哈希牛牛', '300210', '体验房', '0', '200', 1.98),
-(1, '200210', '哈希牛牛', '300211', '初级房', '50', '5000', 1.98),
-(1, '200210', '哈希牛牛', '300212', '中级房', '100', '10000', 1.98),
-(1, '200210', '哈希牛牛', '300213', '高级房', '1000', '20000', 1.98),
+(3, '200210', '哈希牛牛', '300210', '体验房', '0', '200', 1.98, 1, 'http://xxx/a/b.jpg'),
+(3, '200210', '哈希牛牛', '300211', '初级房', '50', '5000', 1.98, 2, 'http://xxx/a/b.jpg'),
+(3, '200210', '哈希牛牛', '300212', '中级房', '100', '10000', 1.98, 3, 'http://xxx/a/b.jpg'),
+(3, '200210', '哈希牛牛', '300213', '高级房', '1000', '20000', 1.98, 4, 'http://xxx/a/b.jpg'),
 
-(1, '200310', '哈希两面', '300310', '体验房', '0', '200', 1.95),
-(1, '200310', '哈希两面', '300311', '初级房', '50', '5000', 1.95),
-(1, '200310', '哈希两面', '300312', '中级房', '100', '10000', 1.95),
-(1, '200310', '哈希两面', '300313', '高级房', '1000', '20000', 1.95),
+(4, '200310', '哈希两面', '300310', '体验房', '0', '200', 1.95, 1, 'http://xxx/a/b.jpg'),
+(4, '200310', '哈希两面', '300311', '初级房', '50', '5000', 1.95, 2, 'http://xxx/a/b.jpg'),
+(4, '200310', '哈希两面', '300312', '中级房', '100', '10000', 1.95, 3, 'http://xxx/a/b.jpg'),
+(4, '200310', '哈希两面', '300313', '高级房', '1000', '20000', 1.95, 4, 'http://xxx/a/b.jpg'),
 
-(1, '200410', '哈希百家乐', '300410', '体验房', '0', '200', 1.95),
-(1, '200410', '哈希百家乐', '300411', '初级房', '50', '5000', 1.95),
-(1, '200410', '哈希百家乐', '300412', '中级房', '100', '10000', 1.95),
-(1, '200410', '哈希百家乐', '300413', '高级房', '1000', '20000', 1.95)
+(5, '200410', '哈希百家乐', '300410', '体验房', '0', '200', 1.95, 1, 'http://xxx/a/b.jpg'),
+(5, '200410', '哈希百家乐', '300411', '初级房', '50', '5000', 1.95, 2, 'http://xxx/a/b.jpg'),
+(5, '200410', '哈希百家乐', '300412', '中级房', '100', '10000', 1.95, 3, 'http://xxx/a/b.jpg'),
+(5, '200410', '哈希百家乐', '300413', '高级房', '1000', '20000', 1.95, 4, 'http://xxx/a/b.jpg')
 ;
 
 
 
 
-drop table if exists t_code;
-create table t_code(
+drop table if exists t_hash_odds;
+create table t_hash_odds(
     id int primary key auto_increment,
     game_id int comment '游戏id',
-    code varchar(50) comment '编码',
-    code_zh varchar(50) comment '编码中文',
+    name varchar(50) comment '名称',
+    name_zh varchar(50) comment '名称中文',
     odds decimal(10, 2) comment '赔率',
-    sorted int comment '排序'
+    code varchar(50) comment '编码'
 ) comment '彩种玩法';
 
-insert into cb_v2.t_code(`game_id`, `code`,`code_zh`, `odds`, `sorted`) values
-(1, '400010','', '9.8',1),
+insert into cb_v2.t_hash_odds(`game_id`, `name`,`name_zh`, `odds`, `code`) values
+(1, '400010','', '9.8', '1000'),
 
-(2, '400110','0', '9.8', 1),
-(2, '400111','1', '9.8', 1),
-(2, '400112','2', '9.8', 1),
-(2, '400113','3', '9.8', 1),
-(2, '400114','4', '9.8', 1),
-(2, '400115','5', '9.8', 1),
-(2, '400116','6', '9.8', 1),
-(2, '400117','7', '9.8', 1),
-(2, '400118','8', '9.8', 1),
-(2, '400119','9', '9.8', 1),
+(2, '400110','0', '9.8', '2000'),
+(2, '400111','1', '9.8', '2001'),
+(2, '400112','2', '9.8', '2002'),
+(2, '400113','3', '9.8', '2003'),
+(2, '400114','4', '9.8', '2004'),
+(2, '400115','5', '9.8', '2005'),
+(2, '400116','6', '9.8', '2006'),
+(2, '400117','7', '9.8', '2007'),
+(2, '400118','8', '9.8', '2008'),
+(2, '400119','9', '9.8', '2009'),
 
-(3, '400210','庄(平倍)', '0.95', 1),
-(3, '400211','庄(超级翻倍)', '0.95', 2),
-(3, '400212','庄(翻倍)', '0.95', 3),
-(3, '400213','和局', '9.5', 4),
-(3, '400213','闲(平倍)', '0.95', 5),
-(3, '400214','闲(超级翻倍)', '0.95', 6),
-(3, '400215','闲(翻倍)', '0.95', 7),
+(3, '400210','庄(平倍)', '0.95', '3000'),
+(3, '400211','庄(超级翻倍)', '0.95', '3001'),
+(3, '400212','庄(翻倍)', '0.95', '3002'),
+(3, '400213','和局', '9.5', '3003'),
+(3, '400213','闲(平倍)', '0.95', '3004'),
+(3, '400214','闲(超级翻倍)', '0.95', '3005'),
+(3, '400215','闲(翻倍)', '0.95', '3006'),
 
-(4, '400310','大', '1.95', 1),
-(4, '400311','小', '1.95', 2),
-(4, '400212','单', '1.95', 3),
-(4, '400213','双', '1.95', 4),
+(4, '400310','大', '1.95', '4000'),
+(4, '400311','小', '1.95', '4001'),
+(4, '400212','单', '1.95', '4002'),
+(4, '400213','双', '1.95', '4003'),
 
-(5, '400410','庄', '1.95', 1),
-(5, '400411','庄对', '11', 2),
-(5, '400412','闲对', '11', 3),
-(5, '400413','闲', '1.95', 4),
-(5, '400414','和', '8', 5)
+(5, '400410','庄', '1.95', '5000'),
+(5, '400411','庄对', '11', '5001'),
+(5, '400412','闲对', '11', '5002'),
+(5, '400413','闲', '1.95', '5003'),
+(5, '400414','和', '8', '5004')
 ;
 
 
 
-drop table if exists t_lottery_play_code;
-create table t_lottery_play_code(
-    id int primary key auto_increment,
-    play_id int comment '玩法编号',
-    name_code varchar(50) comment '玩法名称编码',
-    name_default varchar(50) comment '玩法默认名称',
-    odds decimal(10,3) comment '赔率'
-) comment '彩种玩法编码';
-
--- # 一球
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500010','大',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500011','小',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500012','单',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500013','双',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500014','1',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500015','2',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500016','3',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500017','4',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500018','5',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500019','6',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500020','7',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500021','8',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500022','9',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (1,'500023','0',9.800);
-
--- # 二球
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500010','大',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500011','小',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500012','单',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500013','双',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500014','1',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500015','2',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500016','3',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500017','4',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500018','5',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500019','6',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500020','7',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500021','8',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500022','9',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (2,'500023','0',9.800);
-
--- # 三球
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500010','大',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500011','小',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500012','单',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500013','双',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500014','1',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500015','2',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500016','3',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500017','4',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500018','5',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500019','6',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500020','7',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500021','8',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500022','9',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (3,'500023','0',9.800);
-
--- # 和值
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500110','总和大',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500111','总和小',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500112','总和单',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500113','总和双',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500114','0',803.600);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500115','1',267.860);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500116','2',133.930);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500117','3',80.360);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500118','4',53.570);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500119','5',38.260);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500120','6',28.690);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500121','7',22.310);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500122','8',17.860);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500123','9',14.600);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500124','10',12.750);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500125','11',11.640);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500126','12',11.000);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500127','13',10.710);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500128','14',10.710);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500129','15',11.000);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500130','16',11.640);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500131','17',12.750);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500132','18',14.640);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500133','19',17.860);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500134','20',22.310);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500135','21',28.690);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500136','22',38.260);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500137','23',53.570);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500138','24',80.3600);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500139','25',133.930);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500140','26',267.840);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (4,'500141','27',803.600);
 
 
--- # 龙虎
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (5,'500210','龙',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (5,'500211','虎',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (5,'500212','和',8.030);
-
-
--- # 特殊
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500310','豹子',80.360);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500311','顺子',13.390);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500312','半顺',2.170);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500313','对子',2.970);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (6,'500314','杂六',2.680);
-
-
--- # 牛牛
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500410','牛1',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500411','牛2',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500412','牛3',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500413','牛4',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500414','牛5',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500415','牛6',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500416','牛7',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500417','牛8',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500418','牛9',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500419','牛牛',9.800);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500420','牛大',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500421','牛小',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500422','牛单',1.960);
-insert into cb_v2.t_lottery_play_code(`play_id`,`name_code`,`name_default`,`odds`) values (7,'500423','牛双',1.960);
-
-
-
-
-drop table if exists t_lottery_bet;
-create table t_lottery_bet (
-    id int primary key auto_increment,
-    uid int comment '会员id',
-    username varchar(50) comment '会员名',
-    cate_id int comment '类目id',
-    cate_name_code varchar(50) comment '类目编码',
-    cate_name_default varchar(50) comment '类目默认名称',
-    game_id int comment '彩种id',
-    game_name_code varchar(50) comment '类目编码',
-    game_name_default varchar(50) comment '彩种编码',
-    play_id int comment '玩法编号',
-    play_name_code varchar(50) comment '类目编码',
-    play_name_default varchar(50) comment '玩法编码',
-    play_code_id int comment '玩法编码id',
-    play_code_name_code varchar(50) comment '玩法编码id',
-    play_code_name_default varchar(50) comment '玩法编码id',
-    hash_result varchar(80) comment '开奖结果',
-    num varchar(20) comment '期号',
-    odds decimal(10,4) comment '赔率',
-    money decimal(10,4) comment '投注金额',
-    profit_money decimal(10,4) comment '赢利金额',
-    payout_money decimal(10,4) comment '派彩金额',
-    create_time timestamp null default null comment '创建时间',
-    update_time timestamp null default null comment '更新时间',
-    status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
-    remark varchar(100) comment '备注'
-) comment '彩票注单';
-
-INSERT INTO `t_lottery_bet` (`uid`, `username`, `cate_id`, `cate_name_code`, `cate_name_default`, `game_id`, `game_name_code`, `game_name_default`, `play_id`, `play_name_code`, `play_name_default`, `play_code_id`, `play_code_name_code`, `play_code_name_default`, `hash_result`, `num`, `odds`, `money`, `profit_money`, `payout_money`, `create_time`, `update_time`, `status`, `remark`) VALUES
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:27','2022-07-04 18:34:27',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:30','2022-07-04 18:34:30',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:30','2022-07-04 18:34:30',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:30','2022-07-04 18:34:30',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:31','2022-07-04 18:34:31',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:31','2022-07-04 18:34:31',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:31','2022-07-04 18:34:31',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:31','2022-07-04 18:34:31',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:32','2022-07-04 18:34:32',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:32','2022-07-04 18:34:32',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:32','2022-07-04 18:34:32',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:32','2022-07-04 18:34:32',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:33','2022-07-04 18:34:33',1,NULL),
-(1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:33','2022-07-04 18:34:33',1,NULL),
-(2,'jackB',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:36:06','2022-07-04 18:36:06',1,NULL),
-(2,'jackB',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:36:07','2022-07-04 18:36:07',1,NULL),
-(2,'jackB',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:36:08','2022-07-04 18:36:08',1,NULL),
-(2,'jackB',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:36:08','2022-07-04 18:36:08',1,NULL),
-(2,'jackB',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:36:09','2022-07-04 18:36:09',1,NULL),
-(2,'jackB',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:36:09','2022-07-04 18:36:09',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:12','2022-07-04 18:37:12',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:13','2022-07-04 18:37:13',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:14','2022-07-04 18:37:14',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:14','2022-07-04 18:37:14',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:15','2022-07-04 18:37:15',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:15','2022-07-04 18:37:15',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:16','2022-07-04 18:37:16',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:16','2022-07-04 18:37:16',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:17','2022-07-04 18:37:17',1,NULL),
-(3,'jackC',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:37:17','2022-07-04 18:37:17',1,NULL);
-
-
-
-
-drop table if exists t_draw_bet;
-create table t_draw_bet (
+drop table if exists t_hash_bet;
+create table t_hash_bet (
     id int primary key auto_increment,
     uid int comment '会员id',
     username varchar(50) comment '会员名',
@@ -408,46 +223,22 @@ create table t_recharge (
 drop table if exists t_wallet;
 create table t_wallet(
     id int primary key auto_increment,
-    address varchar(100),
     uid int comment '会员id',
     username varchar(50) comment '会员名',
-    type int(10) comment '钱包类型'
+    type int(10) comment '钱包类型',
+    private_key varchar(100),
+    public_key varchar(200),
+    address_base58 varchar(100),
+    address_hex varchar(100)
 ) comment '钱包';
 
-insert into cb_v2.t_wallet (`address`,`uid`,`username`,`type`) values ('TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe',1,'jack', 1);
-
-
-
-
-drop table if exists t_expect;
-create table t_expect (
-  id int primary key auto_increment,
-  game_id int comment '彩种id',
-  num varchar(50) comment '期号数',
-  start_time varchar(20) comment '开始时间',
-  end_time varchar(20) comment '结束时间'
-) comment '期号';
-
-
-
-drop table if exists t_hash_result;
-create table t_hash_result (
-  id int primary key auto_increment,
-  game_id int comment '彩种id',
-  num varchar(50) comment '期号数',
-  txID varchar(70) comment '期号数',
-  block_hash varchar(70) comment '哈希码',
-  block_height varchar(50) comment '块高度',
-  open_time timestamp comment '开奖时间',
-  open_timestamp bigint comment '开奖时间戳',
-  network varchar(10) comment '块高度',
-  is_settle tinyint comment '状态(0:未结算,1:已结算)'
-) comment '开奖结果';
-INSERT INTO cb_v2.t_hash_result (game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (5, '202207010275', '00b62b030c3acf59129247e4a5272be8bbf736723c05a9aed154c990c9513df3', '0000000001a6a300de858fa824019a3e1dbd779e074fc2cb314fc61aca7dfff6', '27697920', '2022-07-01 22:55:07', 1656687307000, 'nile', 0);
-INSERT INTO cb_v2.t_hash_result (game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (5, '202207010274', '78458f985d78e05a21ff4171e376bb3ba08154f4c6675ff0860f99c4ff8c98a3', '0000000001a6a29e0703e89c59bab0e5c36f5bab2c91fc9797da037d2cd9b9e8', '27697822', '2022-07-01 22:50:06', 1656687006000, 'nile', 0);
-INSERT INTO cb_v2.t_hash_result (game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (5, '202207010273', 'd9dc22d7f4a915a339bc49a6b3cfe5df8f3a394f6d79a64fe68cbf1d5553a589', '0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb', '27697765', '2022-07-01 22:47:16', 1656686836000, 'nile', 0);
-
-
+insert into cb_v2.t_wallet(uid, username, type, private_key, public_key, address_base58, address_hex) values
+(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
+(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
+(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
+(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
+(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68')
+;
 
 
 

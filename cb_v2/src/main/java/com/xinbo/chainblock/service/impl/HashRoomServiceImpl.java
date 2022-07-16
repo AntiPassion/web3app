@@ -3,7 +3,7 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.LotteryPlayEntity;
+import com.xinbo.chainblock.entity.HashRoomEntity;
 import com.xinbo.chainblock.mapper.LotteryPlayMapper;
 import com.xinbo.chainblock.service.LotteryPlayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +19,20 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class LotteryPlayServiceImpl extends ServiceImpl<LotteryPlayMapper, LotteryPlayEntity> implements LotteryPlayService {
+public class HashRoomServiceImpl extends ServiceImpl<LotteryPlayMapper, HashRoomEntity> implements LotteryPlayService {
 
     @Autowired
     private LotteryPlayMapper lotteryPlayMapper;
 
 
     @Override
-    public LotteryPlayEntity findById(int id) {
+    public HashRoomEntity findById(int id) {
         return lotteryPlayMapper.selectById(id);
     }
 
     @Override
-    public List<LotteryPlayEntity> findAll() {
-        return lotteryPlayMapper.selectList(this.createWrapper(LotteryPlayEntity.builder().build()));
+    public List<HashRoomEntity> findAll() {
+        return lotteryPlayMapper.selectList(this.createWrapper(HashRoomEntity.builder().build()));
     }
 
 
@@ -42,13 +42,13 @@ public class LotteryPlayServiceImpl extends ServiceImpl<LotteryPlayMapper, Lotte
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<LotteryPlayEntity> createWrapper(LotteryPlayEntity entity) {
-        LambdaQueryWrapper<LotteryPlayEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<HashRoomEntity> createWrapper(HashRoomEntity entity) {
+        LambdaQueryWrapper<HashRoomEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
-        if (!StringUtils.isEmpty(entity.getNameCode())) {
-            wrappers.eq(LotteryPlayEntity::getNameCode, entity.getNameCode());
+        if (!StringUtils.isEmpty(entity.getGameId())) {
+            wrappers.eq(HashRoomEntity::getGameId, entity.getGameId());
         }
         return wrappers;
     }

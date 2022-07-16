@@ -1,7 +1,7 @@
 package com.xinbo.chainblock.core.algorithm;
 
 import com.xinbo.chainblock.entity.HashResultEntity;
-import com.xinbo.chainblock.entity.LotteryBetEntity;
+import com.xinbo.chainblock.entity.HashBetEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public class LotteryAlgorithm {
     }
 
 
-    private AlgorithmResult firstBall(HashResultEntity hr, LotteryBetEntity lb) {
+    private AlgorithmResult firstBall(HashResultEntity hr, HashBetEntity lb) {
         AlgorithmResult ar = AlgorithmResult.builder().build();
 
         String blockHash = hr.getBlockHash();
@@ -126,7 +126,7 @@ public class LotteryAlgorithm {
     }
 
 
-    private AlgorithmResult secondBall(HashResultEntity hr, LotteryBetEntity lb) {
+    private AlgorithmResult secondBall(HashResultEntity hr, HashBetEntity lb) {
         AlgorithmResult ar = AlgorithmResult.builder().build();
 
         String blockHash = hr.getBlockHash();
@@ -147,7 +147,7 @@ public class LotteryAlgorithm {
     }
 
 
-    private AlgorithmResult thirdBall(HashResultEntity hr, LotteryBetEntity lb) {
+    private AlgorithmResult thirdBall(HashResultEntity hr, HashBetEntity lb) {
         AlgorithmResult ar = AlgorithmResult.builder().build();
 
         String blockHash = hr.getBlockHash();
@@ -175,7 +175,7 @@ public class LotteryAlgorithm {
      * @param lb
      * @return
      */
-    private AlgorithmResult sumValue(HashResultEntity hr, LotteryBetEntity lb) {
+    private AlgorithmResult sumValue(HashResultEntity hr, HashBetEntity lb) {
         AlgorithmResult ar = AlgorithmResult.builder().build();
 
         String blockHash = hr.getBlockHash();
@@ -210,7 +210,7 @@ public class LotteryAlgorithm {
      * @param lb
      * @return
      */
-    private AlgorithmResult dragonTiger(HashResultEntity hr, LotteryBetEntity lb) {
+    private AlgorithmResult dragonTiger(HashResultEntity hr, HashBetEntity lb) {
         AlgorithmResult ar = AlgorithmResult.builder().build();
 
         String blockHash = hr.getBlockHash();
@@ -247,7 +247,7 @@ public class LotteryAlgorithm {
      * @param lb
      * @return
      */
-    private AlgorithmResult special(HashResultEntity hr, LotteryBetEntity lb) {
+    private AlgorithmResult special(HashResultEntity hr, HashBetEntity lb) {
         AlgorithmResult ar = AlgorithmResult.builder().build();
 
         String blockHash = hr.getBlockHash();
@@ -298,7 +298,7 @@ public class LotteryAlgorithm {
      * @param lb
      * @return
      */
-    private AlgorithmResult niuNiu(HashResultEntity hr, LotteryBetEntity lb) {
+    private AlgorithmResult niuNiu(HashResultEntity hr, HashBetEntity lb) {
         AlgorithmResult ar = AlgorithmResult.builder().build();
 
         String blockHash = hr.getBlockHash();
@@ -323,7 +323,7 @@ public class LotteryAlgorithm {
 
 
 
-    public AlgorithmResult settle(HashResultEntity hr, LotteryBetEntity lb) {
+    public AlgorithmResult settle(HashResultEntity hr, HashBetEntity lb) {
         switch (lb.getPlayId()) {
             case 1:
                 return this.firstBall(hr, lb);

@@ -18,21 +18,40 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_lottery_play")
-public class LotteryPlayEntity {
+@TableName("t_hash_odds")
+public class HashOddsEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 玩法名称编码
+     * 游戏id
      */
-    @TableField("name_code")
-    private String nameCode;
+    @TableField("game_id")
+    private Integer gameId;
 
     /**
-     * 玩法默认名称
+     * 名称
      */
-    @TableField("name_default")
-    private String nameDefault;
+    @TableField("name")
+    private String name;
+
+    /**
+     * 名称中文
+     */
+    @TableField("name_zh")
+    private String nameZh;
+
+    /**
+     * 赔率
+     */
+    @TableField("odds")
+    private Float odds;
+
+    /**
+     * 编码
+     */
+    @TableField("code")
+    private String code;
+
 }

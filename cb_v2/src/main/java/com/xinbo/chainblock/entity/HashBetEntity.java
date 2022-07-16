@@ -20,8 +20,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_lottery_bet")
-public class LotteryBetEntity {
+@TableName("t_hash_bet")
+public class HashBetEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

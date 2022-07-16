@@ -4,11 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.AgentEntity;
-import com.xinbo.chainblock.entity.ExpectEntity;
 import com.xinbo.chainblock.mapper.AgentMapper;
-import com.xinbo.chainblock.mapper.ExpectMapper;
 import com.xinbo.chainblock.service.AgentService;
-import com.xinbo.chainblock.service.ExpectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -59,16 +56,10 @@ public class AgentServiceImpl extends ServiceImpl<AgentMapper, AgentEntity> impl
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<ExpectEntity> createWrapper(ExpectEntity entity) {
-        LambdaQueryWrapper<ExpectEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<AgentEntity> createWrapper(AgentEntity entity) {
+        LambdaQueryWrapper<AgentEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
-        }
-        if (!StringUtils.isEmpty(entity.getGameId())) {
-            wrappers.eq(ExpectEntity::getGameId, entity.getGameId());
-        }
-        if (!StringUtils.isEmpty(entity.getNum())) {
-            wrappers.eq(ExpectEntity::getNum, entity.getNum());
         }
         return wrappers;
     }

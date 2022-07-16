@@ -3,16 +3,14 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.AgentRebateEntity;
-import com.xinbo.chainblock.mapper.AgentRebateMapper;
-import com.xinbo.chainblock.service.AgentRebateService;
+import com.xinbo.chainblock.entity.HashGameEntity;
+import com.xinbo.chainblock.mapper.HashGameMapper;
+import com.xinbo.chainblock.service.HashGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
-
 
 /**
  * @author tony
@@ -20,16 +18,23 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class AgentRebateServiceImpl extends ServiceImpl<AgentRebateMapper, AgentRebateEntity> implements AgentRebateService {
+public class HashHashGameServiceImpl extends ServiceImpl<HashGameMapper, HashGameEntity> implements HashGameService {
 
     @Autowired
-    private AgentRebateMapper agentRebateMapper;
+    private HashGameMapper hashGameMapper;
+
 
 
     @Override
-    public List<AgentRebateEntity> findAll() {
-        return agentRebateMapper.findAll();
+    public HashGameEntity findById(int id) {
+        return hashGameMapper.selectById(id);
     }
+
+    @Override
+    public List<HashGameEntity> findAll() {
+        return hashGameMapper.selectList(this.createWrapper(HashGameEntity.builder().build()));
+    }
+
 
     /**
      * 创建查询条件
@@ -37,8 +42,8 @@ public class AgentRebateServiceImpl extends ServiceImpl<AgentRebateMapper, Agent
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<AgentRebateEntity> createWrapper(AgentRebateEntity entity) {
-        LambdaQueryWrapper<AgentRebateEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<HashGameEntity> createWrapper(HashGameEntity entity) {
+        LambdaQueryWrapper<HashGameEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
