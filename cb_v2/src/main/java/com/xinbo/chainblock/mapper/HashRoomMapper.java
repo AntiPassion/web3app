@@ -10,5 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @desc file desc
  */
 @Mapper
-public interface LotteryPlayMapper extends BaseMapper<HashRoomEntity> {
+public interface HashRoomMapper extends BaseMapper<HashRoomEntity> {
 }

@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.HashRoomEntity;
-import com.xinbo.chainblock.mapper.LotteryPlayMapper;
-import com.xinbo.chainblock.service.LotteryPlayService;
+import com.xinbo.chainblock.mapper.HashRoomMapper;
+import com.xinbo.chainblock.service.HashRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -19,20 +19,20 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class HashRoomServiceImpl extends ServiceImpl<LotteryPlayMapper, HashRoomEntity> implements LotteryPlayService {
+public class HashRoomServiceImpl extends ServiceImpl<HashRoomMapper, HashRoomEntity> implements HashRoomService {
 
     @Autowired
-    private LotteryPlayMapper lotteryPlayMapper;
+    private HashRoomMapper hashRoomMapper;
 
 
     @Override
     public HashRoomEntity findById(int id) {
-        return lotteryPlayMapper.selectById(id);
+        return hashRoomMapper.selectById(id);
     }
 
     @Override
     public List<HashRoomEntity> findAll() {
-        return lotteryPlayMapper.selectList(this.createWrapper(HashRoomEntity.builder().build()));
+        return hashRoomMapper.selectList(this.createWrapper(HashRoomEntity.builder().build()));
     }
 
 

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @author tony
  * @date 6/24/22 4:31 下午
@@ -29,6 +31,12 @@ public class HashOddsServiceImpl extends ServiceImpl<LotteryPlayCodeMapper, Hash
         return lotteryPlayCodeMapper.selectById(id);
     }
 
+    @Override
+    public List<HashOddsEntity> findByGameId(int gameId) {
+        HashOddsEntity entity = HashOddsEntity.builder().gameId(gameId).build();
+        return lotteryPlayCodeMapper.selectList(this.createWrapper(entity));
+    }
+
 
     /**
      * 创建查询条件
@@ -43,6 +51,9 @@ public class HashOddsServiceImpl extends ServiceImpl<LotteryPlayCodeMapper, Hash
         }
         if (!StringUtils.isEmpty(entity.getCode())) {
             wrappers.eq(HashOddsEntity::getCode, entity.getCode());
+        }
+        if (!ObjectUtils.isEmpty(entity.getGameId()) && entity.getGameId()>0) {
+            wrappers.eq(HashOddsEntity::getGameId, entity.getGameId());
         }
         return wrappers;
     }

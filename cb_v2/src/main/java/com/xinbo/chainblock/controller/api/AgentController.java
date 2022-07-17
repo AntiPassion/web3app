@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@RestController
+@RestController("ApiAgentController")
 @RequestMapping("api/agent")
 public class AgentController {
 

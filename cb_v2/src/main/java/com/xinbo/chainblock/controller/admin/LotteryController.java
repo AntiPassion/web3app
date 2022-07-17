@@ -24,7 +24,7 @@ public class LotteryController {
     private HashGameService hashGameService;
 
     @Autowired
-    private LotteryPlayService lotteryPlayService;
+    private HashRoomService hashRoomService;
 
     @Autowired
     private HashOddsService hashOddsService;
@@ -45,7 +45,7 @@ public class LotteryController {
     @Operation(summary = "findPlay", description = "游戏列表")
     @PostMapping("findPlay")
     public R<Object> findPlay() {
-        List<HashRoomEntity> list = lotteryPlayService.findAll();
+        List<HashRoomEntity> list = hashRoomService.findAll();
         return R.builder().code(StatusCode.SUCCESS).data(list).build();
     }
 

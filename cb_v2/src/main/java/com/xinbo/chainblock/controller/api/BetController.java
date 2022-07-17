@@ -25,7 +25,7 @@ public class BetController {
     private HashGameService hashGameService;
 
     @Autowired
-    private LotteryPlayService lotteryPlayService;
+    private HashRoomService hashRoomService;
 
     @Autowired
     private HashOddsService hashOddsService;
@@ -52,7 +52,7 @@ public class BetController {
                 throw new RuntimeException("lottery game not found");
             }
 
-            HashRoomEntity playEntity = lotteryPlayService.findById(vo.getPlayId());
+            HashRoomEntity playEntity = hashRoomService.findById(vo.getPlayId());
             if(ObjectUtils.isEmpty(playEntity) || playEntity.getId()<=0) {
                 throw new RuntimeException("lottery play not found");
             }

@@ -18,7 +18,7 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class HashHashGameServiceImpl extends ServiceImpl<HashGameMapper, HashGameEntity> implements HashGameService {
+public class HashGameServiceImpl extends ServiceImpl<HashGameMapper, HashGameEntity> implements HashGameService {
 
     @Autowired
     private HashGameMapper hashGameMapper;
