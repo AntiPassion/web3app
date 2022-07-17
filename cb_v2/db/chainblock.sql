@@ -158,24 +158,24 @@ create table t_member(
 );
 
 
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jack','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC3','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC4','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD3','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD4','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD5','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD6','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD7','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD8','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE3','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jack','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB1','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB2','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC1','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC2','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC3','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC4','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD1','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD2','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD3','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD4','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD5','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD6','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD7','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD8','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE1','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE2','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE3','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
 
 
 

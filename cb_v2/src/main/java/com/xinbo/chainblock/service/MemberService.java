@@ -14,6 +14,7 @@ public interface MemberService {
 
     boolean insert();
 
+    MemberEntity findByUsername(String username);
 
     MemberEntity findById(int id);
 

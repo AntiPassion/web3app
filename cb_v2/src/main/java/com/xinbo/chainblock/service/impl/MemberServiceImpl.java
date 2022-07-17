@@ -6,16 +6,23 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
+import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.mapper.AgentMapper;
 import com.xinbo.chainblock.mapper.MemberMapper;
+import com.xinbo.chainblock.mapper.WalletMapper;
 import com.xinbo.chainblock.service.MemberService;
+import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.MapperUtil;
+import com.xinbo.chainblock.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +39,11 @@ import java.util.Date;
 @Service
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> implements MemberService {
 
+    @Autowired
+    private TrxApi trxApi;
+
+    @Autowired
+    private WalletMapper walletMapper;
 
     @Autowired
     private MemberMapper memberMapper;
@@ -47,6 +59,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
                 .build();
         memberMapper.insert(entity);
         return true;
+    }
+
+    @Override
+    public MemberEntity findByUsername(String username) {
+        return memberMapper.selectOne(this.createWrapper(MemberEntity.builder().username(username).build()));
     }
 
     @Override
@@ -86,6 +103,29 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
                 .level(pAgentEntity.getLevel()+1)
                 .build();
         agentMapper.insert(agentEntity);
+
+
+
+        //Step 2: 请求终端
+        AccountApiEntity account = trxApi.createAccount();
+        if(ObjectUtils.isEmpty(account)) {
+            return false;
+        }
+
+        WalletEntity walletEntity = WalletEntity.builder()
+                .uid(entity.getId())
+                .username(entity.getUsername())
+                .type(1)
+                .publicKey(account.getPublicKey())
+                .privateKey(account.getPrivateKey())
+                .addressBase58(account.getAddress().getBase58())
+                .addressHex(account.getAddress().getHex())
+                .build();
+
+        isSuccess = walletMapper.insert(walletEntity)>0;
+        if(!isSuccess) {
+            return false;
+        }
 
         return true;
     }

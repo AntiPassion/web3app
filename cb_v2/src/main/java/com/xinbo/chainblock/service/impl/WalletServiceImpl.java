@@ -23,19 +23,22 @@ public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletEntity> i
     private WalletMapper walletMapper;
 
 
-
-
     public WalletEntity findByAddress(String address) {
         WalletEntity entity = WalletEntity.builder().addressHex(address).build();
         LambdaQueryWrapper<WalletEntity> wrappers = this.createWrapper(entity);
         return walletMapper.selectOne(wrappers);
     }
 
+    @Override
+    public boolean insert(WalletEntity entity) {
+        return walletMapper.insert(entity) > 0;
+    }
+
 
     /**
      * 创建查询条件
      *
-     * @param entity  实体
+     * @param entity 实体
      * @return LambdaQueryWrapper
      */
     private LambdaQueryWrapper<WalletEntity> createWrapper(WalletEntity entity) {
@@ -51,8 +54,6 @@ public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletEntity> i
         }
         return wrappers;
     }
-
-
 
 
 }

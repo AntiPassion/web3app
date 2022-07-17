@@ -33,7 +33,7 @@ public class AgentController {
 
     @Operation(summary = "getCommission", description = "代理佣金")
     @PostMapping("getCommission")
-    public R<Object> register() {
+    public R<Object> getCommission() {
 
         MemberEntity entity = MemberEntity.builder().id(2).build();
         AgentEntity agentEntity = agentService.findByUid(entity.getId());
