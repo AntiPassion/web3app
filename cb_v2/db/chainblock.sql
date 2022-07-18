@@ -132,17 +132,6 @@ create table t_hash_bet (
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 drop table if exists t_member;
 create table t_member(
   id int primary key auto_increment,
