@@ -1,7 +1,7 @@
 package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xinbo.chainblock.entity.HashRoomEntity;
+import com.xinbo.chainblock.entity.GameEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -10,5 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @desc file desc
  */
 @Mapper
-public interface HashRoomMapper extends BaseMapper<HashRoomEntity> {
+public interface GameMapper extends BaseMapper<GameEntity> {
+
 }

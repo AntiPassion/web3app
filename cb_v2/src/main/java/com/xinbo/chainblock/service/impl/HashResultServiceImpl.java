@@ -3,8 +3,7 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.HashResultEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.entity.hash.HashResultEntity;
 import com.xinbo.chainblock.mapper.HashResultMapper;
 import com.xinbo.chainblock.service.HashResultService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +52,8 @@ public class HashResultServiceImpl extends ServiceImpl<HashResultMapper, HashRes
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
-        if (!StringUtils.isEmpty(entity.getNum())) {
-            wrappers.eq(HashResultEntity::getNum, entity.getNum());
-        }
-        if (!StringUtils.isEmpty(entity.getIsSettle())) {
-            wrappers.eq(HashResultEntity::getIsSettle, entity.getIsSettle());
+        if (!StringUtils.isEmpty(entity.getSn())) {
+            wrappers.eq(HashResultEntity::getSn, entity.getSn());
         }
         return wrappers;
     }

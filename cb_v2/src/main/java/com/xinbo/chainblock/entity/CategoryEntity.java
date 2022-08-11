@@ -1,10 +1,9 @@
-package com.xinbo.chainblock.dto;
+package com.xinbo.chainblock.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xinbo.chainblock.annotation.Translate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,24 +12,33 @@ import lombok.NoArgsConstructor;
 /**
  * @author tony
  * @date 6/25/22 4:10 下午
- * @desc file desc
+ * @desc 游戏类目
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HashGameDto {
+@TableName("t_category")
+public class CategoryEntity {
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 游戏名称编码
      */
-    @Translate
+    @TableField("name")
     private String name;
 
     /**
-     * 是否开启
+     * 游戏中文名称
      */
-    private Boolean enable;
+    @TableField("name_zh")
+    private String nameZh;
+
+    /**
+     * 序号
+     */
+    @TableField("sort")
+    private Integer sort;
 }

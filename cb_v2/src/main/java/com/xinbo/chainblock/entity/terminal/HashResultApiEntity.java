@@ -20,11 +20,16 @@ import java.util.Date;
 @Data
 public class HashResultApiEntity {
 
-    @JSONField(name="game_id")
-    private Integer gameId;
+    @JSONField(name="sn")
+    private String sn;
 
-    private String num;
+    @JSONField(name="merchant_id")
+    private Integer merchantId;
 
+    @JSONField(name="to_address")
+    private String toAddress;
+
+    @JSONField(name="txID")
     private String txID;
 
     @JSONField(name="block_hash")
@@ -39,6 +44,7 @@ public class HashResultApiEntity {
     @JSONField(name="open_timestamp")
     private Long openTimestamp;
 
+    @JSONField(name="network")
     private String network;
 
 }

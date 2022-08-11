@@ -1,6 +1,10 @@
 package com.xinbo.chainblock.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xinbo.chainblock.annotation.Translate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,50 +20,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HashRoomDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class GameDto {
 
     private Integer id;
 
     /**
-     * 游戏id
+     * 类目id编码
      */
-    private Integer gameId;
+    private Integer cateId;
+
+    /**
+     * 类目名称编码
+     */
+    @Translate
+    private String cateName;
 
     /**
      * 游戏名称编码
      */
     @Translate
-    private String gameName;
-
-    /**
-     * 房间名称编码
-     */
-    @Translate
     private String name;
 
-    /**
-     * 最低金额
-     */
-    private Integer min;
 
     /**
-     * 最高金额
+     * 是否开启
      */
-    private Integer max;
-
-    /**
-     * 最大赔率
-     */
-    private Float maxOdds;
-
-    /**
-     * 类型(1:体验房, 2:初级房, 3:中级房, 4:高级房)
-     */
-    private Integer type;
-
-    /**
-     * 图片地址
-     */
-    @TableField("pic")
-    private String pic;
+    private Boolean enable;
 }

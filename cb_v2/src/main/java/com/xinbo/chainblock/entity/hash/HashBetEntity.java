@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity;
+package com.xinbo.chainblock.entity.hash;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -27,13 +27,21 @@ public class HashBetEntity {
     private Integer id;
 
     /**
+     * 编号
+     */
+    @TableField("sn")
+    private String sn;
+
+    /**
      * 会员id
      */
+    @TableField("uid")
     private Integer uid;
 
     /**
      * 会员名
      */
+    @TableField("username")
     private String username;
 
     /**
@@ -45,14 +53,14 @@ public class HashBetEntity {
     /**
      * 类目编码
      */
-    @TableField("cate_name_code")
-    private String cateNameCode;
+    @TableField("cate_name")
+    private String cateName;
 
     /**
      * 类目默认名称
      */
-    @TableField("cate_name_default")
-    private String cateNameDefault;
+    @TableField("cate_name_zh")
+    private String cateNameZh;
 
     /**
      * 彩种id
@@ -63,14 +71,14 @@ public class HashBetEntity {
     /**
      * 彩种id
      */
-    @TableField("game_name_code")
-    private String gameNameCode;
+    @TableField("game_name")
+    private String gameName;
 
     /**
      * 彩种id
      */
-    @TableField("game_name_default")
-    private String gameNameDefault;
+    @TableField("game_name_zh")
+    private String gameNameZh;
 
     /**
      * 玩法id
@@ -81,32 +89,14 @@ public class HashBetEntity {
     /**
      * 玩法编码
      */
-    @TableField("play_name_code")
-    private String playNameCode;
+    @TableField("play_name")
+    private String playName;
 
     /**
      * 玩法编码
      */
-    @TableField("play_name_default")
-    private String playNameDefault;
-
-    /**
-     * 玩法编码id
-     */
-    @TableField("play_code_id")
-    private Integer playCodeId;
-
-    /**
-     * 玩法编码id
-     */
-    @TableField("play_code_name_code")
-    private String playCodeNameCode;
-
-    /**
-     * 玩法编码id
-     */
-    @TableField("play_code_name_default")
-    private String playCodeNameDefault;
+    @TableField("play_name_zh")
+    private String playNameZh;
 
     /**
      * 开奖结果
@@ -115,20 +105,40 @@ public class HashBetEntity {
     private String hashResult;
 
     /**
-     * 期号
+     * 投注内容
      */
-    @TableField("num")
-    private String num;
+    @TableField("content")
+    private String content;
+
+    /**
+     * 投注内容(中文)
+     */
+    @TableField("content_zh")
+    private String contentZh;
 
     /**
      * 注单赔率
      */
+    @TableField("odds")
     private Float odds;
 
     /**
      * 注单金额
      */
+    @TableField("bet_amount")
+    private Integer betAmount;
+
+    /**
+     * 注单金额
+     */
+    @TableField("money")
     private Float money;
+
+    /**
+     * 投注金额
+     */
+    @TableField("money_amount")
+    private Float moneyAmount;
 
 
     /**
@@ -156,14 +166,20 @@ public class HashBetEntity {
     private Date updateTime;
 
     /**
+     * 标记(1:赢, 2:输, 3: 和)
+     */
+    @TableField("flag")
+    private Integer flag;
+
+    /**
      * 状态(0:未结算,1:已结算,2:作废)
      */
     @TableField("status")
     private Integer status;
 
     /**
-     * 备注
+     * 算法
      */
-    @TableField("status")
-    private String remark;
+    @TableField("algorithm")
+    private String algorithm;
 }

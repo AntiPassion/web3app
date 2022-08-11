@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 
-@RestController
+@RestController("ApiMemberController")
 @RequestMapping("api/member")
 public class MemberController {
 

@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author tony
@@ -211,6 +213,54 @@ public class TrxApi {
             }
         }catch (Exception ex) {
             log.error("TerminalApi getTransactionsRecord exception", ex);
+        }
+        return result;
+    }
+
+
+    /**
+     * 开奖
+     * @param sn
+     * @param toAddress
+     * @return
+     */
+    public boolean resultOpen(String sn, String toAddress) {
+        boolean result = false;
+        try {
+            String url = String.format("%s%s", terminalUrl, TrxApiConst.RESULT_OPEN);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("sn", sn);
+            jsonObject.put("toAddress", toAddress);
+            String res = restTemplate.postForObject(url, jsonObject, String.class);
+
+            BaseEntity<Boolean> entity = JSON.parseObject(res, new TypeReference<BaseEntity<Boolean>>() {});
+            if(!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData())) {
+                result = entity.getData();
+            }
+        }catch (Exception ex) {
+            log.error("TerminalApi resultOpen exception", ex);
+        }
+        return result;
+    }
+    /**
+     * 开奖
+     * @param sn
+     * @return
+     */
+    public HashResultApiEntity resultFind(String sn) {
+        HashResultApiEntity result = null;
+        try {
+            String url = String.format("%s%s", terminalUrl, TrxApiConst.RESULT_FIND);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("sn", sn);
+            String res = restTemplate.postForObject(url, jsonObject, String.class);
+
+            BaseEntity<HashResultApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<HashResultApiEntity>>() {});
+            if(!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData())) {
+                result = entity.getData();
+            }
+        }catch (Exception ex) {
+            log.error("TerminalApi resultFind exception", ex);
         }
         return result;
     }

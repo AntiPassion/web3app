@@ -1,9 +1,7 @@
-package com.xinbo.chainblock.entity;
+package com.xinbo.chainblock.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,62 +18,65 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_hash_result")
-public class HashResultEntity {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class HashResultDto {
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+
+    /**
+     * 会员id
+     */
+    private Integer uid;
+
+    /**
+     * 会员名
+     */
+    private String username;
+
+    /**
+     * 游戏id
+     */
+    private Integer gameId;
 
     /**
      * 彩种id
      */
-    @TableField("game_id")
-    private Integer gameId;
+    private String sn;
 
     /**
-     * 期号数
+     * 会员数字钱包地址
      */
-    private String num;
+    private String toAddress;
 
     /**
      * 交易id
      */
-    @TableField("txID")
     private String txID;
 
     /**
      * 哈希码
      */
-    @TableField("block_hash")
     private String blockHash;
 
     /**
      * 块高度
      */
-    @TableField("block_height")
     private String blockHeight;
 
     /**
      * 开奖时间
      */
-    @TableField("open_time")
     private Date openTime;
 
     /**
      * 开奖时间戳
      */
-    @TableField("open_timestamp")
     private Long openTimestamp;
 
     /**
      * 网络
      */
     private String network;
-
-    /**
-     * 状态(0:未结算,1:已结算)
-     */
-    @TableField("is_settle")
-    private Boolean isSettle;
 
 }

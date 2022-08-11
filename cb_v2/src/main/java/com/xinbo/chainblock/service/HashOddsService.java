@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.HashOddsEntity;
+import com.xinbo.chainblock.entity.hash.HashOddsEntity;
 
 import java.util.List;
 
@@ -15,5 +15,7 @@ public interface HashOddsService {
     HashOddsEntity findById(int id);
 
     List<HashOddsEntity> findByGameId(int id);
+
+    List<HashOddsEntity> findByCode(List<String> codes);
 
 }

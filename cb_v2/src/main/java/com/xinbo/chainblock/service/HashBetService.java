@@ -1,8 +1,11 @@
 package com.xinbo.chainblock.service;
 
 import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.dto.LotteryBetDto;
-import com.xinbo.chainblock.entity.HashBetEntity;
+import com.xinbo.chainblock.dto.HashBetDto;
+import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
+import com.xinbo.chainblock.entity.hash.HashBetEntity;
+import com.xinbo.chainblock.entity.hash.HashResultEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -14,9 +17,11 @@ import java.util.List;
  */
 public interface HashBetService {
 
-    LotteryBetDto findById(int id);
+    HashBetDto findById(int id);
 
     boolean insert(HashBetEntity entity);
+
+    boolean bet(HashBetEntity bet, MemberEntity member, MemberFlowEntity memberFlowEntity, HashResultEntity result);
 
     List<HashBetEntity> find(HashBetEntity entity);
 
@@ -24,7 +29,9 @@ public interface HashBetService {
 
     BasePage findPage(HashBetEntity entity, long current, long size, Date start, Date end);
 
-    List<HashBetEntity> unsettle(String num, int size);
+    HashBetEntity unsettle();
 
-    boolean settle(List<HashBetEntity> list);
+    boolean settle(HashBetEntity bet, HashResultEntity result);
+
+    HashBetEntity findOrder(String sn);
 }
