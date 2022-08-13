@@ -77,7 +77,7 @@ public class LotterySettleJob {
                 }
                 hashBetEntity.setProfitMoney(profileMoney);
                 hashBetEntity.setPayoutMoney(payoutMoney);
-                hashBetEntity.setHashResult(resultEntity.getBlockHash());
+                hashBetEntity.setBlockHash(resultEntity.getBlockHash());
             }
 
             //Step 3: 更新数据库 @todo
