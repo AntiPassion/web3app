@@ -27,7 +27,7 @@ import java.util.Date;
  * @desc 哈希注单结算任务
  */
 @Slf4j
-@Component
+//@Component
 public class HashBetSettleJob {
 
     @Autowired
