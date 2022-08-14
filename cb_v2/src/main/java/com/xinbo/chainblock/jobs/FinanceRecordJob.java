@@ -1,7 +1,10 @@
 package com.xinbo.chainblock.jobs;
 
+import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSON;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
+import com.xinbo.chainblock.entity.FinanceEntity;
 import com.xinbo.chainblock.entity.RechargeEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
@@ -18,6 +21,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,19 +63,26 @@ public class FinanceRecordJob {
     private String transactionKey = "trx:transaction:%s";
 
     @Scheduled(cron = "0/5 * * * * ?")
-    public void record() {
+    public void handleTrc20Rcord() {
         try {
             String json = redisTemplate.opsForSet().pop(RedisConst.MEMBER_FINANCE);
             if(StringUtils.isEmpty(json)) {
                 return;
             }
 
-            String account = "TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu";
+
+            WalletEntity walletEntity = JSON.parseObject(json, WalletEntity.class);
+            if (ObjectUtils.isEmpty(walletEntity) || walletEntity.getId() <= 0) {
+                return;
+            }
+
+            String account = walletEntity.getAddressBase58();
             List<TransactionRecordApiEntity.Data> transactionsRecord = trxApi.getTransactionsRecord(account);
             if(ObjectUtils.isEmpty(transactionsRecord)) {
                 return;
             }
 
+            List<FinanceEntity> financeEntityList = new ArrayList<>();
             for (TransactionRecordApiEntity.Data data : transactionsRecord) {
                 if(ObjectUtils.isEmpty(data)) {
                     continue;
@@ -83,55 +95,29 @@ public class FinanceRecordJob {
                 if(ObjectUtils.isEmpty(data.getTokenInfo().getName()) ||  !data.getTokenInfo().getName().equals(tokenName)) {
                     continue;
                 }
-
-
-                String key = String.format(transactionKey, data.getTransactionId());
-                Boolean isHas = redisTemplate.hasKey(key);
-                if(!ObjectUtils.isEmpty(isHas) && isHas) {
-                    continue;
-                }
-
-
-                //根据充值地址找到用户钱包
-                WalletEntity walletEntity = walletService.findByAddress(data.getFrom());
-                if(ObjectUtils.isEmpty(walletEntity) || walletEntity.getId() <= 0) {
-                    continue;
-                }
-
-
-                BigDecimal bigDecimal = new BigDecimal(data.getValue());
-                BigDecimal value = commonUtils.fromTrc20(bigDecimal);
-
-                MemberEntity memberEntity = memberService.findById(walletEntity.getUid());
-                memberEntity.setMoney(value.floatValue());
-                boolean isSuccess = memberService.increment(memberEntity);
-                if(!isSuccess) {
-                    continue;
-                }
-
-
-                RechargeEntity entity = RechargeEntity.builder()
+                BigDecimal b1 = new BigDecimal(data.getValue());
+                BigDecimal b2 = new BigDecimal(String.format("%s", Math.pow(10, data.getTokenInfo().getDecimals())));
+                BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
+                FinanceEntity fe = FinanceEntity.builder()
+                        .uid(walletEntity.getUid())
+                        .username(walletEntity.getUsername())
                         .transactionId(data.getTransactionId())
-                        .tokenSymbol(data.getTokenInfo().getSymbol())
-                        .tokenAddress(data.getTokenInfo().getAddress())
-                        .tokenDecimals(data.getTokenInfo().getDecimals())
-                        .tokenName(data.getTokenInfo().getName())
-                        .blockTimestamp(data.getBlockTimestamp())
                         .fromAddress(data.getFrom())
                         .toAddress(data.getTo())
-                        .type(data.getType())
-                        .value(value.doubleValue())
+                        .money(b3.floatValue())
+                        .blockTime(DateUtil.date(data.getBlockTimestamp()))
+                        .blockTimestamp(data.getBlockTimestamp())
+                        .symbol(data.getTokenInfo().getSymbol())
+                        .type(1)
+                        .isAccount(false)
                         .build();
-                isSuccess = rechargeService.save(entity);
-                if(!isSuccess) {
-                    continue;
-                }
-
-                redisTemplate.opsForValue().set(key, "");
+                financeEntityList.add(fe);
             }
         } catch(Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
+
+
 
 }

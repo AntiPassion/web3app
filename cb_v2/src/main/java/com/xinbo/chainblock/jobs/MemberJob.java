@@ -6,8 +6,10 @@ import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.RechargeEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionRecordApiEntity;
 import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.WalletService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -161,5 +164,6 @@ public class MemberJob {
         result.addAll(list.stream().filter(f -> f.getUid() == uid).collect(Collectors.toList()));
         return result;
     }
+
 
 }
