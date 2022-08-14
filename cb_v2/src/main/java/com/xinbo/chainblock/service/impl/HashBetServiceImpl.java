@@ -167,7 +167,6 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
                 .item(ItemEnum.HASH_BET_SETTLE.getCode())
                 .itemZh(ItemEnum.HASH_BET_SETTLE.getMsg())
                 .createTime(new Date())
-                .remark("")
                 .build();
         rows = memberFlowMapper.insert(userFlowEntity);
         if (rows <= 0) {

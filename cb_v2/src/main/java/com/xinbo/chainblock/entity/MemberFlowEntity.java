@@ -77,8 +77,9 @@ public class MemberFlowEntity {
     private Date createTime;
 
     /**
-     * 备注
+     * 扩展字段
      */
-    private String remark;
+    @TableField("ext")
+    private String ext;
 
 }

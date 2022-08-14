@@ -46,7 +46,7 @@ public class ApiController {
 
     @Operation(summary = "transactionOfTrx")
     @GetMapping("transactionOfTrx/{fromAddress}/{privateKey}/{amount}/{toAddress}")
-    public R<Object> transactionOfTrx(@PathVariable String fromAddress, @PathVariable String privateKey, @PathVariable double amount, @PathVariable String toAddress) {
+    public R<Object> transactionOfTrx(@PathVariable String fromAddress, @PathVariable String privateKey, @PathVariable float amount, @PathVariable String toAddress) {
         TransactionTrxApiEntity entity = trxApi.transactionOfTrx(fromAddress, privateKey, amount, toAddress);
         return R.builder().code(StatusCode.SUCCESS).data(entity).build();
     }

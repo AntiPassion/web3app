@@ -251,13 +251,13 @@ const Web3 = require('web3');
     // let t1 = await contract.getBalanceOfContract().call();
     // console.log(t1.toNumber());
 
-    
+    console.log(tronWeb.address.fromHex('419abc42dc5374064b3896d3dd382ad2080b8ff84e'))
 
     // let trx = new Trx(instance, contractAddress);
 
 
-    let t = await instance.getEventByTransactionID('a917a8501e1847d9d726509d992e08c9a7df255220a2d79e4393edeca9149804')
-    console.log(t);
+    // let t = await instance.getEventByTransactionID('a917a8501e1847d9d726509d992e08c9a7df255220a2d79e4393edeca9149804')
+    // console.log(t);
     // let tmp = await instance.trx.getBlock(28946780);
     // console.log(tmp);
 

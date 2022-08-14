@@ -11,7 +11,7 @@ import java.util.List;
  * @desc file desc
  */
 @Data
-public class TransactionRecordApiEntity {
+public class TrxRecordApiEntity {
 
     private List<Data> data;
 
@@ -22,8 +22,8 @@ public class TransactionRecordApiEntity {
 
     @lombok.Data
     public class Data {
-        @JSONField(name="transaction_id")
-        private String transactionId;
+        @JSONField(name="txID")
+        private String txID;
 
 
         @JSONField(name="token_info")
