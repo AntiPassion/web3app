@@ -42,6 +42,9 @@ public class MemberJob {
     @Autowired
     private TrxApi trxApi;
 
+    /**
+     * 处理注册
+     */
     @Scheduled(cron = "0/3 * * * * ?")
     public void handleRegister() {
         try {
@@ -70,6 +73,7 @@ public class MemberJob {
                     .publicKey(account.getPublicKey())
                     .addressBase58(account.getAddress().getBase58())
                     .addressHex(account.getAddress().getHex())
+                    .isMain(false)
                     .build();
             boolean isSuccess = walletService.insert(walletEntity);
             if (!isSuccess) {

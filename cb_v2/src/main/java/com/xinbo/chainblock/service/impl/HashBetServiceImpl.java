@@ -178,9 +178,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
                 .date(DateUtil.format(new Date(), "yyyyMMdd"))
                 .uid(bet.getUid())
                 .username(bet.getUsername())
-                .betMoney(bet.getMoney())
-                .betPayoutMoney(bet.getPayoutMoney())
-                .betProfitMoney(bet.getProfitMoney())
+                .betAmount(bet.getMoney())
                 .updateTime(new Date())
                 .build();
 

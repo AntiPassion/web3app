@@ -37,6 +37,12 @@ public class MemberFlowEntity {
     /**
      * 用户名
      */
+    @TableField("uid")
+    private Integer uid;
+
+    /**
+     * 用户名
+     */
     @TableField("username")
     private String username;
 

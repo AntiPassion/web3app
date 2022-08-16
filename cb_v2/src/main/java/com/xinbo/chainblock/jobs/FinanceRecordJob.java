@@ -6,9 +6,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
-import com.xinbo.chainblock.entity.FinanceEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.mapper.FinanceMapper;
+import com.xinbo.chainblock.entity.*;
+import com.xinbo.chainblock.enums.ItemEnum;
+import com.xinbo.chainblock.service.AccountService;
+import com.xinbo.chainblock.service.FinanceService;
+import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,6 +46,10 @@ public class FinanceRecordJob {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+
+    @Value("${trx.symbol}")
+    private String trxSymbol;
+
     @Value("${trx.token-info.symbol}")
     private String tokenSymbol;
 
@@ -50,7 +57,13 @@ public class FinanceRecordJob {
     private String tokenName;
 
     @Autowired
-    private FinanceMapper financeMapper;
+    private FinanceService financeService;
+
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private AccountService accountService;
 
     /**
      * 处理记录
@@ -161,7 +174,7 @@ public class FinanceRecordJob {
                             .money(commonUtils.fromTrx(amount.floatValue()))
                             .blockTime(DateUtil.date(timestamp))
                             .blockTimestamp(timestamp)
-                            .symbol("trx")
+                            .symbol(trxSymbol)
                             .type(type)
                             .isAccount(false)
                             .build();
@@ -171,7 +184,7 @@ public class FinanceRecordJob {
 
             /***************************** 保存数据库  **********************************/
             if (financeEntityList.size() > 0) {
-                financeMapper.batchInsert(financeEntityList);
+                financeService.batchInsert(financeEntityList);
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -180,17 +193,72 @@ public class FinanceRecordJob {
 
 
     /**
-     * 处理入帐
+     * 处理记帐
      */
     @Scheduled(cron = "0/5 * * * * ?")
     public void handleAccount() {
-        List<FinanceEntity> unaccounted = financeMapper.findUnaccounted();
+        List<FinanceEntity> unaccounted = financeService.findUnaccounted();
         if(CollectionUtils.isEmpty(unaccounted)) {
             return;
         }
 
-        /* **************************** 统计  ********************************* */
+        List<MemberFlowEntity> flowList = new ArrayList<>();
+        List<StatisticsEntity> statisticsList = new ArrayList<>();
+        for(FinanceEntity f : unaccounted) {
+            f.setIsAccount(true);
+            MemberEntity member = memberService.findById(f.getUid());
 
-        /* **************************** 帐变  ********************************* */
+            /* **************************** 帐变  ********************************* */
+            MemberFlowEntity entity = MemberFlowEntity.builder()
+                    .sn(f.getTransactionId())
+                    .item(ItemEnum.RECHARGE.getCode())
+                    .itemZh(ItemEnum.RECHARGE.getMsg())
+                    .flowMoney(f.getMoney())
+                    .beforeMoney(member.getMoney())
+                    .afterMoney(member.getMoney()+f.getMoney())
+                    .createTime(new Date())
+                    .uid(f.getUid())
+                    .username(f.getUsername())
+                    .ext(f.getSymbol())
+                    .build();
+            flowList.add(entity);
+
+
+            /* **************************** 统计  ********************************* */
+            StatisticsEntity statistics = StatisticsEntity.builder()
+                    .uid(f.getUid())
+                    .username(f.getUsername())
+                    .date(DateUtil.format(new Date(), "yyyyMMdd"))
+                    .betAmount(0F)
+                    .profitAmount(0F)
+                    .rechargeTrc20Amount(0F)
+                    .rechargeTrxAmount(0F)
+                    .withdrawTrc20Amount(0F)
+                    .withdrawTrxAmount(0F)
+                    .updateTime(new Date())
+                    .build();
+
+            if(f.getType() == 1) {
+                if(f.getSymbol().toUpperCase(Locale.ROOT).equals(trxSymbol)) {
+                    statistics.setRechargeTrxAmount(f.getMoney());
+                }
+                if(f.getSymbol().toUpperCase(Locale.ROOT).equals(tokenSymbol)) {
+                    statistics.setRechargeTrc20Amount(f.getMoney());
+                }
+            }
+
+            if(f.getType() == 2) {
+                if(f.getSymbol().toUpperCase(Locale.ROOT).equals(trxSymbol)) {
+                    statistics.setWithdrawTrxAmount(f.getMoney());
+                }
+                if(f.getSymbol().toUpperCase(Locale.ROOT).equals(tokenSymbol)) {
+                    statistics.setWithdrawTrc20Amount(f.getMoney());
+                }
+            }
+            statisticsList.add(statistics);
+        }
+
+        // 入帐
+        accountService.financeAccount(unaccounted, flowList, statisticsList);
     }
 }

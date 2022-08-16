@@ -34,8 +34,10 @@ public class CommonUtils {
     }
 
 
-    public double toTrc20(double value) {
-        return value * Math.pow(10, 18);
+    public BigDecimal toTrc20(String value) {
+        BigDecimal b1 = new BigDecimal(value);
+        BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 18)));
+        return b1.multiply(b2);
     }
 
     public BigDecimal fromTrc20(BigDecimal value) {

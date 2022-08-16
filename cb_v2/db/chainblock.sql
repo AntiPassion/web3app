@@ -294,7 +294,8 @@ insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_ti
 drop table if exists t_member_flow;
 create table t_member_flow(
   id int primary key auto_increment,
-  sn varchar(50) comment '订单号',
+  sn varchar(100) comment '订单号',
+  uid int(20) comment '用户i',
   username varchar(50) comment '用户名',
   before_money decimal(10,4) comment '帐变前金额',
   after_money decimal(10,4) comment '帐变后金额',
@@ -305,7 +306,7 @@ create table t_member_flow(
   ext varchar(200) comment '扩展字段'
 ) comment '会员流水表';
 
-# insert into cb_v2.t_member_flow(sn, username, before_money, after_money, flow_money, item, item_zh, create_time, remark) values
+# insert into cb_v2.t_member_flow(sn, username, before_money, after_money, flow_money, item, item_zh, create_time, ext) values
 # ('123456','jack', 10000, 10020, 20, 100010, 100010, '2022-06-25 12:00:00', '');
 
 
@@ -336,23 +337,6 @@ create table t_operation_log(
 
 
 
-# drop table if exists t_recharge;
-# create table t_recharge (
-#     id int primary key auto_increment,
-#     transaction_id varchar(100) comment '转帐id',
-#     token_symbol varchar(20) comment '币种',
-#     token_decimals int comment '位数',
-#     token_address varchar(100) comment '合约地址',
-#     token_name varchar(20) comment '币种名',
-#     block_timestamp bigint comment '块时间戳',
-#     from_address varchar(100) comment '转帐地址',
-#     to_address varchar(100) comment '收款地址',
-#     type varchar(20) comment '转帐类型',
-#     value decimal(20,6) comment '转帐金额',
-#     UNIQUE KEY unique_transaction_id (transaction_id)
-# ) comment '充值';
-
-
 
 drop table if exists t_wallet;
 create table t_wallet(
@@ -363,14 +347,29 @@ create table t_wallet(
     private_key varchar(100),
     public_key varchar(200),
     address_base58 varchar(100),
-    address_hex varchar(100)
+    address_hex varchar(100),
+    is_main tinyint(1) default 0 comment '是否主钱包'
 ) comment '钱包';
 
-insert into cb_v2.t_wallet(uid, username, type, private_key, public_key, address_base58, address_hex) values
-(3, 'jackB2', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
-(19, 'demo5566',1,'F9E0FF36CD981085BA854FD062756E5D8CC6232752A4A6F3AB58BEEF33E0BFBC','04CA3097E79A93B179043D583D8FB5FFCFB711EF0B24D7EC14AD11097C5AFEA9A15D496173AE56F1AB02877BC868CF17AD79F8AC192D5F1341C07E9D75ACDD86D3','TQ5NbDWu1fQgzhq1LE4ej37RyLmDphAKm2','419ABC42DC5374064B3896D3DD382AD2080B8FF84E')
+insert into cb_v2.t_wallet(uid, username, type, private_key, public_key, address_base58, address_hex, is_main) values
+(0,'',1,'EDF5BE9D97DAF6024D3A8BE7ECEC38EB95AD1B47C4620BC8790C22F9FD297C93', '04CF51A868293145E64B064D659A39282D9F136FE6B1273B423B641C987419425E214BD41FBE858C4C4AA7E557EB2E4DD61AB031E9DE1B33B9253DC6AB3E189144', 'TLRPmBB3wL21kg51ZTqsQSwwnejtpxNaYq', '4172A50E2D18F6F11D74AE6AF8CF8C94D7085B4826', 1),
+(3, 'jackB2', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68', 0),
+(19, 'demo5566',1,'F9E0FF36CD981085BA854FD062756E5D8CC6232752A4A6F3AB58BEEF33E0BFBC','04CA3097E79A93B179043D583D8FB5FFCFB711EF0B24D7EC14AD11097C5AFEA9A15D496173AE56F1AB02877BC868CF17AD79F8AC192D5F1341C07E9D75ACDD86D3','TQ5NbDWu1fQgzhq1LE4ej37RyLmDphAKm2','419ABC42DC5374064B3896D3DD382AD2080B8FF84E', 0)
 ;
 
+
+
+drop table if exists t_transfer;
+create table t_transfer(
+    id int primary key auto_increment,
+    uid int comment '会员id',
+    username varchar(50) comment '会员名',
+    transaction_id varchar(100),
+    money decimal comment '金额',
+    type int(10) comment '类型 1:资金帐户 => 交易帐户 2:交易帐户 => 资金帐户',
+    expired bigint comment '过期时间',
+    status int(5) default 0 comment '状态(0:未确认, 1:确认, 2:过期)'
+) comment '转换表';
 
 
 
@@ -418,13 +417,12 @@ create table t_statistics(
   `date` varchar(10) comment '日期',
   uid int comment '用户id',
   username varchar(100) comment '用户名',
-  today_amount decimal(20,2) comment '当日剩余总额',
-  profit_amount decimal(20,2) comment '当日盈利总额',
-  bet_amount decimal(20,2) comment '投注总额',
-  recharge_trc20_amount decimal(20,2) comment '充值trc20总额',
-  recharge_trx_amount decimal(20,2) comment '充值trx总额',
-  withdraw_trc20_amount decimal(20,2) comment '提现trc20总额',
-  withdraw_trx_amount decimal(20,2) comment '提现trx总额',
+  bet_amount decimal(20,2) default 0 comment '当日投注总额',
+  profit_amount decimal(20,2) default 0 comment '当日盈利总额',
+  recharge_trc20_amount decimal(20,2) default 0 comment '充值trc20总额',
+  recharge_trx_amount decimal(20,2) default 0 comment '充值trx总额',
+  withdraw_trc20_amount decimal(20,2) default 0 comment '提现trc20总额',
+  withdraw_trx_amount decimal(20,2) default 0 comment '提现trx总额',
   update_time timestamp null default null comment '更新时间',
   UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
 ) comment '统计';

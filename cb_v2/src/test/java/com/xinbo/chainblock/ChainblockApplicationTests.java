@@ -9,24 +9,20 @@ import com.xinbo.chainblock.entity.FinanceEntity;
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
-import com.xinbo.chainblock.entity.terminal.Trc20RecordApiEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("prod")
@@ -48,27 +44,6 @@ class ChainblockApplicationTests {
     private String toAddress = "TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe";
     private String privateKey = "f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703";
 
-    /**
-     * 获取转帐信息
-     */
-    @Test
-    void getRecordTrc20() {
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-        long minTimestamp = new Date().getTime() - (60 * 60 * 1000 * 24 * 30);
-        //&min_timestamp=%s
-        String url = String.format("%s/accounts/%s/transactions/trc20?only_confirmed=true&only_to=true&limit=200", API, account, minTimestamp);
-        RestTemplate restTemplate = new RestTemplate();
-        String res = restTemplate.getForObject(url, String.class);
-
-        Trc20RecordApiEntity entity = JSON.parseObject(res, new TypeReference<Trc20RecordApiEntity>() {
-        });
-        if (!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData()) && entity.getData().size() > 0) {
-            for (Trc20RecordApiEntity.Data d : entity.getData()) {
-                System.out.println(d);
-            }
-        }
-        System.out.println(entity);
-    }
 
     @Test
     void getRecordTrx() {
@@ -165,7 +140,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {
+        BaseEntity<TransactionApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {
         });
         System.out.println(entity);
     }
@@ -183,7 +158,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {
+        BaseEntity<TransactionApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {
         });
         System.out.println(entity);
     }
