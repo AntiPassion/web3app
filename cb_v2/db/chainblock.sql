@@ -357,6 +357,7 @@ create table t_activity
     cate_id int comment '类目id',
     cate_name varchar(50) comment '类目编码',
     cate_name_zh varchar(50) comment '类目中文',
+    sn varchar(100) comment '编号',
     name varchar(100) comment '活动名称',
     content text comment '内容',
     sorted int comment '序号',
@@ -367,19 +368,19 @@ create table t_activity
     create_time timestamp null default null comment '创建时间',
     is_enable tinyint comment '是否启用'
 ) comment '活动表';
-insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, name, content, sorted, type, language, begin_time, finish_time, create_time, is_enable, is_del) values
-(1, '600010', '限时活动', '充值赠送', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
-(1, '600011', '新手活动', '首充赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
-(1, '600011', '新手活动', '新注册赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
-(1, '600012', '限时活动', '打码返水', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
-(1, '600012', '限时活动', '打码次数', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0);
+insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, sn, name, content, sorted, type, language, begin_time, finish_time, create_time, is_enable) values
+(1, '600010', '限时活动', '1000', '充值赠送', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
+(1, '600011', '新手活动', '2000', '首充赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
+(1, '600011', '新手活动', '3000', '新注册赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
+(1, '600012', '限时活动', '4000', '打码返水', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
+(1, '600012', '限时活动', '5000', '打码次数', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1);
 
 
 
 drop table if exists t_activity_rule;
 create table t_activity_rule(
     id int primary key auto_increment,
-    activity_id int comment '活动id',
+    sn varchar(100) comment '编号',
     cycle int comment '周期(1:一次 2:不限次数 3:一天一次 4:一周一次 5:一月一次 6:自定义天数)',
     days int comment '天数',
     limit_item int comment '限制项(1:充值, 2:首充, 3:打码, 4:打码次数, 5:注册)',
@@ -390,46 +391,46 @@ create table t_activity_rule(
     money decimal(10,2) comment '金额',
     symbol varchar(50) comment '赠送币种'
 ) comment '活动规则表';
-insert into cb_v2.t_activity_rule(activity_id,cycle,days,limit_item,limit_lev,withdraw_bet_mul,calc_mode,receive_mode,money, symbol) values
-(1, 2, 0, 1, 1, 1, 1, 1, 0,'USDT'),
-(2, 1, 0, 2, 1, 1, 2, 1, 0,'TRX'),
-(3, 1, 0, 5, 1, 1, 1, 1, 0,'TRX'),
-(4, 2, 0, 3, 1, 1, 2, 1, 0,'USDT'),
-(5, 6, 3, 4, 1, 1, 1, 1, 0,'TRX');
+insert into cb_v2.t_activity_rule(sn, cycle,days,limit_item,limit_lev,withdraw_bet_mul,calc_mode,receive_mode,money, symbol) values
+('1000', 2, 0, 1, 1, 1, 1, 1, 0,'USDT'),
+('2000', 1, 0, 2, 1, 1, 2, 1, 0,'TRX'),
+('3000', 1, 0, 5, 1, 1, 1, 1, 0,'TRX'),
+('4000', 2, 0, 3, 1, 1, 2, 1, 0,'USDT'),
+('5000', 6, 3, 4, 1, 1, 1, 1, 0,'TRX');
 
 
 
 drop table if exists t_activity_rule_item;
 create table t_activity_rule_item (
-    id int primary key auto_increment,
-    rule_id int comment '规则id',
-    type int comment '类型(1:等于 2:大于 3:大于等于 4:小于 5:小于等于 6:范围)',
-    min int default 0 comment '最小值',
-    max int default 0 comment '最大值',
-    ratio decimal(10, 2) comment '赠送比例'
+  id int primary key auto_increment,
+  sn varchar(100) comment '编号',
+  type int comment '类型(1:等于 2:大于 3:大于等于 4:小于 5:小于等于 6:范围)',
+  min int default 0 comment '最小值',
+  max int default 0 comment '最大值',
+  ratio decimal(10, 2) comment '赠送比例'
 ) comment '活动规则项表';
-insert into t_activity_rule_item (rule_id, type, min, max, ratio) VALUES
-(1, 6, 0, 1000, 10),
-(1, 6, 1001, 5000, 20),
-(1, 6, 5001, 10000, 50),
-(1, 6, 10001, 20000, 100),
-(1, 6, 20001, 50000, 200),
+insert into t_activity_rule_item (sn, type, min, max, ratio) VALUES
+('1000', 6, 0, 1000, 10),
+('1000', 6, 1001, 5000, 20),
+('1000', 6, 5001, 10000, 50),
+('1000', 6, 10001, 20000, 100),
+('1000', 6, 20001, 50000, 200),
 
-(2, 3, 100, 0, 100),
+('2000', 3, 100, 0, 100),
 
-(3, 1, 0, 0, 10),
+('3000', 1, 0, 0, 10),
 
-(4, 6, 0, 1000, 0.01),
-(4, 6, 1001, 5000, 0.02),
-(4, 6, 5001, 10000, 0.03),
-(4, 6, 10001, 20000, 0.04),
-(4, 6, 20001, 50000, 0.05),
+('4000', 6, 0, 1000, 0.01),
+('4000', 6, 1001, 5000, 0.02),
+('4000', 6, 5001, 10000, 0.03),
+('4000', 6, 10001, 20000, 0.04),
+('4000', 6, 20001, 50000, 0.05),
 
-(5, 6, 1, 100, 10),
-(5, 6, 101, 500, 20),
-(5, 6, 501, 1000, 50),
-(5, 6, 1001, 2000, 100),
-(5, 6, 2001, 5000, 200)
+('5000', 6, 1, 100, 10),
+('5000', 6, 101, 500, 20),
+('5000', 6, 501, 1000, 50),
+('5000', 6, 1001, 2000, 100),
+('5000', 6, 2001, 5000, 200)
 ;
 
 
