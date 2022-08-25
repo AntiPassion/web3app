@@ -1,8 +1,9 @@
 package com.xinbo.chainblock.controller.api;
 
+import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.consts.StatusCode;
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.*;
@@ -21,12 +22,13 @@ public class MemberFlowController {
     @Autowired
     private MemberFlowService memberFlowService;
 
+    @JwtIgnore
     @Operation(summary = "findPage", description = "获取注单")
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody MemberFlowVo vo, @PathVariable long current, @PathVariable long size) {
         MemberFlowEntity entity = MapperUtil.to(vo, MemberFlowEntity.class);
-        BasePage basePage = memberFlowService.findPage(entity, current, size);
-        return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
+        BasePageBo basePageBo = memberFlowService.findPage(entity, current, size);
+        return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
     @Operation(summary = "test1", description = "测试")

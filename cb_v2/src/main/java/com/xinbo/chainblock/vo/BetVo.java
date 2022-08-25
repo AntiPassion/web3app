@@ -16,12 +16,12 @@ import java.util.Date;
 @AllArgsConstructor
 public class BetVo {
 
+    private int id;
+
     private int playId;
 
     private int gameId;
 
-    private Date start;
-
-    private Date end;
+    private int type;
 
 }

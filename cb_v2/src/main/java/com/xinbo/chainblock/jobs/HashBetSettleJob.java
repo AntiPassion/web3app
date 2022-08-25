@@ -1,19 +1,17 @@
 package com.xinbo.chainblock.jobs;
 
+import com.xinbo.chainblock.bo.AccountApiBo;
+import com.xinbo.chainblock.bo.AlgorithmResult;
+import com.xinbo.chainblock.bo.HashResultApiBo;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
-import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
 import com.xinbo.chainblock.core.algorithm.HashAlgorithm;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
-import com.xinbo.chainblock.entity.terminal.HashResultApiEntity;
 import com.xinbo.chainblock.service.HashBetService;
-import com.xinbo.chainblock.service.HashResultService;
-import com.xinbo.chainblock.service.MemberService;
-import com.xinbo.chainblock.utils.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -27,7 +25,7 @@ import java.util.Date;
  * @desc 哈希注单结算任务
  */
 @Slf4j
-//@Component
+@Component
 public class HashBetSettleJob {
 
     @Autowired
@@ -39,11 +37,16 @@ public class HashBetSettleJob {
     @Autowired
     private HashAlgorithm hashAlgorithm;
 
+    @Value("${scheduled.enable.settle}")
+    private boolean isSettle;
+
 
     @Scheduled(cron = "0/2 * * * * ?")
     public void settle() {
         try {
-            System.out.println("@Scheduled start---> " + new Date());
+            if (!isSettle) {
+                return;
+            }
 
             // Step 1: 未结算数据
             HashBetEntity bet = hashBetService.unsettle();
@@ -52,7 +55,7 @@ public class HashBetSettleJob {
             }
 
             // Step 2: 生成开奖
-            HashResultApiEntity hashResult = trxApi.resultFind(bet.getSn());
+            HashResultApiBo hashResult = trxApi.resultFind(bet.getSn());
             if(ObjectUtils.isEmpty(hashResult) || StringUtils.isEmpty(hashResult.getBlockHash())) {
                 return;
             }
@@ -93,8 +96,6 @@ public class HashBetSettleJob {
             // Step 4: 数据库操作
             hashBetService.settle(bet, result);
 
-
-            System.out.println("@Scheduled end-----> " + new Date());
         } catch (RuntimeException ex) {
             log.error("settle: ", ex);
         }

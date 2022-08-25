@@ -48,6 +48,34 @@ public class StatisticsEntity {
     private Float betAmount;
 
     /**
+<<<<<<< HEAD
+     * 当日投注次数
+     */
+    @TableField("bet_count")
+    private Float betCount;
+
+    /**
+     * 当日盈利总额
+     */
+    @TableField("profit_amount")
+    private Float profitAmount;
+
+    /**
+     * 充值trc20次数
+     */
+    @TableField("recharge_trc20_count")
+    private Float rechargeTrc20Count;
+
+    /**
+     * 充值trc20总额
+     */
+    @TableField("recharge_trc20_amount")
+    private Float rechargeTrc20Amount;
+
+    /**
+     * 提现trc20总额
+     */
+=======
      * 当日盈利总额
      */
     @TableField("profit_amount")
@@ -68,14 +96,39 @@ public class StatisticsEntity {
     /**
      * 提现trc20总额
      */
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
     @TableField("withdraw_trc20_amount")
     private Float withdrawTrc20Amount;
 
     /**
+<<<<<<< HEAD
+     * 充值trx次数
+     */
+    @TableField("recharge_trx_count")
+    private Float rechargeTrxCount;
+
+    /**
+     * 充值trx总额
+     */
+    @TableField("recharge_trx_amount")
+    private Float rechargeTrxAmount;
+
+    /**
+=======
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
      * 提现trx总额
      */
     @TableField("withdraw_trx_amount")
     private Float withdrawTrxAmount;
+<<<<<<< HEAD
+
+    /**
+     * 活动总额
+     */
+    @TableField("activity_amount")
+    private Float activityAmount;
+=======
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 
     /**
      * 更新时间

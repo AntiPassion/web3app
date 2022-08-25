@@ -31,28 +31,56 @@ public class MemberEntity {
     /**
      * 帐号
      */
+    @TableField("username")
     private String username;
 
     /**
      * 密码
      */
+    @TableField("pwd")
     private String pwd;
 
-
+    /**
+     * 金额
+     */
+    @TableField("money")
     private Float money;
-
-    private String salt;
-
-    private Integer version;
 
 
     /**
-     * 创建时间
+     * 盐
      */
-    @TableField("create_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    @TableField("salt")
+    private String salt;
 
+    /**
+     * 提现钱包地址
+     */
+    @TableField("withdraw_wallet")
+    private String withdrawWallet;
 
+    /**
+     * 提现钱包密码
+     */
+    @TableField("withdraw_pwd")
+    private String withdrawPwd;
+
+    /**
+     * 版本
+     */
+    @TableField("version")
+    private Integer version;
+
+    /**
+     * 类型(1:正常会员, 2:测试会员)
+     */
+    @TableField("type")
+    private Integer type;
+
+    /**
+     * 是否冻结(1:正常, 0:冻结)
+     */
+    @TableField("is_enable")
+    private Boolean isEnable;
 
 }

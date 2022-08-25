@@ -7,14 +7,15 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
-import com.xinbo.chainblock.enums.ItemEnum;
+import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.mapper.*;
 import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -49,9 +50,9 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
 
 
     @Override
-    public HashBetDto findById(int id) {
+    public HashBetEntity findById(int id) {
         HashBetEntity entity = hashBetMapper.selectById(id);
-        return MapperUtil.to(entity, HashBetDto.class);
+        return entity;
     }
 
     @Override
@@ -98,20 +99,25 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
     }
 
     @Override
-    public List<HashBetEntity> find(HashBetEntity entity) {
+    public HashBetEntity find(HashBetEntity entity) {
+        return hashBetMapper.selectOne(this.createWrapper(entity));
+    }
+
+    @Override
+    public List<HashBetEntity> findList(HashBetEntity entity) {
         return hashBetMapper.selectList(this.createWrapper(entity));
     }
 
     @Override
-    public BasePage findPage(HashBetEntity entity, long current, long size) {
+    public BasePageBo findPage(HashBetEntity entity, long current, long size) {
         Page<HashBetEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
         IPage<HashBetEntity> iPage = hashBetMapper.selectPage(page, this.createWrapper(entity));
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
     }
 
     @Override
-    public BasePage findPage(HashBetEntity entity, long current, long size, Date start, Date end) {
+    public BasePageBo findPage(HashBetEntity entity, long current, long size, Date start, Date end) {
         Page<HashBetEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
         LambdaQueryWrapper<HashBetEntity> wrapper = this.createWrapper(entity);
@@ -120,7 +126,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         }
 
         IPage<HashBetEntity> iPage = hashBetMapper.selectPage(page, wrapper);
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
     }
 
     @Override
@@ -139,7 +145,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         }
 
         //添加开奖结果
-        rows = hashResultMapper.update(result);
+        rows = hashResultMapper.updateBySn(result);
         if(rows <=0) {
             return false;
         }
@@ -156,22 +162,27 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
             return false;
         }
 
-
-        //添加帐变
-        MemberFlowEntity userFlowEntity = MemberFlowEntity.builder()
-                .sn(bet.getSn())
-                .username(memberEntity.getUsername())
-                .beforeMoney(beforeMoney)
-                .afterMoney(afterMoney)
-                .flowMoney(flowMoney)
-                .item(ItemEnum.HASH_BET_SETTLE.getCode())
-                .itemZh(ItemEnum.HASH_BET_SETTLE.getMsg())
-                .createTime(new Date())
-                .build();
-        rows = memberFlowMapper.insert(userFlowEntity);
-        if (rows <= 0) {
-            return false;
+        // 订单为赢才添加帐变
+        if(bet.getFlag() == AlgorithmCode.WIN) {
+            //添加帐变
+            MemberFlowEntity userFlowEntity = MemberFlowEntity.builder()
+                    .sn(bet.getSn())
+                    .uid(memberEntity.getId())
+                    .username(memberEntity.getUsername())
+                    .beforeMoney(beforeMoney)
+                    .afterMoney(afterMoney)
+                    .flowMoney(flowMoney)
+                    .item(MemberFlowItemEnum.HASH_BET_SETTLE.getName())
+                    .itemCode(MemberFlowItemEnum.HASH_BET_SETTLE.getCode())
+                    .itemZh(MemberFlowItemEnum.HASH_BET_SETTLE.getNameZh())
+                    .createTime(new Date())
+                    .build();
+            rows = memberFlowMapper.insert(userFlowEntity);
+            if (rows <= 0) {
+                return false;
+            }
         }
+
 
         //更新统计
         StatisticsEntity statisticsEntity = StatisticsEntity.builder()
@@ -179,6 +190,10 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
                 .uid(bet.getUid())
                 .username(bet.getUsername())
                 .betAmount(bet.getMoney())
+<<<<<<< HEAD
+                .profitAmount(bet.getProfitMoney())
+=======
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
                 .updateTime(new Date())
                 .build();
 
@@ -218,6 +233,15 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         }
         if (!StringUtils.isEmpty(entity.getGameId()) && entity.getGameId() > 0) {
             wrappers.eq(HashBetEntity::getGameId, entity.getGameId());
+        }
+        if (!StringUtils.isEmpty(entity.getPlayId()) && entity.getPlayId() > 0) {
+            wrappers.eq(HashBetEntity::getPlayId, entity.getPlayId());
+        }
+        if (!StringUtils.isEmpty(entity.getFlag()) && entity.getFlag() > 0) {
+            wrappers.eq(HashBetEntity::getFlag, entity.getFlag());
+        }
+        if (!StringUtils.isEmpty(entity.getStatus()) && entity.getStatus() > 0) {
+            wrappers.eq(HashBetEntity::getStatus, entity.getStatus());
         }
         return wrappers;
     }

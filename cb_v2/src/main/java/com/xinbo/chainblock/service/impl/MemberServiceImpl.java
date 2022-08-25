@@ -1,37 +1,45 @@
 package com.xinbo.chainblock.service.impl;
 
+<<<<<<< HEAD
+=======
 import com.alibaba.fastjson.JSON;
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.consts.RedisConst;
-import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.core.TrxApi;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
+<<<<<<< HEAD
+=======
 import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 import com.xinbo.chainblock.mapper.MemberMapper;
 import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.MemberService;
-import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
+=======
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+<<<<<<< HEAD
+=======
 import java.util.*;
 
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 /**
  * @author tony
  * @date 6/24/22 4:31 下午
@@ -41,27 +49,24 @@ import java.util.*;
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> implements MemberService {
 
     @Autowired
-    private TrxApi trxApi;
-
-    @Autowired
-    private WalletService walletService;
-
-    @Autowired
     private MemberMapper memberMapper;
 
     @Autowired
     private AgentService agentService;
 
+<<<<<<< HEAD
+=======
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     @Value("${trx.token-info.contract-address}")
     private String contractAddress;
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 
     @Override
     public boolean insert() {
         MemberEntity entity = MemberEntity.builder()
-                .username("jack").createTime(new Date()).money(1000F).salt("123").version(1)
+                .username("jack").money(1000F).salt("123").version(1)
                 .build();
         memberMapper.insert(entity);
         return true;
@@ -114,6 +119,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
             return false;
         }
 
+<<<<<<< HEAD
+=======
 
         //Step 2: 请求终端
         AccountApiEntity account = trxApi.createAccount();
@@ -136,20 +143,17 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
             return false;
         }
 
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         return true;
     }
 
     @Override
-    public BasePage findPage(MemberEntity entity, long current, long size, Date start, Date end) {
+    public BasePageBo findPage(MemberEntity entity, long current, long size) {
         Page<MemberEntity> page = new Page<>(current, size);
-        page.addOrder(OrderItem.asc("create_time"));
         LambdaQueryWrapper<MemberEntity> wrapper = this.createWrapper(entity);
-        if (!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
-            wrapper.ge(MemberEntity::getCreateTime, start).le(MemberEntity::getCreateTime, end);
-        }
 
         IPage<MemberEntity> iPage = memberMapper.selectPage(page, wrapper);
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberDto.class)).build();
     }
 
     @Override
@@ -158,17 +162,26 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     }
 
     @Override
+<<<<<<< HEAD
+    public MemberEntity info(int uid) {
+        return memberMapper.info(uid);
+=======
     public String balanceUSDT(int uid) {
         WalletEntity walletEntity = walletService.findByUid(uid);
         return trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
     }
 
-    @Override
-    public Map<String, String> balance(int uid) {
-        WalletEntity walletEntity = walletService.findByUid(uid);
-        // Step 1: 获取资金帐号转帐记录@todo
-        redisTemplate.opsForSet().add(RedisConst.MEMBER_FINANCE, JSON.toJSONString(walletEntity));
+//    @Override
+//    public String balanceTrc20(int uid) {
+//        WalletEntity walletEntity = walletService.findByUid(uid);
+//        return trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
+//    }
+//
 
+
+<<<<<<< HEAD
+=======
         String trc20 = trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
         String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());
         Map<String, String> map = new HashMap<>();
@@ -176,6 +189,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         map.put("trx", trx);
         return map;
     }
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 
     /**
      * 资金帐户 => 交易帐户

@@ -1,32 +1,23 @@
 package com.xinbo.chainblock.utils;
 
-import cn.hutool.core.io.resource.ResourceUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.io.FileUtils;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import cn.hutool.core.date.DateUtil;
+import com.xinbo.chainblock.bo.DateRangeBo;
+
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.Date;
 
-@Service
 public class CommonUtils {
 
-    public double toTrx(float value) {
+    public static double toTrx(float value) {
         BigDecimal b1 = new BigDecimal(value);
         BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 6)));
         BigDecimal b3 = b1.multiply(b2);
         return b3.floatValue();
     }
 
-    public float fromTrx(float value) {
+    public static float fromTrx(float value) {
         BigDecimal b1 = new BigDecimal(value);
         BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 6)));
         BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
@@ -34,31 +25,45 @@ public class CommonUtils {
     }
 
 
+<<<<<<< HEAD
+    public static BigDecimal toTrc20(String value) {
+=======
     public BigDecimal toTrc20(String value) {
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         BigDecimal b1 = new BigDecimal(value);
         BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 18)));
         return b1.multiply(b2);
     }
 
-    public BigDecimal fromTrc20(BigDecimal value) {
+    public static BigDecimal fromTrc20(BigDecimal value) {
         BigDecimal bigInteger = new BigDecimal(String.valueOf(Math.pow(10, 18)));
-        return value.divide(bigInteger,6, RoundingMode.CEILING);
+        return value.divide(bigInteger, 6, RoundingMode.CEILING);
     }
 
-    public static String translate(String language, String key) {
-        String result = "";
-        try {
-            String path = String.format("classpath:json/%s.json", language);
-            String str = ResourceUtil.readUtf8Str(path);
-            JSONObject jsonObject = JSON.parseObject(str);
-            Object value = jsonObject.get(key);
-            if(!ObjectUtils.isEmpty(value)) {
-                result = jsonObject.get(key).toString();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+    public static DateRangeBo toConvertDate(int type) {
+        if (type == 0) {
+            return DateRangeBo.builder().build();
         }
-        return result;
+
+        Date startTime = DateUtil.parse(DateUtil.today());
+        Date endTime = DateUtil.parse(DateUtil.today());
+        if (type == 1) {
+            startTime = DateUtil.parse(DateUtil.today());
+            endTime = DateUtil.parse(DateUtil.today());
+        }
+        if (type == 2) {
+            startTime = DateUtil.parse(DateUtil.yesterday().toDateStr());
+            endTime = DateUtil.parse(DateUtil.yesterday().toDateStr());
+        }
+        if (type == 3) {
+            startTime = DateUtil.parse(DateUtil.lastMonth().toDateStr());
+            endTime = DateUtil.parse(DateUtil.today());
+        }
+
+        return DateRangeBo.builder()
+                .startTime(DateUtil.beginOfDay(startTime))
+                .endTime(DateUtil.endOfDay(endTime))
+                .build();
     }
 
 }

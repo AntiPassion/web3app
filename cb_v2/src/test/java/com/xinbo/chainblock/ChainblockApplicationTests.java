@@ -1,15 +1,25 @@
 package com.xinbo.chainblock;
 
+import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.jwt.JWT;
+import cn.hutool.jwt.JWTHeader;
+import cn.hutool.jwt.JWTUtil;
+import cn.hutool.jwt.signers.JWTSigner;
+import cn.hutool.jwt.signers.JWTSignerUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.xinbo.chainblock.bo.*;
 import com.xinbo.chainblock.entity.FinanceEntity;
+<<<<<<< HEAD
+=======
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -21,11 +31,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.math.BigDecimal;
+<<<<<<< HEAD
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+=======
 import java.util.ArrayList;
 import java.util.List;
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles("prod")
+@ActiveProfiles("company")
 @SpringBootTest
 class ChainblockApplicationTests {
 
@@ -43,6 +58,79 @@ class ChainblockApplicationTests {
     private String fromAddress = "TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu";
     private String toAddress = "TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe";
     private String privateKey = "f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703";
+
+<<<<<<< HEAD
+
+
+    @Test
+    void jwt() {
+        JWTSigner jwtSigner = JWTSignerUtil.hs256("abc".getBytes(StandardCharsets.UTF_8));
+        Map<String, Object> map = new HashMap<String, Object>() {
+            private static final long serialVersionUID = 1L;
+            {
+                put("uid", Integer.parseInt("123"));
+                put("expire_time", System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15);
+            }
+        };
+        String token = JWTUtil.createToken(map, jwtSigner);
+
+
+        final JWT jwt = JWTUtil.parseToken(token);
+        Object header = jwt.getHeader(JWTHeader.TYPE);
+        Object sub = jwt.getPayload("uid");
+        Object expire_time = jwt.getPayload("expire_time");
+
+        System.out.println(header);
+        System.out.println(sub);
+        System.out.println(expire_time);
+
+
+        JwtUserBo bo = JwtUserBo.builder()
+                .uid(19)
+                .username("demo5566")
+                .device("pc")
+                .language("zh")
+                .roleType("member")
+                .build();
+
+        String sign = JWT.create().setSigner(jwtSigner)
+                .setIssuedAt(DateUtil.date())
+                .setNotBefore(DateUtil.date())
+                .setExpiresAt(DateUtil.nextWeek())
+                .setPayload("payload", JSON.toJSONString(bo))
+                .sign();
+        final JWT jwt2 = JWTUtil.parseToken(sign);
+        Object header2 = jwt2.getHeader(JWTHeader.TYPE);
+        Object sub2 = jwt2.getPayload("payload");
+        System.out.println(header2);
+
+        JwtUserBo tmp = JSON.parseObject(String.valueOf(sub2), JwtUserBo.class);
+        System.out.println(tmp);
+
+        boolean verify = JWTUtil.verify(sign, "abcd".getBytes(StandardCharsets.UTF_8));
+        System.out.println(verify);
+
+    }
+=======
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
+
+
+    @Test
+    void huTools() {
+        Date today = DateUtil.parse(DateUtil.today());
+        System.out.println(DateUtil.beginOfDay(today));
+        System.out.println(DateUtil.endOfDay(today));
+
+
+        Date yesterday = DateUtil.parse(DateUtil.yesterday().toDateStr());
+        System.out.println(DateUtil.beginOfDay(yesterday));
+        System.out.println(DateUtil.endOfDay(yesterday));
+
+        Date lastMonth = DateUtil.parse(DateUtil.lastMonth().toDateStr());
+        System.out.println(DateUtil.beginOfDay(lastMonth));
+        System.out.println(DateUtil.endOfDay(lastMonth));
+
+    }
 
 
     @Test
@@ -94,7 +182,7 @@ class ChainblockApplicationTests {
         String url = String.format("%s%s", T_API, "/trx/createAccount");
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, "", String.class);
-        BaseEntity<AccountApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<AccountApiEntity>>() {
+        BaseApiBo<AccountApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<AccountApiBo>>() {
         });
         System.out.println(entity);
     }
@@ -107,7 +195,7 @@ class ChainblockApplicationTests {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("fromAddress", fromAddress);
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {
+        BaseApiBo<String> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<String>>() {
         });
         System.out.println(entity);
     }
@@ -123,7 +211,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {
+        BaseApiBo<String> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<String>>() {
         });
         System.out.println(entity);
     }
@@ -140,7 +228,11 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
+<<<<<<< HEAD
+        BaseApiBo<TransactionApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionApiBo>>() {
+=======
         BaseEntity<TransactionApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         });
         System.out.println(entity);
     }
@@ -158,7 +250,11 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
+<<<<<<< HEAD
+        BaseApiBo<TransactionApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionApiBo>>() {
+=======
         BaseEntity<TransactionApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {
+>>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         });
         System.out.println(entity);
     }
@@ -172,7 +268,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<TransactionInfoApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionInfoApiEntity>>() {
+        BaseApiBo<TransactionInfoApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionInfoApiBo>>() {
         });
         System.out.println(entity);
     }

@@ -2,7 +2,7 @@ package com.xinbo.chainblock.controller.admin;
 
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.StatusCode;
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
@@ -12,13 +12,11 @@ import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import com.xinbo.chainblock.vo.MemberFlowVo;
 import com.xinbo.chainblock.vo.MemberVo;
-import com.xinbo.chainblock.vo.UserVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 /**
  * @author tony
@@ -40,8 +38,8 @@ public class MemberController {
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody MemberDto vo, @PathVariable long current, @PathVariable long size) {
         MemberEntity entity = MapperUtil.to(vo, MemberEntity.class);
-        BasePage basePage = memberService.findPage(entity, current, size, vo.getStart(), vo.getEnd());
-        return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
+        BasePageBo basePageBo = memberService.findPage(entity, current, size);
+        return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
 
@@ -59,7 +57,6 @@ public class MemberController {
     @PostMapping("update")
     public R<Object> update(@RequestBody @Valid MemberVo vo) {
         MemberEntity entity = MapperUtil.to(vo, MemberEntity.class);
-        entity.setCreateTime(new Date());
         entity.setSalt("11111");
         entity.setVersion(1);
         boolean isSuccess = memberService.update(entity);
@@ -71,8 +68,8 @@ public class MemberController {
     @PostMapping("findFlowPage/{current}/{size}")
     public R<Object> findFlowPage(@RequestBody MemberFlowVo vo, @PathVariable long current, @PathVariable long size) {
         MemberFlowEntity entity = MapperUtil.to(vo, MemberFlowEntity.class);
-        BasePage basePage = memberFlowService.findPage(entity, current, size, vo.getStart(), vo.getEnd());
-        return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
+        BasePageBo basePageBo = memberFlowService.findPage(entity, current, size, vo.getStart(), vo.getEnd());
+        return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
 

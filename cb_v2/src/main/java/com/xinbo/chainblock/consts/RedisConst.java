@@ -14,6 +14,10 @@ public interface RedisConst {
 
     String MEMBER_REGISTER = "cb:member:register";
 
+    String MEMBER_TRANSFER = "cb:member:transfer";
+
+    String MEMBER_BALANCE = "cb:member:balance:%s";
+
     String MEMBER_FINANCE = "cb:member:finance";
 
 }
