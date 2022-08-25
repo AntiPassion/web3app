@@ -6,19 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.FinanceEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
-<<<<<<< HEAD
 import com.xinbo.chainblock.mapper.*;
 import com.xinbo.chainblock.service.FinanceService;
-=======
-import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.mapper.FinanceMapper;
-import com.xinbo.chainblock.mapper.MemberFlowMapper;
-import com.xinbo.chainblock.mapper.StatisticsMapper;
-import com.xinbo.chainblock.mapper.WalletMapper;
-import com.xinbo.chainblock.service.FinanceService;
-import com.xinbo.chainblock.service.WalletService;
-import org.dozer.stats.StatisticsManager;
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +61,6 @@ public class FinanceServiceImpl extends ServiceImpl<FinanceMapper, FinanceEntity
         return financeMapper.findUnaccounted();
     }
 
-<<<<<<< HEAD
     @Transactional
     @Override
     public boolean account(List<FinanceEntity> financeList, List<MemberFlowEntity> flowList, List<StatisticsEntity> statisticsList) {
@@ -94,8 +82,6 @@ public class FinanceServiceImpl extends ServiceImpl<FinanceMapper, FinanceEntity
         return true;
     }
 
-=======
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 
     /**
      * 批量插入

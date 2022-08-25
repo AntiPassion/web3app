@@ -1,6 +1,8 @@
 package com.xinbo.chainblock.service;
 
 
+import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.entity.activity.ActivityEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRuleEntity;
 
 import java.util.List;
@@ -12,5 +14,5 @@ import java.util.List;
  */
 public interface ActivityRuleService {
 
-    ActivityRuleEntity findBySn(String sn);
+    ActivityRuleEntity findByActivityId(int activityId);
 }

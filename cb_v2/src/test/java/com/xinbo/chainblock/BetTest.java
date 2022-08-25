@@ -1,20 +1,13 @@
 package com.xinbo.chainblock;
 
-<<<<<<< HEAD
 import com.xinbo.chainblock.bo.AccountApiBo;
 import com.xinbo.chainblock.bo.AlgorithmResult;
 import com.xinbo.chainblock.bo.HashResultApiBo;
-=======
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.core.algorithm.HashAlgorithm;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
-<<<<<<< HEAD
-=======
-import com.xinbo.chainblock.entity.terminal.HashResultApiEntity;
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.junit.Test;

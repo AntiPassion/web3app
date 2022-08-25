@@ -28,11 +28,8 @@ public interface StatisticsMapper extends BaseMapper<StatisticsEntity> {
     List<StatisticsEntity> findByDate(@Param("date") String date);
 
     int batchInsert(@Param("list") List<StatisticsEntity> list);
-<<<<<<< HEAD
 
 
     @Select("select * from t_statistics where date between #{bo.startTimeStr} and #{bo.endTimeStr} and uid = #{uid}")
     List<StatisticsEntity> findList(@Param("bo") DateRangeBo dateRangeBo, @Param("uid") int uid);
-=======
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 }

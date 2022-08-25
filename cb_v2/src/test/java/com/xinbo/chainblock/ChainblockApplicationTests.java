@@ -13,13 +13,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.xinbo.chainblock.bo.*;
 import com.xinbo.chainblock.entity.FinanceEntity;
-<<<<<<< HEAD
-=======
-import com.xinbo.chainblock.entity.terminal.BaseEntity;
-import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -31,13 +24,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.math.BigDecimal;
-<<<<<<< HEAD
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-=======
-import java.util.ArrayList;
-import java.util.List;
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("company")
@@ -59,7 +47,6 @@ class ChainblockApplicationTests {
     private String toAddress = "TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe";
     private String privateKey = "f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703";
 
-<<<<<<< HEAD
 
 
     @Test
@@ -111,8 +98,6 @@ class ChainblockApplicationTests {
         System.out.println(verify);
 
     }
-=======
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 
 
     @Test
@@ -228,11 +213,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-<<<<<<< HEAD
         BaseApiBo<TransactionApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionApiBo>>() {
-=======
-        BaseEntity<TransactionApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         });
         System.out.println(entity);
     }
@@ -250,11 +231,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-<<<<<<< HEAD
         BaseApiBo<TransactionApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionApiBo>>() {
-=======
-        BaseEntity<TransactionApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         });
         System.out.println(entity);
     }

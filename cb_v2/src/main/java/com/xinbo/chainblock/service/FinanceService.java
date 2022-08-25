@@ -19,7 +19,6 @@ public interface FinanceService {
 
     List<FinanceEntity> findUnaccounted();
 
-<<<<<<< HEAD
 
     /**
      * 入帐
@@ -30,7 +29,5 @@ public interface FinanceService {
      */
     boolean account(List<FinanceEntity> financeList, List<MemberFlowEntity> flowList, List<StatisticsEntity> statisticsList);
 
-=======
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
     int batchInsert(List<FinanceEntity> list);
 }

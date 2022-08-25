@@ -42,11 +42,7 @@ public class TrxApi {
         try {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.CREATE_ACCOUNT);
             String res = restTemplate.postForObject(url, "", String.class);
-<<<<<<< HEAD
             BaseApiBo<AccountApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<AccountApiBo>>() {
-=======
-            BaseEntity<AccountApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<AccountApiEntity>>() {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
             });
             if (!ObjectUtils.isEmpty(entity) && entity.getCode() == 0 && !ObjectUtils.isEmpty(entity.getData())) {
                 result = entity.getData();
@@ -71,11 +67,7 @@ public class TrxApi {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("fromAddress", fromAddress);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-<<<<<<< HEAD
             BaseApiBo<String> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<String>>() {
-=======
-            BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
             });
             if (!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
                 result = entity.getData();
@@ -104,11 +96,7 @@ public class TrxApi {
             jsonObject.put("fromAddress", fromAddress);
             jsonObject.put("privateKey", privateKey);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-<<<<<<< HEAD
             BaseApiBo<String> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<String>>() {
-=======
-            BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
             });
             if (!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
                 result = entity.getData();
@@ -129,13 +117,8 @@ public class TrxApi {
      * @param toAddress   收款地址
      * @return Entity
      */
-<<<<<<< HEAD
     public TransactionApiBo transactionOfTrx(String fromAddress, String privateKey, float amount, String toAddress) {
         TransactionApiBo result = null;
-=======
-    public TransactionApiEntity transactionOfTrx(String fromAddress, String privateKey, float amount, String toAddress) {
-        TransactionApiEntity result = null;
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         try {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.TRANSACTION_TRX);
             JSONObject jsonObject = new JSONObject();
@@ -144,11 +127,7 @@ public class TrxApi {
             jsonObject.put("toAddress", toAddress);
             jsonObject.put("privateKey", privateKey);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-<<<<<<< HEAD
             BaseApiBo<TransactionApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionApiBo>>() {
-=======
-            BaseEntity<TransactionApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
             });
             if (!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
                 result = entity.getData();
@@ -170,13 +149,8 @@ public class TrxApi {
      * @param toAddress       收款地址
      * @return String
      */
-<<<<<<< HEAD
     public BaseApiBo<TransactionApiBo> transactionOfTrc20(String contractAddress, String fromAddress, String privateKey, String amount, String toAddress) {
         BaseApiBo<TransactionApiBo> result = new BaseApiBo<>();
-=======
-    public BaseEntity<TransactionApiEntity> transactionOfTrc20(String contractAddress, String fromAddress, String privateKey, String amount, String toAddress) {
-        BaseEntity<TransactionApiEntity> result = new BaseEntity<>();
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         try {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.TRANSACTION_TRC20);
             JSONObject jsonObject = new JSONObject();
@@ -189,11 +163,7 @@ public class TrxApi {
             if(StringUtils.isEmpty(res)) {
                 return result;
             }
-<<<<<<< HEAD
             result = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionApiBo>>() {});
-=======
-            result = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {});
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         } catch (Exception ex) {
             log.error("TerminalApi transactionOfTrc20 exception", ex);
         }
@@ -214,11 +184,7 @@ public class TrxApi {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("txID", txID);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-<<<<<<< HEAD
             BaseApiBo<TransactionInfoApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionInfoApiBo>>() {
-=======
-            BaseEntity<TransactionInfoApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionInfoApiEntity>>() {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
             });
             if (!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
                 result = entity.getData();
@@ -296,11 +262,7 @@ public class TrxApi {
             jsonObject.put("toAddress", toAddress);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
 
-<<<<<<< HEAD
             BaseApiBo<Boolean> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<Boolean>>() {
-=======
-            BaseEntity<Boolean> entity = JSON.parseObject(res, new TypeReference<BaseEntity<Boolean>>() {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
             });
             if (!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData())) {
                 result = entity.getData();
@@ -325,11 +287,7 @@ public class TrxApi {
             jsonObject.put("sn", sn);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
 
-<<<<<<< HEAD
             BaseApiBo<HashResultApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<HashResultApiBo>>() {
-=======
-            BaseEntity<HashResultApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<HashResultApiEntity>>() {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
             });
             if (!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData())) {
                 result = entity.getData();

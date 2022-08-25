@@ -25,11 +25,7 @@ public class CommonUtils {
     }
 
 
-<<<<<<< HEAD
     public static BigDecimal toTrc20(String value) {
-=======
-    public BigDecimal toTrc20(String value) {
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         BigDecimal b1 = new BigDecimal(value);
         BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 18)));
         return b1.multiply(b2);

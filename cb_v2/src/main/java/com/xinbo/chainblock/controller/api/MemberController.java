@@ -8,7 +8,6 @@ import com.xinbo.chainblock.bo.BaseApiBo;
 import com.xinbo.chainblock.bo.TransactionApiBo;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.StatusCode;
-<<<<<<< HEAD
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.bo.EnumItemBo;
 import com.xinbo.chainblock.dto.MemberDto;
@@ -22,16 +21,6 @@ import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.bo.JwtUserBo;
-=======
-import com.xinbo.chainblock.entity.MemberEntity;
-import com.xinbo.chainblock.entity.TransferEntity;
-import com.xinbo.chainblock.entity.terminal.BaseEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
-import com.xinbo.chainblock.exception.BusinessException;
-import com.xinbo.chainblock.service.MemberService;
-import com.xinbo.chainblock.service.TransferService;
-import com.xinbo.chainblock.utils.JwtUser;
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
@@ -63,11 +52,7 @@ public class MemberController {
     private MemberService memberService;
 
     @Autowired
-<<<<<<< HEAD
     private WalletService walletService;
-=======
-    private TransferService transferService;
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -186,7 +171,6 @@ public class MemberController {
 
 
     @JwtIgnore
-<<<<<<< HEAD
     @Operation(summary = "wallet", description = "钱包地址")
     @PostMapping("wallet")
     public R<Object> wallet() {
@@ -198,13 +182,10 @@ public class MemberController {
 
 
     @JwtIgnore
-=======
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
     @Operation(summary = "transfer", description = "资金转换")
     @PostMapping("transfer")
     public R<Object> transfer(@RequestBody TransferVo vo) {
         try {
-<<<<<<< HEAD
             /* ******************************  Step 1: 判断数据是否合法  **************************************** */
             Map<Integer, EnumItemBo> map = TransferEnum.toMap();
             EnumItemBo enumItemBo = map.get(vo.getDirection());
@@ -217,14 +198,11 @@ public class MemberController {
             }
 
             // @todo 模拟数据
-=======
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
             MemberEntity entity = MemberEntity.builder()
                     .id(19)
                     .username("demo5566")
                     .build();
 
-<<<<<<< HEAD
             /* ******************************  Step 2: 开始划转  **************************************** */
             BaseApiBo<TransactionApiBo> result = null;
             // Step 2.1 资金帐户 => 交易帐户
@@ -314,46 +292,12 @@ public class MemberController {
             return R.builder().code(StatusCode.SUCCESS).data(result.getData().getTxid()).build();
         } catch (RuntimeException ex) {
             return R.builder().code(StatusCode.FAILURE).msg(ex.getMessage()).build();
-=======
-            BaseEntity<TransactionApiEntity> result = null;
-            // 资金帐户 => 交易帐户
-            if (vo.getDirect() == 1) {
-                result = memberService.fundingAccount2TradingAccount(entity.getId(), vo.getMoney());
-            }
-
-            // 交易帐户 => 资金帐户
-            if (vo.getDirect() == 2) {
-                result = memberService.tradingAccount2FundingAccount(entity.getId(), vo.getMoney());
-            }
-
-            if(ObjectUtils.isEmpty(result)) {
-                throw new BusinessException(1, "");
-            }
-
-            if(result.getCode() == 0) {
-                long expired = DateUtil.currentSeconds() + (30 * 60); //时间戳(秒级)
-                TransferEntity transferEntity = TransferEntity.builder()
-                        .uid(entity.getId())
-                        .username(entity.getUsername())
-                        .type(vo.getDirect())
-                        .transactionId(result.getData().getTxid())
-                        .money(vo.getMoney())
-                        .expired(expired)
-                        .status(0)
-                        .build();
-                transferService.insert(transferEntity);
-                return R.builder().code(StatusCode.SUCCESS).data(result.getData().getTxid()).build();
-            } else {
-                return R.builder().code(StatusCode.FAILURE).msg(result.getMsg()).build();
-            }
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
         } catch (Exception ex) {
             return R.builder().code(StatusCode.FAILURE).build();
         }
     }
 
 
-<<<<<<< HEAD
     @JwtIgnore
     @Operation(summary = "info", description = "会员信息")
     @GetMapping("info")
@@ -407,7 +351,5 @@ public class MemberController {
 
 
     }
-=======
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
 
 }

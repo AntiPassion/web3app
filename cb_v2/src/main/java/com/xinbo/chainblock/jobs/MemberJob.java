@@ -50,7 +50,6 @@ public class MemberJob {
     @Autowired
     private TrxApi trxApi;
 
-<<<<<<< HEAD
     @Value("${scheduled.enable.register}")
     private boolean isRegister;
 
@@ -58,8 +57,6 @@ public class MemberJob {
     private boolean isTransfer;
 
 
-=======
->>>>>>> 30e5a312183241d17cdf3808671b354753f201c8
     /**
      * 处理注册
      */

@@ -27,15 +27,12 @@ interceptor:
 
 scheduled:
   enable:
-    register: false
-    transfer: false
-    settle: false
+    register: true
+    transfer: true
+    settle: true
     finance:
-      record: false
-      account: false
-
-upload:
-  path: '/Users/zhangjie/jack/web3app/web3app_2019/cb_v2/upload/images'
+      record: true
+      account: true
 
 
 spring:
