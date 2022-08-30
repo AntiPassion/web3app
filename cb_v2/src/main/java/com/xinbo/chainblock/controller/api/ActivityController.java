@@ -223,7 +223,7 @@ public class ActivityController {
 
                     moneyAmount += money;
 
-                    int status = receiveMode == ActivityConst.ADMIN_CHECK_RULE ? ActivityConst.UNHANDLED_RECORD : ActivityConst.COMPLETE_RECORD;
+                    int status = receiveMode == ActivityConst.RULE_ADMIN_CHECK ? ActivityConst.RECORD_UNHANDLED : ActivityConst.RECORD_COMPLETE;
                     ActivityRecordEntity re = ActivityRecordEntity.builder()
                             .activityId(activityEntity.getId())
                             .activityName(activityEntity.getName())
@@ -281,7 +281,7 @@ public class ActivityController {
                             .username(memberEntity.getUsername())
                             .money(money)
                             .symbol(ruleEntity.getSymbol())
-                            .status(ActivityConst.UNHANDLED_RECORD)
+                            .status(ActivityConst.RECORD_UNHANDLED)
                             .createTime(new Date())
                             .remark(se.getDate())
                             .build();
@@ -320,7 +320,7 @@ public class ActivityController {
                             .username(memberEntity.getUsername())
                             .money(money)
                             .symbol(ruleEntity.getSymbol())
-                            .status(ActivityConst.UNHANDLED_RECORD)
+                            .status(ActivityConst.RECORD_UNHANDLED)
                             .createTime(new Date())
                             .remark(se.getDate())
                             .build();
@@ -340,7 +340,7 @@ public class ActivityController {
             MemberFlowEntity memberFlow = null;
             StatisticsEntity statistics = null;
             // 如果为立即发放
-            if(receiveMode == ActivityConst.JUST_SEND_RULE) {
+            if(receiveMode == ActivityConst.RULE_JUST_SEND) {
 
                 // 会员表
                 member = MemberEntity.builder()
@@ -353,7 +353,7 @@ public class ActivityController {
                 float beforeMoney = memberEntity.getMoney();
                 float afterMoney = memberEntity.getMoney() + moneyAmount;
                 float flowMoney = moneyAmount;
-                MemberFlowEntity userFlowEntity = MemberFlowEntity.builder()
+                memberFlow = MemberFlowEntity.builder()
                         .sn(activityEntity.getSn())
                         .uid(memberEntity.getId())
                         .username(memberEntity.getUsername())
@@ -367,7 +367,7 @@ public class ActivityController {
                         .build();
 
                 // 统计表
-                StatisticsEntity statisticsEntity = StatisticsEntity.builder()
+                statistics = StatisticsEntity.builder()
                         .date(DateUtil.format(new Date(), FORMAT))
                         .uid(memberEntity.getId())
                         .username(memberEntity.getUsername())
@@ -376,9 +376,7 @@ public class ActivityController {
                         .build();
             }
 
-
-
-            boolean isSuccess = activityRecordService.batchInsert(recordEntityList);
+            boolean isSuccess = activityRecordService.submit(recordEntityList, member, memberFlow, statistics);
             System.out.println(isSuccess);
         } catch (BusinessException ex) {
             System.out.println(ex.getMsg());
@@ -388,6 +386,4 @@ public class ActivityController {
 
         return R.builder().data(StatusCode.SUCCESS).build();
     }
-
-
 }

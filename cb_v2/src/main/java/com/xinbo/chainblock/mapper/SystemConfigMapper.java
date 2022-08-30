@@ -1,7 +1,8 @@
 package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xinbo.chainblock.entity.GameEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
+import com.xinbo.chainblock.entity.SystemConfigEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -13,8 +14,8 @@ import java.util.List;
  * @desc file desc
  */
 @Mapper
-public interface GameMapper extends BaseMapper<GameEntity> {
+public interface SystemConfigMapper extends BaseMapper<SystemConfigEntity> {
 
-    @Select("select * from t_game where address <> ''")
-    List<GameEntity> findOffline();
+    @Select("select * from t_system_config")
+    List<SystemConfigEntity> findAll();
 }

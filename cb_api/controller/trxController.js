@@ -164,14 +164,28 @@ module.exports = {
     ctx.body = R.success(result)
   },
 
+
   /**
-   * 获取块哈希
+   * 获取块哈希根据哈希高度
    * @param {Object} ctx 
    */
   async getBlockHash(ctx) {
     let data = ctx.request.body
-    let blockHeight = data.blockHeight;
-    let result = await trxModel.getBlockHash(blockHeight);
+    let blockHeight = data.blockHeight
+    let result = await trxModel.getBlockHash(blockHeight)
     ctx.body = R.success(result)
+  },
+
+  async getBlockHashByTransactionId(ctx) {
+    let data = ctx.request.body
+    let txID = data.txID
+    let result = await trxModel.getTransactionInfo(txID)
+    if(result && result.blockNumber > 0) {
+      result = await trxModel.getBlockHash(result.blockNumber)
+      ctx.body = R.success(result)
+    } else {
+      ctx.body = R.success()
+    }
   }
+
 }

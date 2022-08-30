@@ -4,6 +4,7 @@ server:
 
 
 trx:
+  network: 'nile'
   terminal-url: 'http://localhost:3333'
   api-url: 'https://nile.trongrid.io/v1'
   symbol: 'TRX'
@@ -24,6 +25,11 @@ scheduled:
     finance:
       record: false
       account: false
+    offline:
+      bet: false
+      settle: false
+    system:
+      flow: false
 
 
 
