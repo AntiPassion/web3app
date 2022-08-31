@@ -32,6 +32,8 @@ scheduled:
     register: false
     transfer: false
     settle: false
+    agent:
+      commission: false
     finance:
       record: false
       account: false
