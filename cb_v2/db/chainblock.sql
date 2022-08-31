@@ -671,7 +671,6 @@ create table t_agent_commission(
 
 
 
-
 drop table if exists t_user;
 CREATE TABLE t_user (
     id int(20) primary key auto_increment,

@@ -18,4 +18,10 @@ import java.util.List;
 @Mapper
 public interface AgentCommissionMapper extends BaseMapper<AgentCommissionEntity> {
     int insertOrUpdate(@Param("list") List<AgentCommissionEntity> list);
+
+    @Select("select * from t_agent_commission where uid = #{uid} and is_account = 0")
+    List<AgentCommissionEntity> findAvailableCommission(@Param("uid") int uid);
+
+    @Update("update t_agent_commission set is_account = 1 where uid = #{uid}")
+    int accounted(@Param("uid") int uid);
 }

@@ -4,10 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.AgentCommissionEntity;
+import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.mapper.AgentCommissionMapper;
+import com.xinbo.chainblock.mapper.MemberFlowMapper;
+import com.xinbo.chainblock.mapper.MemberMapper;
 import com.xinbo.chainblock.service.AgentCommissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +30,12 @@ public class AgentCommissionServiceImpl extends ServiceImpl<AgentCommissionMappe
     @Autowired
     private AgentCommissionMapper agentCommissionMapper;
 
+    @Autowired
+    private MemberMapper memberMapper;
+
+    @Autowired
+    private MemberFlowMapper memberFlowMapper;
+
     public boolean insertOrUpdate(List<AgentCommissionEntity> list) {
         return agentCommissionMapper.insertOrUpdate(list) > 0;
     }
@@ -34,10 +45,41 @@ public class AgentCommissionServiceImpl extends ServiceImpl<AgentCommissionMappe
         return agentCommissionMapper.selectOne(this.createWrapper(entity));
     }
 
+    @Override
+    public List<AgentCommissionEntity> findAvailableCommission(int uid) {
+        return agentCommissionMapper.findAvailableCommission(uid);
+    }
+
+    @Transactional
+    @Override
+    public boolean applySubmit(int uid, MemberEntity member, MemberFlowEntity memberFlow) {
+
+        // 代理佣金表
+        int rows = agentCommissionMapper.accounted(uid);
+        if (rows <= 0) {
+            return false;
+        }
+
+        // 会员表
+        rows = memberMapper.increment(member);
+        if (rows <= 0) {
+            return false;
+        }
+
+        // 会员流水表
+        rows = memberFlowMapper.insert(memberFlow);
+        if (rows <= 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+
     /**
      * 创建查询条件
      *
-     * @param entity  实体
+     * @param entity 实体
      * @return LambdaQueryWrapper
      */
     private LambdaQueryWrapper<AgentCommissionEntity> createWrapper(AgentCommissionEntity entity) {
@@ -48,8 +90,11 @@ public class AgentCommissionServiceImpl extends ServiceImpl<AgentCommissionMappe
         if (!StringUtils.isEmpty(entity.getUsername())) {
             wrappers.eq(AgentCommissionEntity::getUsername, entity.getUsername());
         }
-        if (!StringUtils.isEmpty(entity.getUid()) && entity.getUid()>0) {
+        if (!StringUtils.isEmpty(entity.getUid()) && entity.getUid() > 0) {
             wrappers.eq(AgentCommissionEntity::getUid, entity.getUid());
+        }
+        if (!StringUtils.isEmpty(entity.getDate())) {
+            wrappers.eq(AgentCommissionEntity::getDate, entity.getDate());
         }
         return wrappers;
     }
