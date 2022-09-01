@@ -14,10 +14,12 @@ import java.util.List;
 public interface AgentCommissionService {
     boolean insertOrUpdate(List<AgentCommissionEntity> list);
 
+    AgentCommissionEntity find(int uid, String date);
     AgentCommissionEntity find(AgentCommissionEntity entity);
 
-    List<AgentCommissionEntity> findAvailableCommission(int uid);
+    float findAvailableCommission(int uid);
+    float findCommissionTotal(int uid);
 
-    boolean applySubmit(int uid, MemberEntity member, MemberFlowEntity memberFlow);
+    boolean applySubmit(int uid, AgentCommissionRecordEntity record, MemberEntity member, MemberFlowEntity memberFlow);
 
 }

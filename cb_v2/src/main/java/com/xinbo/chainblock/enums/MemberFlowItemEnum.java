@@ -27,7 +27,7 @@ public enum MemberFlowItemEnum {
 
 
     ACTIVITY_RECEIVE(500310,"500310", "活动领取"),
-    AGENT_COMMISSION(500410,"500410", "代理佣金"),
+    AGENT_COMMISSION(500410,"500410", "代理佣金")
     ;
 
     int code;
