@@ -15,13 +15,16 @@ trx:
 
 interceptor:
   exclude:
-    path: "/error/**,/v3/**,/webjars/**,/swagger-resources/**,/swagger-ui/**,/admin/user/login"
+    path: "/error/**,/v3/**,/captcha/**,/webjars/**,/swagger-resources/**,/swagger-ui/**,/admin/user/login"
+
 
 scheduled:
   enable:
     register: false
     transfer: false
     settle: false
+    agent:
+      commission: false
     finance:
       record: false
       account: false
@@ -31,6 +34,9 @@ scheduled:
     system:
       flow: false
 
+
+upload:
+  path: '/Users/zhangjie/jack/web3app/web3app_2019/cb_v2/upload/images'
 
 
 spring:

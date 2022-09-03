@@ -16,13 +16,15 @@ trx:
 
 interceptor:
   exclude:
-    path: "/error/**,/v3/**,/webjars/**,/swagger-resources/**,/swagger-ui/**,/admin/user/login"
+    path: "/error/**,/v3/**,/captcha/**,/webjars/**,/swagger-resources/**,/swagger-ui/**,/admin/user/login"
 
 scheduled:
   enable:
     register: false
     transfer: false
-    settle: false
+    settle: true
+    agent:
+      commission: false
     finance:
       record: false
       account: false

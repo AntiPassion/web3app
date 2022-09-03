@@ -40,7 +40,7 @@ insert into cb_v2.t_game(`cate_id`,`cate_name`,`cate_name_zh`,`name`,`name_zh`,`
 ('1', '100010', '哈希', '200010', '哈希两面',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '1000', 1.95),
 ('1', '100010', '哈希', '200110', '哈希百家乐',1, 'http://xx/x.png', 1, '', '2000', 0),
 ('1', '100010', '哈希', '200210', '哈希PK拾',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuA', '3000', 1.98),
-('1', '100010', '哈希', '200310', '幸运哈希',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuB', '4000', 1.97),
+('1', '100010', '哈希', '200310', '幸运哈希',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuB', '4000', 1.98),
 ('1', '100010', '哈希', '200410', '哈希牛牛',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuC', '5000', 0),
 ('2', '100110', '彩票', '200510', 'XB彩票',1, 'http://xx/x.png', 1, '', '', 0),
 ('3', '100210', '体育', '200610', '皇冠体育',1, 'http://xx/x.png', 1, '', '', 0);
@@ -83,10 +83,10 @@ insert into cb_v2.t_hash_play(`cate_id`,`cate_name`,`cate_name_zh`, `game_id`, `
 ('1', '100010', '哈希', 3, '200210', '哈希PK拾', '300012', '中级房', '100', '10000', 1.98, 3),
 ('1', '100010', '哈希', 3, '200210', '哈希PK拾', '300013', '高级房', '1000', '20000', 1.98, 4),
 
-('1', '100010', '哈希', 4, '200310', '幸运哈希', '300010', '体验房', '0', '200', 1.98, 2),
-('1', '100010', '哈希', 4, '200310', '幸运哈希', '300011', '初级房', '0', '200', 1.98, 2),
-('1', '100010', '哈希', 4, '200310', '幸运哈希', '300012', '中级房', '0', '200', 1.98, 3),
-('1', '100010', '哈希', 4, '200310', '幸运哈希', '300013', '高级房', '0', '200', 1.98, 4),
+('1', '100010', '哈希', 4, '200310', '幸运哈希', '300010', '体验房', '0', '200', 1.98, 1),
+('1', '100010', '哈希', 4, '200310', '幸运哈希', '300011', '初级房', '50', '5000', 1.98, 2),
+('1', '100010', '哈希', 4, '200310', '幸运哈希', '300012', '中级房', '100', '10000', 1.98, 3),
+('1', '100010', '哈希', 4, '200310', '幸运哈希', '300013', '高级房', '1000', '20000', 1.98, 4),
 
 ('1', '100010', '哈希', 5, '200410', '哈希牛牛', '300010', '体验房', '0', '200', 1.98, 1),
 ('1', '100010', '哈希', 5, '200410', '哈希牛牛', '300011', '初级房', '50', '5000', 1.98, 2),
@@ -133,7 +133,7 @@ insert into cb_v2.t_hash_odds(`game_id`, `name`,`name_zh`, `odds`, `code`) value
 (3, '400119','9', '9.8', '400119'),
 
 
-(4, '400010','', '9.8', '400010'),
+(4, '400010','', '1.98', '400010'),
 
 (5, '400210','庄(平倍)', '0.95', '400210'),
 (5, '400211','庄(超级翻倍)', '0.95', '400211'),
@@ -196,7 +196,9 @@ create table t_hash_bet (
     profit_money decimal(10,4) comment '赢利金额',
     payout_money decimal(10,4) comment '派彩金额',
     create_time timestamp null default null comment '创建时间',
+    create_timestamp bigint(20) comment '创建时间戳',
     update_time timestamp null default null comment '更新时间',
+    update_timestamp bigint(20) comment '更新时间戳',
     flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
     status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
     algorithm varchar(10) comment '算法',
@@ -325,7 +327,8 @@ insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`, `withdraw_wallet`,`
 ('jackE2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
 ('jackE3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
 ('demo5566','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo7788','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1)
+('demo7788','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo8899','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1)
 ;
 
 drop table if exists t_member_group;
@@ -385,8 +388,8 @@ create table t_member_flow(
   item_code int comment '帐变编码',
   item_zh varchar(100) comment '帐变中文',
   create_time timestamp null default null comment '创建时间',
-  ext varchar(200) comment '扩展字段',
-  UNIQUE KEY unique_sn (sn)
+  create_timestamp bigint(20) comment '创建时间戳',
+  ext varchar(200) comment '扩展字段'
 ) comment '会员流水表';
 
 
@@ -578,18 +581,18 @@ create table t_agent(
 
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (0,1,'jack',0,'');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,2,'jackB1',1,'4,5,8,9,10,11,16,17');
-insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,3,'jackB2',1,'6,7,12,13,14,15,18');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,3,'jackB2',1,'6,7,12,13,14,15,18,19,20,21');
 
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,4,'jackC1',2,'8,9,16,17');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,5,'jackC2',2,'10,11');
-insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,6,'jackC3',2,'12,13,18');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,6,'jackC3',2,'12,13,18,19,20,21');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,7,'jackC4',2,'14,15');
 
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,8,'jackD1',3,'');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,9,'jackD2',3,'16,17');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,10,'jackD3',3,'');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,11,'jackD4',3,'');
-insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,12,'jackD5',3,'18,19');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,12,'jackD5',3,'18,19,20,21');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,13,'jackD6',3,'');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,14,'jackD7',3,'');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,15,'jackD8',3,'');
@@ -597,44 +600,12 @@ insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,15
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,16,'jackE1',4,'');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,17,'jackE2',4,'');
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (12,18,'jackE3',4,'');
-insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (12,19,'demo5566',4,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (12,19,'demo5566',4,'20,21');
 
-insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (19,20,'demo5566',5,'');
-
-
-drop table if exists t_statistics;
-create table t_statistics(
-  id int primary key auto_increment,
-  `date` varchar(10) comment '日期',
-  uid int comment '用户id',
-  username varchar(100) comment '用户名',
-  bet_count decimal(20,2) default 0 comment '当日投注次数',
-  bet_amount decimal(20,2) default 0 comment '当日投注总额',
-  profit_amount decimal(20,2) default 0 comment '当日盈利总额',
-  recharge_trc20_count decimal(20,2) default 0 comment '充值trc20次数',
-  recharge_trc20_amount decimal(20,2) default 0 comment '充值trc20总额',
-  withdraw_trc20_amount decimal(20,2) default 0 comment '提现trc20总额',
-  recharge_trx_count decimal(20,2) default 0 comment '充值trx次数',
-  recharge_trx_amount decimal(20,2) default 0 comment '充值trx总额',
-  withdraw_trx_amount decimal(20,2) default 0 comment '提现trx总额',
-  activity_amount decimal(20,2) default 0 comment '活动总额',
-  update_time timestamp null default null comment '更新时间',
-  UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
-) comment '统计';
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (19,20,'demo7788',5,'');
+insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (19,21,'demo8899',5,'');
 
 
-INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_count`, `bet_amount`,
-                                `profit_amount`, `recharge_trc20_count`, `recharge_trc20_amount`, `withdraw_trc20_amount`, `recharge_trx_count`,
-                                `recharge_trx_amount`, `withdraw_trx_amount`, `activity_amount`, `update_time`
-                                ) VALUES
-('20220820',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220821',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220822',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220823',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220824',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220825',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220826',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220827',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43');
 
 
 
@@ -682,19 +653,32 @@ create table t_agent_commission(
     `date` varchar(10) comment '日期',
     uid int comment '用户id',
     username varchar(100) comment '用户名',
-    commission decimal(20,2) comment '佣金',
-    total_performance decimal(20,2) comment '总业绩',
-    self_performance decimal(20,2) comment '自营业绩',
-    direct_performance decimal(20,2) comment '直属业绩',
-    team_performance decimal(20,2) comment '团队业绩',
+    total_commission decimal(10,2) comment '总佣金',
+    total_performance decimal(10,2) comment '总业绩',
+    self_commission decimal(10,2) comment '自营佣金',
+    self_performance decimal(10,2) comment '自营业绩',
+    team_performance decimal(10,2) comment '团队业绩',
+    direct_performance decimal(10,2) comment '直属业绩',
+    sub_performance decimal(10,2) comment '下属业绩',
     rebate int comment '返佣比',
     create_time timestamp null default null comment '创建时间',
-    update_time timestamp null default null comment '创建时间',
+    create_timestamp bigint(20) comment '创建时间戳',
+    is_account tinyint(1) default 0 comment '是否入帐(0:未入帐, 1:已入帐)',
     UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
 ) comment '代理佣金表';
 
 
-
+drop table if exists t_agent_commission_record;
+create table t_agent_commission_record(
+    id int primary key auto_increment,
+    sn varchar(50) comment '序号',
+    uid int comment '用户id',
+    username varchar(100) comment '用户名',
+    money decimal(10,2) comment '总佣金',
+    create_time timestamp null default null comment '创建时间',
+    create_timestamp bigint(20) comment '创建时间戳',
+    UNIQUE KEY unique_date_uid (sn) comment '唯一索引'
+) comment '代理佣金记录表';
 
 
 
@@ -825,6 +809,55 @@ insert into cb_v2.t_permission(path, component, redirect, name, name_default, ti
 # ('修改佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0),
 # ('查询佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0)
 # ;
+
+
+
+
+drop table if exists t_statistics;
+create table t_statistics(
+  id int primary key auto_increment,
+  `date` varchar(10) comment '日期',
+  uid int comment '用户id',
+  username varchar(100) comment '用户名',
+  bet_count decimal(20,2) default 0 comment '当日投注次数',
+  bet_amount decimal(20,2) default 0 comment '当日投注总额',
+  profit_amount decimal(20,2) default 0 comment '当日盈利总额',
+  recharge_trc20_count decimal(20,2) default 0 comment '充值trc20次数',
+  recharge_trc20_amount decimal(20,2) default 0 comment '充值trc20总额',
+  withdraw_trc20_amount decimal(20,2) default 0 comment '提现trc20总额',
+  recharge_trx_count decimal(20,2) default 0 comment '充值trx次数',
+  recharge_trx_amount decimal(20,2) default 0 comment '充值trx总额',
+  withdraw_trx_amount decimal(20,2) default 0 comment '提现trx总额',
+  activity_amount decimal(20,2) default 0 comment '活动总额',
+  update_time timestamp null default null comment '更新时间',
+  UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
+) comment '统计';
+
+
+INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_count`, `bet_amount`,
+                                `profit_amount`, `recharge_trc20_count`, `recharge_trc20_amount`, `withdraw_trc20_amount`, `recharge_trx_count`,
+                                `recharge_trx_amount`, `withdraw_trx_amount`, `activity_amount`, `update_time`
+                                ) VALUES
+('20220901',2,'jackB1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',3,'jackB2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',4,'jackC1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',5,'jackC2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',6,'jackC3',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',7,'jackC4',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',8,'jackD1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',9,'jackD2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',10,'jackD3',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',11,'jackD4',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',12,'jackD5',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',13,'jackD6',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',14,'jackD7',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',15,'jackD8',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',16,'jackE1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',17,'jackE2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',18,'jackE3',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',20,'demo7788',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+('20220901',21,'demo8899',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43');
 
 
 
