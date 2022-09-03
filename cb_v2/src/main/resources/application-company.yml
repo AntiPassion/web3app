@@ -22,11 +22,7 @@ scheduled:
   enable:
     register: false
     transfer: false
-<<<<<<< HEAD
-    settle: true
-=======
     settle: false
->>>>>>> 1bfb0f11762379c1fe9963be7c7bbf8d818fcdaa
     agent:
       commission: false
     finance:
